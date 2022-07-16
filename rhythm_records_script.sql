@@ -12,184 +12,165 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table `customers`
+-- Table `Customers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `customers` ;
+DROP TABLE IF EXISTS `Customers` ;
 
-CREATE TABLE IF NOT EXISTS `customers` (
-  `customer_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `Customers` (
+  `customer_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `phone` BIGINT(12) NOT NULL,
+  `phone` VARCHAR(15) NOT NULL,
   `address` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`customer_id`))
 ENGINE = InnoDB;
 
-ALTER TABLE `customers` AUTO_INCREMENT=1001;
+ALTER TABLE `Customers` AUTO_INCREMENT=1001;
 
 
 -- -----------------------------------------------------
--- Table `orders`
+-- Table `Orders`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `orders` ;
+DROP TABLE IF EXISTS `Orders` ;
 
-CREATE TABLE IF NOT EXISTS `orders` (
-  `order_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `Orders` (
+  `order_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
   `order_date` DATE NOT NULL,
-  `order_total` DECIMAL(10,2) NOT NULL,
-  `customers_customer_id` INT NOT NULL,
-  PRIMARY KEY (`order_id`, `customers_customer_id`),
-  INDEX `fk_orders_customers_idx` (`customers_customer_id` ASC) VISIBLE,
-  CONSTRAINT `fk_orders_customers`
-    FOREIGN KEY (`customers_customer_id`)
-    REFERENCES `customers` (`customer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `order_total` DECIMAL(10,2) DEFAULT NULL,
+  `customer_id` INT NOT NULL,
+  PRIMARY KEY (`order_id`),
+  FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-ALTER TABLE `orders` AUTO_INCREMENT=501;
+ALTER TABLE `Orders` AUTO_INCREMENT=501;
 
 -- -----------------------------------------------------
--- Table `albums`
+-- Table `Albums`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `albums` ;
+DROP TABLE IF EXISTS `Albums` ;
 
-CREATE TABLE IF NOT EXISTS `albums` (
-  `album_id` INT NOT NULL AUTO_INCREMENT,
-  `album_name` VARCHAR(45) NOT NULL,
-  `release_date` DATE NULL,
+CREATE TABLE IF NOT EXISTS `Albums` (
+  `album_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+  `album_name` VARCHAR(255) NOT NULL,
+  `release_date` DATE DEFAULT NULL,
   `stock_qty` INT NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`album_id`))
 ENGINE = InnoDB;
 
-ALTER TABLE `albums` AUTO_INCREMENT=5001;
+ALTER TABLE `Albums` AUTO_INCREMENT=5001;
 
 
 -- -----------------------------------------------------
--- Table `orders_has_albums`
+-- Table `Orders_has_Albums`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `orders_has_albums` ;
+DROP TABLE IF EXISTS `Orders_has_Albums` ;
 
-CREATE TABLE IF NOT EXISTS `orders_has_albums` (
-  `orders_albums_id` INT NOT NULL AUTO_INCREMENT,
-  `orders_order_id` INT NOT NULL,
-  `albums_album_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `Orders_has_Albums` (
+  `Orders_Albums_id` INT NOT NULL AUTO_INCREMENT,
+  `order_id` INT NOT NULL,
+  `album_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `unit_price` DECIMAL(10,2) NOT NULL,
-  `line_total` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`orders_albums_id`, `orders_order_id`, `albums_album_id`),
-  INDEX `fk_orders_has_albums_albums1_idx` (`albums_album_id` ASC) VISIBLE,
-  INDEX `fk_orders_has_albums_orders1_idx` (`orders_order_id` ASC) VISIBLE,
-  CONSTRAINT `fk_orders_has_albums_orders1`
-    FOREIGN KEY (`orders_order_id`)
-    REFERENCES `orders` (`order_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_orders_has_albums_albums1`
-    FOREIGN KEY (`albums_album_id`)
-    REFERENCES `albums` (`album_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `line_total` DECIMAL(10,2) DEFAULT NULL,
+  PRIMARY KEY (`Orders_Albums_id`), 
+  FOREIGN KEY (`order_id`) REFERENCES `Orders` (`order_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+
+  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `artists`
+-- Table `Artists`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `artists` ;
+DROP TABLE IF EXISTS `Artists` ;
 
-CREATE TABLE IF NOT EXISTS `artists` (
-  `artist_id` INT NOT NULL AUTO_INCREMENT,
-  `artist_name` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `Artists` (
+  `artist_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+  `artist_name` VARCHAR(255) NOT NULL,
   `country` VARCHAR(45) NULL,
   PRIMARY KEY (`artist_id`))
 ENGINE = InnoDB;
 
-ALTER TABLE `artists` AUTO_INCREMENT=990;
+ALTER TABLE `Artists` AUTO_INCREMENT=990;
 
 
 -- -----------------------------------------------------
--- Table `genres`
+-- Table `Genres`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `genres` ;
+DROP TABLE IF EXISTS `Genres` ;
 
-CREATE TABLE IF NOT EXISTS `genres` (
-  `genres_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `Genres` (
+  `genre_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
   `genre_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`genres_id`))
+  PRIMARY KEY (`genre_id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `genres_has_albums`
+-- Table `Genres_has_Albums`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `genres_has_albums` ;
+DROP TABLE IF EXISTS `Genres_has_Albums` ;
 
-CREATE TABLE IF NOT EXISTS `genres_has_albums` (
-  `genres_albums_id` INT NOT NULL AUTO_INCREMENT,
-  `genres_genres_id` INT NOT NULL,
-  `albums_album_id` INT NOT NULL,
-  PRIMARY KEY (`genres_albums_id`, `genres_genres_id`, `albums_album_id`),
-  INDEX `fk_genres_has_albums_albums1_idx` (`albums_album_id` ASC) VISIBLE,
-  INDEX `fk_genres_has_albums_genres1_idx` (`genres_genres_id` ASC) VISIBLE,
-  CONSTRAINT `fk_genres_has_albums_genres1`
-    FOREIGN KEY (`genres_genres_id`)
-    REFERENCES `genres` (`genres_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_genres_has_albums_albums1`
-    FOREIGN KEY (`albums_album_id`)
-    REFERENCES `albums` (`album_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+CREATE TABLE IF NOT EXISTS `Genres_has_Albums` (
+  `Genres_Albums_id` INT NOT NULL AUTO_INCREMENT,
+  `genre_id` INT NOT NULL,
+  `album_id` INT NOT NULL,
+  PRIMARY KEY (`Genres_Albums_id`),
+  FOREIGN KEY (`genre_id`) REFERENCES `Genres` (`genre_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `artists_has_albums`
+-- Table `Artists_has_Albums`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `artists_has_albums` ;
+DROP TABLE IF EXISTS `Artists_has_Albums` ;
 
-CREATE TABLE IF NOT EXISTS `artists_has_albums` (
-  `artists_albums_id` INT NOT NULL AUTO_INCREMENT,
-  `artists_artist_id` INT NOT NULL,
-  `albums_album_id` INT NOT NULL,
-  PRIMARY KEY (`artists_albums_id`, `artists_artist_id`, `albums_album_id`),
-  INDEX `fk_artists_has_albums_albums1_idx` (`albums_album_id` ASC) VISIBLE,
-  INDEX `fk_artists_has_albums_artists1_idx` (`artists_artist_id` ASC) VISIBLE,
-  CONSTRAINT `fk_artists_has_albums_artists1`
-    FOREIGN KEY (`artists_artist_id`)
-    REFERENCES `artists` (`artist_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_artists_has_albums_albums1`
-    FOREIGN KEY (`albums_album_id`)
-    REFERENCES `albums` (`album_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+CREATE TABLE IF NOT EXISTS `Artists_has_Albums` (
+  `Artists_Albums_id` INT NOT NULL AUTO_INCREMENT,
+  `artist_id` INT NOT NULL,
+  `album_id` INT NOT NULL,
+  PRIMARY KEY (`Artists_Albums_id`),
+  FOREIGN KEY (`artist_id`) REFERENCES `Artists` (`artist_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+  
+  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Insert data to Table `customers`
+-- Insert data to Table `Customers`
 -- -----------------------------------------------------
 
-INSERT INTO `customers` (`first_name`, `last_name`, `email`, `phone`, `address`)
+INSERT INTO `Customers` (`first_name`, `last_name`, `email`, `phone`, `address`)
 VALUES
-('Robert', 'Smith', 'rmisth@gmail.com', 9984648001, '123 Fake Street, Towner, CO 73892'),
-('Amanda', 'Bergen', 'abergen@yahoo.com', 1546140854, '456 Unreal Drive, Cityberg, UT 98903'),
-('Jon', 'Johnson', 'jjohnson@hotmail.com', 6135549641, '789 Wheresit Road, Whoville, NY 30432'),
-('Jacob', 'Lichtenstein', 'jlicthenstein@aol.com', 8813411452, '987 Theresit Street, Realville, CA 45034'),
-('Mark', 'Nunda', 'mnunda@comcast.net', 7763015124, '654 Someplace Avenue, Someplace, WA 53403');
+('Robert', 'Smith', 'rmisth@gmail.com', '9984648001', '123 Fake Street, Towner, CO 73892'),
+('Amanda', 'Bergen', 'abergen@yahoo.com', '1546140854', '456 Unreal Drive, Cityberg, UT 98903'),
+('Jon', 'Johnson', 'jjohnson@hotmail.com', '6135549641', '789 Wheresit Road, Whoville, NY 30432'),
+('Jacob', 'Lichtenstein', 'jlicthenstein@aol.com', '8813411452', '987 Theresit Street, Realville, CA 45034'),
+('Mark', 'Nunda', 'mnunda@comcast.net', '7763015124', '654 Someplace Avenue, Someplace, WA 53403');
 
 
 -- -----------------------------------------------------
--- Insert data to Table `artists`
+-- Insert data to Table `Artists`
 -- -----------------------------------------------------
 
-INSERT INTO `artists` (`artist_name`, `country`)
+INSERT INTO `Artists` (`artist_name`, `country`)
 VALUES
 ('Nas', 'United States of America'),
 ('Neutral Milk Hotel', 'United States of America'),
@@ -199,10 +180,10 @@ VALUES
 
 
 -- -----------------------------------------------------
--- Insert data to Table `genres`
+-- Insert data to Table `Genres`
 -- -----------------------------------------------------
 
-INSERT INTO `genres` (`genre_name`)
+INSERT INTO `Genres` (`genre_name`)
 VALUES
 ('East Coast Hiphop'),
 ('Hardcore Hiphop'),
@@ -217,22 +198,22 @@ VALUES
 
 
 -- -----------------------------------------------------
--- Insert data to Table `orders`
+-- Insert data to Table `Orders`
 -- -----------------------------------------------------
 
-INSERT INTO `orders` (`order_date`, `order_total`, `customers_customer_id`)
+INSERT INTO `Orders` (`order_date`, `customer_id`)
 VALUES
-('2022-04-21', '75.00', 1004),
-('2022-04-21', '37.50', 1003),
-('2022-05-01', '24.50', 1001),
-('2022-05-01', '49.00', 1004),
-('2022-05-05', '37.50', 1005);
+('2022-04-21', (SELECT customer_id FROM Customers WHERE first_name = 'Jacob' AND last_name = 'Lichtenstein' AND phone = '8813411452')),
+('2022-04-21', (SELECT customer_id FROM Customers WHERE first_name = 'Jon' AND last_name = 'Johnson' AND phone = '6135549641')),
+('2022-05-01', (SELECT customer_id FROM Customers WHERE first_name = 'Robert' AND last_name = 'Smith' AND phone = '9984648001')),
+('2022-05-01', (SELECT customer_id FROM Customers WHERE first_name = 'Jacob' AND last_name = 'Lichtenstein' AND phone = '8813411452')),
+('2022-05-05', (SELECT customer_id FROM Customers WHERE first_name = 'Mark' AND last_name = 'Nunda' AND phone = '7763015124'));
 
 
 -- -----------------------------------------------------
--- Insert data to Table `albums`
+-- Insert data to Table `Albums`
 -- -----------------------------------------------------
-INSERT INTO `albums` (`album_name`, `release_date`, `stock_qty`, `price`)
+INSERT INTO `Albums` (`album_name`, `release_date`, `stock_qty`, `price`)
 VALUES
 ('Illmatic', '1994-04-19', 15, '24.50'),
 ('In the Aeroplane Over the Sea', '1998-02-10', 15, '24.50'),
@@ -240,6 +221,184 @@ VALUES
 ('Raw Power', '1970-02-07', 10, '24.50'),
 ('Neotokyo GSDF', '2009-03-05', 5, '37.50'),
 ('It Was Written', '1996-07-02', 5, '24.50');
+
+
+
+-- -----------------------------------------------------
+-- Insert data to Table `Orders_has_Albums`
+-- -----------------------------------------------------
+
+INSERT INTO `Orders_has_Albums` (`order_id`,`album_id`, `quantity`, `unit_price`)
+VALUES
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-04-21'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame'),
+  2,
+  '37.5'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1003' AND order_date = '2022-04-21'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Illmatic'),
+  1,
+  '11.5'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1003' AND order_date = '2022-04-21'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea'),
+  2,
+  '13'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1001' AND order_date = '2022-05-01'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Raw Power'),
+  1,
+  '24.5'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-05-01'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF'),
+  1,
+  '24.5'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-05-01'),
+  (SELECT album_id FROM Albums WHERE album_name = 'It Was Written'),
+  1,
+  '24.5'
+),
+(
+  (SELECT order_id FROM Orders WHERE customer_id = '1005' AND order_date = '2022-05-05'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame'),
+  1,
+  '37.5'
+);
+
+
+-- -----------------------------------------------------
+-- Update Line_Total to Table `Orders_has_Albums`
+-- -----------------------------------------------------
+
+UPDATE `Orders_has_Albums`
+SET `line_total` = quantity * unit_price;
+
+
+-- -----------------------------------------------------
+-- Update Order Total to Table `Orders`
+-- -----------------------------------------------------
+
+UPDATE `Orders`
+SET Orders.order_total = (SELECT SUM(Orders_has_Albums.line_total) 
+FROM `Orders_has_Albums` 
+WHERE Orders_has_Albums.order_id = Orders.order_id);
+
+
+
+-- -----------------------------------------------------
+-- Insert data to Table `Genres_has_Albums`
+-- -----------------------------------------------------
+
+INSERT INTO `Genres_has_Albums` (`genre_id`, `album_id`)
+VALUES
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'East Coast Hiphop'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Illmatic')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'East Coast Hiphop'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Hardcore Hiphop'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Hardcore Hiphop'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Hardcore Hiphop'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Indie Rock'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Raw Power')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Psychedelic Folk'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Illmatic')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Black Metal'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Black Metal'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Ambient/Atmospheric'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Illmatic')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Proto-Punk'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Raw Power')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Proto-Punk'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Proto-Punk'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Hard Rock'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Raw Power')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Soundtrack'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF')
+),
+(
+  (SELECT genre_id FROM Genres WHERE genre_name = 'Drum and Bass'),
+  (SELECT album_id FROM Albums WHERE album_name = 'It Was Written')
+);
+
+
+-- -----------------------------------------------------
+-- Insert data to Table `Artists_has_Albums`
+-- -----------------------------------------------------
+
+INSERT INTO `Artists_has_Albums` ( `artist_id`, `album_id`)
+VALUES
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Nas' AND country = 'United States of America'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Illmatic')
+),  
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Neutral Milk Hotel' AND country = 'United States of America'),
+  (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea')
+),
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Summoning' AND country = 'Austria'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame')
+),
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Iggy & The Stooges' AND country = 'United States of America'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Raw Power')
+),
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Ed Harris' AND country = 'Australia'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF')
+),
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Summoning' AND country = 'Austria'),
+  (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF')
+),
+(
+  (SELECT artist_id FROM Artists WHERE artist_name = 'Iggy & The Stooges' AND country = 'United States of America'),
+  (SELECT album_id FROM Albums WHERE album_name = 'It Was Written')
+);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
