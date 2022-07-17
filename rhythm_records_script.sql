@@ -38,11 +38,13 @@ CREATE TABLE IF NOT EXISTS `Orders` (
   `order_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
   `order_date` DATE NOT NULL,
   `order_total` DECIMAL(10,2) DEFAULT NULL,
-  `customer_id` INT NOT NULL,
+  `customer_id` INT NULL,
   PRIMARY KEY (`order_id`),
-  FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION)
+  CONSTRAINT `fk_Orders_Customer`
+    FOREIGN KEY (`customer_id`) 
+    REFERENCES `Customers` (`customer_id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 ALTER TABLE `Orders` AUTO_INCREMENT=501;
@@ -72,18 +74,19 @@ DROP TABLE IF EXISTS `Orders_has_Albums` ;
 CREATE TABLE IF NOT EXISTS `Orders_has_Albums` (
   `Orders_Albums_id` INT NOT NULL AUTO_INCREMENT,
   `order_id` INT NOT NULL,
-  `album_id` INT NOT NULL,
+  `album_id` INT NULL,
   `quantity` INT NOT NULL,
   `unit_price` DECIMAL(10,2) NOT NULL,
   `line_total` DECIMAL(10,2) DEFAULT NULL,
-  PRIMARY KEY (`Orders_Albums_id`), 
-  FOREIGN KEY (`order_id`) REFERENCES `Orders` (`order_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION,
-
-  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION)
+  PRIMARY KEY (`Orders_Albums_id`),
+  CONSTRAINT `fk_Order_has_Albums_Orders` 
+    FOREIGN KEY (`order_id`) 
+    REFERENCES `Orders` (`order_id`),
+  CONSTRAINT `fk_Order_has_Albums_Albums` 
+    FOREIGN KEY (`album_id`) 
+    REFERENCES `Albums` (`album_id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -95,7 +98,7 @@ DROP TABLE IF EXISTS `Artists` ;
 CREATE TABLE IF NOT EXISTS `Artists` (
   `artist_id` INT UNIQUE NOT NULL AUTO_INCREMENT,
   `artist_name` VARCHAR(255) NOT NULL,
-  `country` VARCHAR(45) NULL,
+  `country` VARCHAR(45) DEFAULT NULL,
   PRIMARY KEY (`artist_id`))
 ENGINE = InnoDB;
 
@@ -124,12 +127,16 @@ CREATE TABLE IF NOT EXISTS `Genres_has_Albums` (
   `genre_id` INT NOT NULL,
   `album_id` INT NOT NULL,
   PRIMARY KEY (`Genres_Albums_id`),
-  FOREIGN KEY (`genre_id`) REFERENCES `Genres` (`genre_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION,
-  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION)
+  CONSTRAINT `fk_Genres_has_Albums_Genres` 
+    FOREIGN KEY (`genre_id`) 
+    REFERENCES `Genres` (`genre_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Genres_has_Albums_Albums` 
+    FOREIGN KEY (`album_id`) 
+    REFERENCES `Albums` (`album_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -143,13 +150,16 @@ CREATE TABLE IF NOT EXISTS `Artists_has_Albums` (
   `artist_id` INT NOT NULL,
   `album_id` INT NOT NULL,
   PRIMARY KEY (`Artists_Albums_id`),
-  FOREIGN KEY (`artist_id`) REFERENCES `Artists` (`artist_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION,
-  
-  FOREIGN KEY (`album_id`) REFERENCES `Albums` (`album_id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION)
+  CONSTRAINT `fk_Artists_has_Albums_Artists` 
+    FOREIGN KEY (`artist_id`) 
+    REFERENCES `Artists` (`artist_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Artists_has_Albums_Albums`
+    FOREIGN KEY (`album_id`) 
+    REFERENCES `Albums` (`album_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
