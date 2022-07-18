@@ -1,0 +1,204 @@
+-- SELECT Queries (9 Total)
+-- 1) get all the orders details for the Orders page
+SELECT `Orders.order_id`, `Orders.order_date`, `Orders.order_total`, `Customers.first_name`, `Customers.last_name` 
+FROM `Orders`
+INNER JOIN `Customers` ON `Oders.customer_id` = `Customers.customer_id`;
+
+-- 2) get all the customers details for the Customers page
+SELECT `customer_id`, `first_name`, `last_name`, `email`, `phone`, `address` FROM `Customers`;
+
+-- 3) get all the artist details for the Artists page
+SELECT `artist_id`, `artist_name`, `country`FROM `Artists`;
+
+-- 4) get all the album details for the Albums page
+SELECT `album_id`, `album_name`, `artist_name`, `genre_name`, `release_date`, `stock_qty`, `price` FROM `Albums`;
+
+-- 5) get all the genres details for the Genres page
+SELECT `genre_id`, `genre_name` FROM `Genres`;
+
+-- 6) get all album IDs belonging to an order (Orders Has Albums)
+SELECT `album_id` FROM `Orders_has_Albums` WHERE `order_id` = :id_of_order_from_input;
+
+-- 7) get all album names belonging to a genre (Genres Has Albums)
+SELECT `album_id` FROM `Genres_has_Albums` WHERE `genre_id` = :id_of_genre_from_input;
+
+-- 8) get all album names belong to an artist (Artists Has Albums)
+SELECT `album_id` FROM `Artists_has_Albums` WHERE `artist_id` = :id_of_artist_from_input;
+
+-- 9) get details of customers based on last name (Dynamic Search/Filter requirement) 
+SELECT `customer_id`, `first_name`, `email`, `phone`, `address` FROM `Customers` WHERE `last_name` = :lname;
+
+
+-- INSERT Queries for entities and relastionships (8 Total)
+-- 1) Customers Table 
+INSERT INTO `Customers` (`first_name`, `last_name`, `email`, `phone`, `address`) VALUES
+(:fname, :lname, :email, :phonenum, :address);
+
+-- 2) Orders Table
+INSERT INTO `Orders` (`order_date`, `order_total`, `customer_id`) VALUES
+(:order_date, :total, :id_of_customer_from_input);
+
+
+-- 3) Albums Table
+INSERT INTO `Albums` (`album_name`, `release_date`, `stock_qty`, `price`) VALUES
+(:alname, :rdate, :stock, :price);
+
+-- 4) Artists Table
+INSERT INTO `Artists` (`artist_name`, `country`) VALUES
+(:arname, :country);
+
+-- 5) Genres Table
+INSERT INTO `Genres` (`genre_name`) VALUES
+(:gname);
+
+-- 6) Orders Has ALbums Table
+INSERT INTO `Orders_has_Albums` (`order_id`, `album_id`, `quantity`, `unit_price`, `line_total`) VALUES
+(:id_of_order_from_input, :id_of_album_from_input, :quan, :uprice, :line_total);
+
+-- 7) Genres Has Albums Table
+INSERT INTO `Genres_has_Albums` (`genre_id`, `album_id`) VALUES
+(:id_of_genre_from_input, :id_of_album_from_input);
+
+-- 8) Artists Has Albums Table
+INSERT INTO `Artists_has_Albums` ('artist_id', `album_id`) VALUES
+(:id_of_artist_from_input, :id_of_album_from_input);
+
+------------------------------------------------------------------------------------------------------------------------------------
+-- proposed changes to Insert Queries: I guess in the following way the data entered by the user will be able to connect the tables 
+-- I could be wrong, not too sure if NodeJS code actually pick up these input variables in the way I imagined...
+------------------------------------------------------------------------------------------------------------------------------------
+
+-- PROPOSE to replace item 2): Orders Table and associate customer with order 
+INSERT INTO `Orders` (`order_date`, `customer_id`)
+VALUES
+(:order_date, (SELECT `customer_id` FROM `Customers` WHERE `first_name` = :fname AND `last_name` = :lname AND `phone` = :phonenum));
+
+
+-- PROPOSE to replace item 6): Orders Has ALbums Table and M:M Relationship Addition: associate album with order
+INSERT INTO `Orders_has_Albums` (`order_id`,`album_id`, `quantity`, `unit_price`)
+VALUES
+(
+  (SELECT `order_id` FROM `Orders` WHERE `customer_id` = :id_of_customer_from_input AND `order_date` = :order_date),
+  (SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname),
+  :quan, 
+  :uprice
+);
+
+
+-- PROPOSE to replace item 7): Genres Has Albums Table and M:M Relationship Addition: associate album with genre
+INSERT INTO `Genres_has_Albums` (`genre_id`, `album_id`)
+VALUES
+(
+  (SELECT `genre_id` FROM `Genres` WHERE `genre_name` = :gname),
+  (SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname)
+);
+
+
+-- PROPOSE to replace item 8): Artists Has Albums Table and M:M Relationship Addition: associate album with artist
+INSERT INTO `Artists_has_Albums` ( `artist_id`, `album_id`) VALUES
+(
+(SELECT `artist_id` FROM `Artists` WHERE `artist_name` = :arname AND `country` = :country), 
+(SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname)
+);
+
+------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+-- UPDATE functions (8 Total)
+
+-- 1) UPDATE a customer's data based on submission of the Update Customer form 
+UPDATE `Customers` 
+SET 
+`first_name` = :fname, `last_name` = :lname, `email` = :email, `phone` = :phonenum, `address` = :address 
+WHERE `customer_id` = :id_of_customer_from_input;
+
+
+-- 2) UPDATE an order's data based on submission of the Update Order form (order total is updated via the intersetion table)
+UPDATE `Orders` 
+SET 
+`order_date` = :date, `customer_id` = :id_of_customer_from_input 
+WHERE `order_id` = :id_of_order_from_input;
+
+
+-- 3) UPDATE an album's data based on submission of the Update Album form 
+UPDATE `Albums` 
+SET 
+`album_name` = :alname, `release_date` = :date, `stock_qty` = :quan, `price` = :price 
+WHERE `album_id` = :id_of_album_from_input;
+
+
+-- 4) UPDATE an artist's data based on submission of the Update Artist form 
+UPDATE `Artists` 
+SET 
+`artist_name` = :arname, `country` = :country 
+WHERE `artist_id` = :id_of_artist_from_input;
+
+
+-- 5) UPDATE a genre's data based on submission of the Update Genre form 
+UPDATE `Genres` 
+SET 
+`genre_name` = :gname 
+WHERE `genre_id` = :id_of_genre_from_input;
+
+
+-- 6) UPDATE the relationship between orders and albums based on submission of the Update Order form 
+UPDATE `Orders_has_Albums` 
+SET 
+  (SELECT `order_id` FROM `Orders` WHERE `customer_id` = :id_of_customer_from_input AND `order_date` = :date),
+  (SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname),
+  :quan,
+  :uprice
+WHERE `order_id` = :id_of_order_from_input;
+
+-- update line_price
+UPDATE `Orders_has_Albums`
+SET `line_total` = quantity * unit_price;
+
+-- update total price in Orders
+UPDATE `Orders`
+SET Orders.order_total = (SELECT SUM(Orders_has_Albums.line_total) 
+FROM `Orders_has_Albums` 
+WHERE Orders_has_Albums.order_id = Orders.order_id);
+
+
+-- 7) UPDATE the relationship between genres and albums based on submission of the Update Album form 
+UPDATE `Genres_has_Albums`  
+SET 
+`genre_id` = (SELECT `genre_id` FROM `Genres` WHERE `genre_name` = :gname), 
+`album_id` = (SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname);
+
+
+-- 8) UPDATE the relationship between artists and albums based on submission of the Update Album form 
+UPDATE `Artists_has_Albums`  
+SET 
+  (SELECT `artist_id` FROM `Artists` WHERE `artist_name` = :arname AND `country` = :country),
+  (SELECT `album_id` FROM `Albums` WHERE `album_name` = :alname);
+
+
+
+-- DELETE functions including dis-associate two values (8 Total)
+
+-- 1) DELETE a customer 
+DELETE FROM Customers WHERE customer_id = :id_of_customer_from_input;
+
+-- 2) DELETE an album 
+DELETE FROM Albums WHERE album_id = :id_of_album_from_input;
+
+-- 3) DELETE an artist 
+DELETE FROM Artists WHERE artist_id = :id_of_artist_from_input;
+
+-- 4) DELETE a genre
+DELETE FROM Genres WHERE genres_id = :id_of_genre_from_input;
+
+-- 5) DELETE an order (DO we want to include this?)
+DELETE FROM Orders WHERE order_id = :id_of_order_from_input;
+
+-- 6) M:M Relationship Deletion: dis-associate an album from an artist
+DELETE FROM `Artists_has_Albums` WHERE `artist_id` = :id_of_artist_from_input AND `album_id` = :id_of_album_from_input;
+
+-- 7) M:M Relationship Deletion: dis-associate an album from a genre
+DELETE FROM `Genres_has_Albums` WHERE `genre_id` = :id_of_genre_from_input AND `album_id` = :id_of_album_from_input;
+
+-- 8) M:M Relationship Deletion: dis-associate an album from an order
+DELETE FROM `Orders_has_Albums` WHERE `order_id` = :id_of_order_from_input AND `album_id` = :id_of_album_from_input;
