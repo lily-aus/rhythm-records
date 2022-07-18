@@ -1,19 +1,27 @@
 -- SELECT Queries (9 Total)
--- 1) get all the orders details for the Orders page
-SELECT `Orders.order_id`, `Orders.order_date`, `Orders.order_total`, `Customers.first_name`, `Customers.last_name` 
-FROM `Orders`
-INNER JOIN `Customers` ON `Oders.customer_id` = `Customers.customer_id`;
 
--- 2) get all the customers details for the Customers page
+-- 1) get all the customers details for the Customers table
 SELECT `customer_id`, `first_name`, `last_name`, `email`, `phone`, `address` FROM `Customers`;
 
--- 3) get all the artist details for the Artists page
+-- 2) get all the orders details for the Orders table
+SELECT `Orders`.order_id, `Orders`.order_date, `Orders`.order_total, `Customers`.first_name, `Customers`.last_name 
+FROM `Orders`
+INNER JOIN `Customers` ON `Orders`.customer_id = `Customers`.customer_id;
+
+-- 3) get all the album details for the Albums table
+SELECT 
+`Albums`.album_id, `Albums`.album_name, `Albums`.release_date, `Albums`.stock_qty, `Albums`.price, `Artists`.artist_name, `Genres`.genre_name
+FROM `Albums`
+JOIN `Artists_has_Albums` ON `Albums`.album_id = `Artists_has_Albums`.album_id
+JOIN `Artists` ON  `Artists`.artist_id = `Artists_has_Albums`.artist_id
+JOIN `Genres_has_Albums` ON `Albums`.album_id = `Genres_has_Albums`.album_id
+JOIN `Genres` ON `Genres`.genre_id = `Genres_has_Albums`.genre_id
+;
+
+-- 4) get all the artist details for the Artists table
 SELECT `artist_id`, `artist_name`, `country`FROM `Artists`;
 
--- 4) get all the album details for the Albums page
-SELECT `album_id`, `album_name`, `artist_name`, `genre_name`, `release_date`, `stock_qty`, `price` FROM `Albums`;
-
--- 5) get all the genres details for the Genres page
+-- 5) get all the genres details for the Genres table
 SELECT `genre_id`, `genre_name` FROM `Genres`;
 
 -- 6) get all album IDs belonging to an order (Orders Has Albums)
