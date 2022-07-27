@@ -1,0 +1,131 @@
+
+<html>
+    <head>
+        <title>Albums</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript" src="../js_functs/albums/gen_albums.js"></script>
+
+    </head>
+
+    <body onload="browseAlbum()">
+        <h1>Albums</h1>
+
+        [ <a href="orders.html">Orders</a> | <a href="customers.html">Customers</a> | <a href="artists.html">Artists</a> | <a href="albums.html">Albums</a> | <a href="genres.html">Genres</a>
+        | <a href="artists_has_albums.html">Artists Has Albums</a> | <a href="genres_has_albums.html">Genres Has Albums</a>  | <a href="orders_has_albums.html">Orders Has Albums</a> ]
+        <p><a href="../index.html">Return to Index Page</a></p>
+        <br>
+        <div id="browse">
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th><a href="../main/inserts/insert_albums.html" onClick="newAlbum()">New</a></th>
+                    <th></th>
+                    <th>Album ID</th>
+                    <th>Album Name</th>
+                    <th>Release Date</th>
+                    <th>Quantity in Stock</th>
+                    <th>Price</th>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5001</td>
+                    <td align="center">Illmatic</td>
+                    <td align="center">04/19/1994</td>
+                    <td align="center">15</td>
+                    <td align="center">$24.50</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5002</td>
+                    <td align="center">In the Aeroplane Over the Sea</td>
+                    <td align="right">02/10/1998</td>
+                    <td align="center">15</td>
+                    <td align="center">$24.50</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5003</td>
+                    <td align="center">Let Mortal Heroes Sing Your Flame</td>
+                    <td align="center">10/31/2001</td>
+                    <td align="center">5</td>
+                    <td align="center">$37.50</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5004</td>
+                    <td align="center">Raw Power</td>
+                    <td align="center">02/07/1970</td>
+                    <td align="center">10</td>
+                    <td align="center">$24.50</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5005</td>
+                    <td align="center">Neotokyo GSDF</td>
+                    <td align="center">03/05/2009</td>
+                    <td align="center">5</td>
+                    <td align="center">$37.50</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5006</td>
+                    <td align="center">It Was Written</td>
+                    <td align="center">07/02/1996</td>
+                    <td align="center">5</td>
+                    <td align="center">$24.50</td>
+                </tr>
+
+            </table>
+            <p>&nbsp;</p>
+        </div> <!-- browse -->
+
+        <!--seach function display the albums information by searching album name-->
+        <div>
+            <h3>Search album information by album name</h3>
+
+            <form class="seachAlbums">
+                <input type="text" placeholder="Please enter an album name..." name="search">
+                <input class="btn" type="submit" id="searchAlbums" value="Search">
+                </form>
+        </div><!-- search-->
+
+        <div id="delete" hidden>
+            <form method="POST" id="deleteAlbum">
+                <legend><strong>Delete Album</strong></legend>
+                
+                <fieldset class="fields">
+                    <p>Are you sure you wish to delete the following?</p>
+                    <input type="hidden" name="AlbumID" id="deleteAlbumID" value="1">
+                    <label> Album ID </label> <input type="number" name="alid"> 
+                </fieldset>
+                
+                <input class="btn" type="submit" id="deleteAlbum" value="Delete Album">
+                <input class="btn" type="button" value="cancel" onClick="window.location.reload();">
+            </form> 
+        </div><!-- delete -->
+
+        <script>
+            function deleteFunction() {
+              var x = document.getElementById("delete");
+              x.hidden
+              x.hidden = !x.hidden
+            }
+        </script>
+
+
+
+    </body>
+</html>

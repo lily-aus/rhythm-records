@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>Add Artist</title>     
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript">
+        </script>
+
+    </head>
+
+    <body>
+        <h1>Add Artist</h1>
+
+        [ <a href="../orders.html">Orders</a> | <a href="../customers.html">Customers</a> | <a href="../artists.html">Artists</a> | <a href="../albums.html">Albums</a> | <a href="../genres.html">Genres</a>
+        | <a href="../artists_has_albums.html">Artists Has Albums</a> | <a href="../genres_has_albums.html">Genres Has Albums</a>  | <a href="../orders_has_albums.html">Orders Has Albums</a> ]
+        <br>
+        
+        <p><a href="../../index.html">Return to Index Page</a></p>
+        
+        <br>
+        
+        <div id="add_artist">
+            
+            <form method="POST" id="addArtist">
+                <fieldset>
+                    <h3>Provide Artist Details</h3>
+                    <div class="form-group">
+                        <label for="arname"> Artist Name: </label> 
+                        <input type="text" name="arname" ><br><br>
+                        <label for="country"> Country: </label> 
+                        <input type="text" name="country" ><br><br>
+                    </div>
+                </fieldset>
+            </form> 
+        </div><!-- update -->
+
+        <p>&nbsp;</p>
+
+        <div>
+            <input class="btn" type="submit" id="addArtist" value="Add artist">
+            <a href="../artists.html"><input class="btn" type="button" value="Cancel"></a>
+        </div>
+
+    </body>
+</html>

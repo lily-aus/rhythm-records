@@ -1,0 +1,150 @@
+
+<html>
+    <head>
+        <title>Orders Has Albums</title>
+        
+        <!-- Link CSS and JS files -->
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript" src="../js_functs/intersectionals/oha.js"></script>
+
+    </head>
+
+    <body>
+        <h1>Orders Has Albums</h1>
+        
+        <!-- Navigation Menu -->
+        [ <a href="orders.html">Orders</a> | <a href="customers.html">Customers</a> | <a href="artists.html">Artists</a> | <a href="albums.html">Albums</a> | <a href="genres.html">Genres</a>
+        | <a href="artists_has_albums.html">Artists Has Albums</a> | <a href="genres_has_albums.html">Genres Has Albums</a>  | <a href="orders_has_albums.html">Orders Has Albums</a> ]
+        <p><a href="../../cs340/index.html">Return to Index Page</a></p>
+        <br>
+
+        <div>
+            
+            <div id="browse_orders_has_albums">
+
+                <table border="1" cellpadding="5">
+                    <tr>
+                        <th><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">New</a></th>
+                        <th></th>
+                        <th>orders_has_albums_id</th>
+                        <th>Order ID</th>
+                        <th>Album ID</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Line Total</th>
+                    </tr>
+
+                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">1</td>
+                        <td align="center">501</td>
+                        <td align="center">5003</td>
+                        <td align="center">2</td>
+                        <td align="center">37.50</td>
+                        <td align="center">75.00</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">2</td>
+                        <td align="center">502</td>
+                        <td align="center">5001</td>
+                        <td align="center">1</td>
+                        <td align="center">11.50</td>
+                        <td align="center">11.50</td>
+                    </tr>                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">3</td>
+                        <td align="center">502</td>
+                        <td align="center">5002</td>
+                        <td align="center">2</td>
+                        <td align="center">13.00</td>
+                        <td align="center">26.00</td>
+                    </tr>                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">4</td>
+                        <td align="center">503</td>
+                        <td align="center">5004</td>
+                        <td align="center">1</td>
+                        <td align="center">24.50</td>
+                        <td align="center">24.50</td>
+                    </tr>                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">5</td>
+                        <td align="center">504</td>
+                        <td align="center">5005</td>
+                        <td align="center">1</td>
+                        <td align="center">24.50</td>
+                        <td align="center">24.50</td>
+                    </tr>                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">6</td>
+                        <td align="center">504</td>
+                        <td align="center">5006</td>
+                        <td align="center">1</td>
+                        <td align="center">24.50</td>
+                        <td align="center">24.50</td>
+                    </tr>                    <tr>
+                        <td><a href="../main/updates/update_albums.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.orders_has_albums_id')">Delete</a></td>
+                        <td align="center">7</td>
+                        <td align="center">505</td>
+                        <td align="center">5003</td>
+                        <td align="center">1</td>
+                        <td align="center">37.50</td>
+                        <td align="center">37.50</td>
+                    </tr>
+
+                </table>
+                <p>&nbsp;</p>
+            </div> <!-- browse -->
+
+            <!-- DELETE M:M Relationship Deletion: dis-associate an album from an order -->
+
+
+            <div id="delete_orders_has_albums" hidden>
+                <form method="POST" id="deleteordershasalbums">
+                    <legend><strong>Dis-associate an album from an order</strong></legend>
+                    
+                    <fieldset class="fields">
+                        <p>Are you sure you wish to delete the following?</p>
+                        <input type="hidden" name="artist_has_albums_id" id="deleteordershasalbumsID" value="1">
+                        <label> orders_has_albums_id </label> <input type="number" name="orders_has_albums_id">
+
+                    
+                    </fieldset>
+                    
+                    <input class="btn" type="submit" id="deleteordershasalbums" value="Submit">
+                    <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
+                </form> 
+            </div><!-- delete -->
+
+            <script>
+                function deleteFunction() {
+                  var x = document.getElementById("delete_orders_has_albums");
+                  x.hidden
+                  x.hidden = !x.hidden
+                }
+            </script>
+
+
+            <!--seach function display the albums belong to the artist-->
+            <div>
+                <h3>Display all albums purchased in an order</h3>
+
+                <form class="seachAlbums">
+                    <input type="text" placeholder="Please enter an order ID..." name="search">
+                    <input class="btn" type="submit" id="searchAlbums" value="Search">
+                  </form>
+            </div>
+
+
+        </div>
+
+    </body>
+</html>

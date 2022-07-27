@@ -1,0 +1,141 @@
+
+<html>
+    <head>
+        <title>Genres</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript" src="../js_functs/genres/gen_genres.js"></script>
+
+    </head>
+
+    <body>
+        <h1>Genres</h1>
+
+        [ <a href="orders.html">Orders</a> | <a href="customers.html">Customers</a> | <a href="artists.html">Artists</a> | <a href="albums.html">Albums</a> | <a href="genres.html">Genres</a>
+        | <a href="artists_has_albums.html">Artists Has Albums</a> | <a href="genres_has_albums.html">Genres Has Albums</a>  | <a href="orders_has_albums.html">Orders Has Albums</a> ]
+        <p><a href="../index.html">Return to Index Page</a></p>
+        <br>
+        <div id="browse">
+            <table border="1" cellpadding="5">
+
+                <tr>
+                    <th><a href="../main/inserts/insert_genres.html" onClick="newGenre()">New</a></th>
+                    <th></th>
+                    <th>Genre ID</th>
+                    <th>Genre Name</th>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">1</td>
+                    <td align="center"> East Coast Hiphop </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">2</td>
+                    <td align="center"> Hardcore Hiphop </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">3</td>
+                    <td align="center"> Indie Rock </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">4</td>
+                    <td align="center"> Psychedlic Folk </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">5</td>
+                    <td align="center"> Black Metal </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">6</td>
+                    <td align="center"> Ambient/Atmospheric </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">7</td>
+                    <td align="center"> Proto-Punk </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">8</td>
+                    <td align="center"> Hard Rock </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">9</td>
+                    <td align="center"> Soundtrack </td>
+                </tr>
+
+                <tr>
+                    <td><a href="../main/updates/update_genres.html" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">10</td>
+                    <td align="center"> Drum and Bass </td>
+                </tr>
+
+            </table>
+            <p>&nbsp;</p>
+        </div> <!-- browse -->
+
+
+        <!--seach function display the genre id by searching genre name-->
+        <div>
+            <h3>Search genre ID by genre name</h3>
+
+            <form class="searchGenre">
+                <input type="text" placeholder="Please enter a genre name..." name="search">
+                <input class="btn" type="submit" id="searchGenre" value="Search">
+                </form>
+        </div><!-- search-->
+
+
+
+        <div id="delete" hidden>
+            <form method="POST" id="deleteGenre">
+                <legend><strong>Delete Genre</strong></legend>
+
+                <fieldset class="fields">
+                    <p>Are you sure you wish to delete the following?</p>
+                    <input type="hidden" name="GenreID" id="deleteGenreID" value="1">
+                    <label> Genre ID </label> <input type="number" name="gid">
+                </fieldset>
+                
+                <input class="btn" type="submit" id="deleteGenre" value="Delete Genre">
+                <input class="btn" type="button" value="cancel" onClick="window.location.reload();">
+            </form> 
+        </div><!-- delete -->
+
+
+        <script>
+            function deleteFunction() {
+              var x = document.getElementById("delete");
+              x.hidden
+              x.hidden = !x.hidden
+            }
+        </script>
+
+    </body>
+</html>

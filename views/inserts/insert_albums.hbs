@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <title>Add Album</title>     
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript">
+        </script>
+
+    </head>
+
+    <body>
+        <h1>Add Album</h1>
+        
+        [ <a href="../orders.html">Orders</a> | <a href="../customers.html">Customers</a> | <a href="../artists.html">Artists</a> | <a href="../albums.html">Albums</a> | <a href="../genres.html">Genres</a>
+        | <a href="../artists_has_albums.html">Artists Has Albums</a> | <a href="../genres_has_albums.html">Genres Has Albums</a>  | <a href="../orders_has_albums.html">Orders Has Albums</a> ]
+        <br>
+        
+        <p><a href="../../index.html">Return to Index Page</a></p>
+        
+        <br>
+
+        <div id="add_albums">
+            
+            <form method="POST" id="addAlbum">
+                <fieldset>
+                    <h3>Provide Album Details</h3>
+                    <div class="form-group">
+                        <label for="alname"> Album Name: </label> 
+                        <input type="text" name="alname" ><br><br>
+                        <label for="date"> Release Date: </label> 
+                        <input type="date" name="date"><br><br>
+                        <label for="quan"> Quantity in Stock: </label> 
+                        <input type="number" name="quan"><br><br>
+                        <label for="price"> Price: </label> 
+                        <input type="number" step="0.01" name="price" ><br><br>
+                    </div>
+                    <!-- the Add album button will create the album id and used by add artist and add genre in the following tables-->
+                    <button onclick="AddGenreFunction()">Save album </button> Please save and continue
+                    <br><br>
+                </fieldset>
+                
+                <br><br>
+                <table id="artists_has_albums" border="1" cellpadding="5">
+                    <tr>
+                      <th> </th>
+                      <th>Artist Name</th>
+                    </tr>
+                    <tr>
+                        <td>1 </td>
+                        <td>
+                            <select class="form-control" id="artistSelect">
+                                <option value="none" selected disabled hidden>Select an artist</option>
+                                <option>Nas</option>
+                                <option>Neutral Milk Hotel</option>
+                                <option>Summoning</option>
+                                <option>Iggy & The Stooges</option>
+                                <option>Ed Harris</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <button onclick="AddArtistFunction()">Add another artist</button>
+
+                <br><br>
+
+                <table id="genres_has_albums" border="1" cellpadding="5">
+                    <tr>
+                      <th> </th>
+                      <th>Genre Name</th>
+                    </tr>
+                    <tr>
+                        <td>1 </td>
+                        <td>
+                            <select class="form-control" id="genreSelect">
+                                <option value="none" selected disabled hidden>Select a genre</option>
+                                <option>East Coast Hiphop</option>
+                                <option>Hardcore Hiphop</option>
+                                <option>Indie Rock</option>
+                                <option>Psychedelic Folk</option>
+                                <option>Black Metal</option>
+                                <option>Ambient/Atmospheric</option>
+                                <option>Proto-Punk</option>
+                                <option>Hard Rock</option>
+                                <option>Soundtrack</option>
+                                <option>Drum and Bass</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <button onclick="AddGenreFunction()">Add another genre</button>
+
+
+            </form> 
+        </div><!-- update -->
+
+        <p>&nbsp;</p>
+
+        <div>
+            <input class="btn" type="submit" id="addAlbum" value="Add album">
+            <a href="../albums.html"><input class="btn" type="button" value="Cancel"></a>
+        </div>
+
+    </body>
+</html>
