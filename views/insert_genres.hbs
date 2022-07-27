@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>Add Genre</title>     
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript">
+        </script>
+
+    </head>
+
+    <body>
+        <h1>Add Genre</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        
+        <br>
+
+        <div id="add_genre">
+            
+            <form method="POST" id="addGenre">
+                <fieldset>
+                    <h3>Provide Genre Details</h3>
+                    <div class="form-group">
+                        <label for="gname"> Genre Name: </label> 
+                        <input type="text" name="arname" ><br><br>
+                    </div>
+                </fieldset>
+            </form> 
+        </div><!-- add -->
+
+        <p>&nbsp;</p>
+
+        <div>
+            <input class="btn" type="submit" id="addGenre" value="Add genre">
+            <a href="../genres"><input class="btn" type="button" value="Cancel"></a>
+        </div>
+
+    </body>
+</html>
