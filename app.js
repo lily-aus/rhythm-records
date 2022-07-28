@@ -10,6 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 PORT = 34853;
+app.use(express.static('public'))
 
 // Database
 var db = require('./database/db-connector');
@@ -40,8 +41,12 @@ app.get('/orders', function(req, res)
 
 app.get('/artists', function(req, res)
     {
-        res.render('artists');
-    });
+        let query1 = "SELECT * FROM Artists;";
+        db.pool.query(query1, function(error, rows, fields){
+        res.render('artists',{data: rows});                                      
+        })
+    
+    });  
 
 app.get('/albums', function(req, res)
     {
@@ -118,6 +123,39 @@ app.get('/insert_artists', function(req, res)
     {
         res.render('insert_artists');
     });
+
+
+app.post('/add-artist-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+        // Capture NULL values
+        let artist_name = parseInt(data.artist_name);
+        if (isNaN(artist_name))
+        {
+            artist_name = 'NULL'
+        }
+    
+        let country = parseInt(data.country);
+        if (isNaN(country))
+        {
+            country = 'NULL'
+        }
+    
+        // Create the query and run it on the database
+        query1 = `INSERT INTO Artists(artist_name, country) VALUES ('${data.artist_name}', '${data.country}')`;
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+ 
+})
+});
 
 app.get('/update_artists', function(req, res)
     {

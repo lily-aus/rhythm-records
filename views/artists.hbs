@@ -3,7 +3,7 @@
     <head>
         <title>Artists</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="/css/style.css"  rel="stylesheet" type="text/css" />
 
         <script language="JavaScript" src="../js_functs/artists/gen_artists.js"></script>
 
@@ -20,54 +20,33 @@
         <br>
         
         <div id="browse">
-            <table border="1" cellpadding="5">
-                <tr>
-                    <th><a href="../insert_artists" onClick="newArtist()">New</a></th>
-                    <th></th>
-                    <th>Artist ID</th>
-                    <th>Artist Name</th>
-                    <th>Country</th>
-                </tr>
+             <table border="1" cellpadding="5" id="artists-table">
 
-                <tr>
-                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">990</td>
-                    <td align="center">Nas</td>
-                    <td align="center">United States of America</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th><a href="../insert_artists" onClick="newArtist()">New</a></th>
+                        <th></th>
+                            {{#each data.[0]}}
+                            <th>
+                                {{@key}}
+                            </th>
+                            {{/each}}
+                    </tr>
+                </thead>
 
-                <tr>
-                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">991</td>
-                    <td align="center">Neutral Milk Hotel</td>
-                    <td align="center">United States of America</td>
-                </tr>
+                <tbody>
 
-                <tr>
-                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">992</td>
-                    <td align="center">Summoning</td>
-                    <td align="center">Austria</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">993</td>
-                    <td align="center">Iggy & The Stooges</td>
-                    <td align="center">United States of America</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">994</td>
-                    <td align="center">Ed Harris</td>
-                    <td align="center">Australia</td>
-                </tr>
+                    {{!-- For each row, print the id, name and country in order --}}
+                    {{#each data}}
+                    <tr>
+                        <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.ArtistID')">Delete</a></td>                        
+                        <td align="center">{{this.artist_id}}</td>
+                        <td align="center">{{this.artist_name}}</td>
+                        <td align="center">{{this.country}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
 
             </table>
             <p>&nbsp;</p>
