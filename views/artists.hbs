@@ -6,6 +6,7 @@
         <link href="/css/style.css"  rel="stylesheet" type="text/css" />
 
         <script language="JavaScript" src="../js_functs/artists/gen_artists.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     </head>
 
@@ -15,7 +16,7 @@
         [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
         | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
         
-        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        <p><a href="../">Return to Index Page</a></p>
 
         <br>
         
@@ -25,7 +26,7 @@
                 <thead>
                     <tr>
                         <th><a href="../insert_artists" onClick="newArtist()">New</a></th>
-                        <th></th>
+                        <th>Delete</th>
                             {{#each data.[0]}}
                             <th>
                                 {{@key}}
@@ -38,17 +39,18 @@
 
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
-                    <tr>
+                    <tr data-value={{this.artist_id}}>
                         <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.ArtistID')">Delete</a></td>                        
+                        <td><button onclick="deleteArtist({{this.artist_id}})">Delete</button></td>                       
                         <td align="center">{{this.artist_id}}</td>
                         <td align="center">{{this.artist_name}}</td>
                         <td align="center">{{this.country}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
-
             </table>
+            <script src="/js/delete_artist.js"></script>
+
             <p>&nbsp;</p>
         </div> <!-- browse -->
 
@@ -61,33 +63,6 @@
                 <input class="btn" type="submit" id="searchArtist" value="Search">
                 </form>
         </div><!-- search-->
-
-
-        <p>&nbsp;</p>
-
-        <div id="delete" hidden>
-            <form method="POST" id="deleteArtist">
-                <legend><strong>Delete Artist</strong></legend>
-
-                <fieldset class="fields">
-                    <p>Are you sure you wish to delete the following?</p>
-                    <input type="hidden" name="ArtistID" id="deleteArtistID" value="1">
-                    <label> Artist ID </label> <input type="number" name="arid">
-                </fieldset>
-
-                <input class="btn" type="submit" id="deleteArtist" value="Delete Artist">
-                <input class="btn" type="button" value="cancel" onClick="window.location.reload();">
-            </form> 
-        </div><!-- delete -->
-
-
-        <script>
-            function deleteFunction() {
-              var x = document.getElementById("delete");
-              x.hidden
-              x.hidden = !x.hidden
-            }
-        </script>
 
     </body>
 </html>

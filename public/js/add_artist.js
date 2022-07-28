@@ -64,21 +64,32 @@ addRowToTable = (data) => {
 
     // Create a row and 3 cells
     let row = document.createElement("TR");
+    let deleteCell = document.createElement("TD"); 
     let idCell = document.createElement("TD");
     let nameCell = document.createElement("TD");
     let countryCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    idCell.innerText = newRow.id;
+    deleteCell = document.createElement("button");
+    deleteCell.innerHTML = "Delete";
+    deleteCell.onclick = function(){
+        deletePerson(newRow.id);
+    };
+    
+    idCell.innerText = newRow.artist_id;
     nameCell.innerText = newRow.artist_name;
     countryCell.innerText = newRow.country;
 
     // Add the cells to the row 
+    row.appendChild(deleteCell)
     row.appendChild(idCell);
     row.appendChild(nameCell);
     row.appendChild(countryCell);
 
-    
+     // Add a row attribute so the deleteRow function can find a newly added row
+     row.setAttribute('data-value', newRow.id);
+
+
     // Add the row to the table
     currentTable.appendChild(row);
 }

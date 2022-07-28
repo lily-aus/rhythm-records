@@ -171,6 +171,41 @@ app.get('/update_albums', function(req, res)
     {
         res.render('update_albums');
     });
+
+
+app.delete('/delete-artist-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let artistID = parseInt(data.artist_id);
+        let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE artist_id = ?`;
+        let deleteArtists = `DELETE FROM Artists WHERE artist_id = ?`;
+
+      
+      
+            // Run the 1st query
+            db.pool.query(deleteArtists_has_Albums, [artistID], function(error, rows, fields){
+                if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+                }
+    
+                else
+                {
+                    // Run the second query
+                    db.pool.query(deleteArtists, [artistID], function(error, rows, fields) {
+    
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            res.sendStatus(204);
+                        }
+                    })
+                }
+    })});
+ 
 /*
     LISTENER
 */
