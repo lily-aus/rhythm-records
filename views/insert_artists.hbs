@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Add Artist</title>     
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script language="JavaScript">
         </script>
 
@@ -19,25 +19,28 @@
         
         <div id="add_artist">
             
-            <form method="POST" id="addArtist">
+            <form id="addArtist">
                 <fieldset>
                     <h3>Provide Artist Details</h3>
                     <div class="form-group">
                         <label for="arname"> Artist Name: </label> 
-                        <input type="text" name="arname" ><br><br>
+                        <input type="text" name="arname" id="arname"><br><br>
+
                         <label for="country"> Country: </label> 
-                        <input type="text" name="country" ><br><br>
+                        <input type="text" name="country" id="country" ><br><br>
                     </div>
                 </fieldset>
+
+                <div>
+                    <input class="btn" type="submit" value="Add artist">
+                    <a href="/artists"><input class="btn" type="button" value="Cancel"></a>
+                </div>
+
             </form> 
-        </div><!-- update -->
+            <script src="/js/add_artist.js"></script>
+        </div><!-- insert -->
 
-        <p>&nbsp;</p>
 
-        <div>
-            <input class="btn" type="submit" id="addArtist" value="Add artist">
-            <a href="../artists"><input class="btn" type="button" value="Cancel"></a>
-        </div>
 
     </body>
 </html>
