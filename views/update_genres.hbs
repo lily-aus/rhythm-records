@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Update Genres</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript" src="/js_functs/genres/update_genres.js"></script>
+
+    </head>
+
+    <body>
+        <h1>Update Genre</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        
+        <br>
+
+        <div id="update_genres">
+            <form method="POST" id="updateGenre">
+                <fieldset>
+                    <h3>Selected Genre Details</h3>
+                    <div class="form-group">
+                        <label for="gid"> Genre ID: </label> 
+                        <input type="number" name="gid" value="1"><br><br>
+                        <label for="gname"> Genre Name: </label> 
+                        <input type="text" name="gname" value="genre name">
+                    </div>
+                </fieldset>
+                <br>
+                
+                <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre">
+                <a href="../genres"><input class="btn" type="button" value="Cancel"></a>
+            </form> 
+        </div><!-- update -->
+
+    </body>
+</html>

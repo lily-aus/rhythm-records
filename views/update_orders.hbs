@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <title>Update Orders</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript"></script>
+
+    </head>
+
+    <body>
+        <h1>Update Orders</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        
+        <br>
+
+        <div id="update_orders">
+            <form method="POST" id="update-order-ajax">      
+                <fieldset>
+                    <h3>Selected Order Details</h3>
+                    <div class="form-group">
+                        <label for="oid"> Order ID: </label> 
+                        <input type="number" name="oid" value="1"><br><br>
+                        <label for="date"> Order Date: </label> 
+                        <input type="date" name="date" value="04/21/2022"><br><br>
+                        <label for="price"> Order Total: </label> 
+                        <input type="float" step="0.01" name="price" value="75.00"><br><br>
+                        <label for="custID"> Customer ID: </label> 
+                        <input type="number" name="custID" value="1004"><br><br>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <h3>Existing Albums in Order</h3>
+                    <table id="orders_has_albums" border="1" cellpadding="5">
+                        <tr>
+                            <th> Item </th>
+                            <th> Album Name </th>
+                            <th> Quantity </th>
+                            <th> Unit Price </th>
+                        </tr>
+
+                        <tr>
+                            <td>Album 1</td>
+                            
+                            <td>
+                                <select class="form-control" id="albumSelect">
+                                    <option>Illmatic</option>
+                                    <option>In the Aeroplane Over the Sea</option>
+                                    <option>Let Mortal Heroes Sing Your Flame </option>
+                                    <option>Raw Power</option>
+                                    <option>Neotokyo GSDF</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <select class="form-control" id="quanSelect">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div>$37.50</div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Album 2</td>
+
+                            <td>
+                                <select class="form-control" id="albumSelect">
+                                    <option>Illmatic</option>
+                                    <option>In the Aeroplane Over the Sea</option>
+                                    <option>Let Mortal Heroes Sing Your Flame </option>
+                                    <option>Raw Power</option>
+                                    <option>Neotokyo GSDF</option>
+                                </select>
+                            </td>
+                            
+                            <td>
+                                <select class="form-control" id="quanSelect">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div>$37.50</div>
+                            </td>
+                        </tr>
+
+                    </table>
+                    
+                    <button onclick="AddOrderFunction()">Add New Album</button>
+                </fieldset>
+                <br>
+                <br>
+
+                <input class="btn" type="submit" id="UpdateSaveOrder" value="Update Order">
+                <a href="../orders"><input class="btn" type="button" value="Cancel"></a>
+            </form> 
+        </div><!-- update -->
+
+    <script language="JavaScript">
+        // let queryString = location.search.substring(1);
+        // console.log(queryString);
+
+        // let partial_query1 = "SELECT @id_of_order := order_id FROM Orders_Has_Albums WHERE Orders_Albums_ID = ";
+        // let query1 = partial_query1.concat(queryString);
+        // let query2 = "SELECT * FROM Orders WHERE order_id = @id_of_order";
+    
+    </script>
+    
+    </body>
+</html>

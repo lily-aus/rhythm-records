@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Add Orders</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+        <h1>Add Orders</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+
+        <div id="insert_orders">
+            <h3>Provide Order Details</h3>
+
+            <form method="POST" id="add-order-ajax">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="input-customer_id"> Customer ID: </label> 
+                        
+                        <select>
+                            {{#each customer_ids}}
+                            <option>{{this}}</option>
+                            {{/each}}
+                        </select>
+
+                        <br><br>
+
+                        <label for="input-album_name"> Album Name: </label> 
+                        <input type="text" name="input-album_name"><br><br>
+                        
+                        <label for="input-quantity"> Quantity: </label> 
+                        <input type="number" name="input-quantity"><br><br>
+                    
+                    </div>
+                </fieldset>
+                <br>
+                
+                <input class="btn" type="submit" id="addOrder" value="Add Order" onclick="insertOrder()">
+                <a href="../orders"><input class="btn" type="button" value="Cancel"></a>
+            </form> 
+
+            
+        </div>
+
+    </body>
+</html>

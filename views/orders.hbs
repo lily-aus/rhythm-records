@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Orders</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript" src="../js_functs/orders/gen_orders.js"></script>
+
+    </head>
+
+    <body onload="browseOrder()">
+        <h1>Orders</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        
+        <br>
+
+        <div id="browse">
+
+            <table border="1" cellpadding="5">
+
+                <tr>
+                    <th><a href="../insert_orders" onClick="newOrder()">New</a></th>
+                    <th></th>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Order Total</th>
+                    <th>Customer ID</th>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_orders" onClick="updateOrder('this.OrderID')">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.OrderID')">Delete</a></td>
+                    <td align="center">501</td>
+                    <td align="center">04/21/2022</td>
+                    <td align="center">$75.00</td>
+                    <td align="center">1004</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_orders" onClick="updateOrder('this.OrderID')">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.OrderID')">Delete</a></td>
+                    <td align="center">502</td>
+                    <td align="center">04/21/2022</td>
+                    <td align="center">$37.50</td>
+                    <td align="center">1003</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_orders" onClick="updateOrder('this.OrderID')">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.OrderID')">Delete</a></td>
+                    <td align="center">503</td>
+                    <td align="center">05/01/2022</td>
+                    <td align="center">$24.50</td>
+                    <td align="center">1001</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_orders" onClick="updateOrder('this.OrderID')">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.OrderID')">Delete</a></td>
+                    <td align="center">504</td>
+                    <td align="center">05/01/2022</td>
+                    <td align="center">$49.00</td>
+                    <td align="center">1004</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_orders" onClick="updateOrder('this.OrderID')">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.OrderID')">Delete</a></td>
+                    <td align="center">505</td>
+                    <td align="center">05/05/2022</td>
+                    <td align="center">$37.50</td>
+                    <td align="center">1004</td>
+                </tr>
+
+            </table>
+            <p>&nbsp;</p>
+        </div> <!-- browse -->
+
+        <!--seach function display the order information by searching customer ID-->
+        <div>
+            <h3>Search order information by customer ID</h3>
+
+            <form class="searchOrder">
+                <input type="int" placeholder="Enter a customer's ID..." name="search">
+                <input class="btn" type="submit" id="searchOrder" value="Search">
+                </form>
+        </div><!-- search-->
+
+        <p>&nbsp;</p>
+        
+        <div id="delete" hidden>
+            <form method="POST" id="deleteOrder">
+                <legend><strong>Delete Order</strong></legend>
+
+                <fieldset class="fields">
+                    <p>Are you sure you wish to delete the following?</p>
+                    <input type="hidden" name="OrderID" id="deleteOrderID" value="1">
+                    <label> Order ID </label> <input type="number" name="oid">
+                </fieldset>
+                
+                <input class="btn" type="submit" id="deleteOrder" value="Delete Order">
+                <input class="btn" type="button" value="cancel" onClick="browseOrder()">
+            </form> 
+        </div><!-- delete -->
+
+        <script>
+            function deleteFunction() {
+              var x = document.getElementById("delete");
+              x.hidden
+              x.hidden = !x.hidden
+            }
+        </script>
+    </body>
+</html>

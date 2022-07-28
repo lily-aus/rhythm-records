@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>Add Artist</title>     
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript">
+        </script>
+
+    </head>
+
+    <body>
+        <h1>Add Artist</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+        
+        <br>
+        
+        <div id="add_artist">
+            
+            <form method="POST" id="addArtist">
+                <fieldset>
+                    <h3>Provide Artist Details</h3>
+                    <div class="form-group">
+                        <label for="arname"> Artist Name: </label> 
+                        <input type="text" name="arname" ><br><br>
+                        <label for="country"> Country: </label> 
+                        <input type="text" name="country" ><br><br>
+                    </div>
+                </fieldset>
+            </form> 
+        </div><!-- update -->
+
+        <p>&nbsp;</p>
+
+        <div>
+            <input class="btn" type="submit" id="addArtist" value="Add artist">
+            <a href="../artists"><input class="btn" type="button" value="Cancel"></a>
+        </div>
+
+    </body>
+</html>

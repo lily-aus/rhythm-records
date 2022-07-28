@@ -1,0 +1,129 @@
+
+<html>
+    <head>
+        <title>Artists Has Albums</title>
+        
+        <!-- Link CSS and JS files -->
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript" src="../js_functs/intersectionals/aha.js"></script>
+    </head>
+
+    <body>
+        <h1>Artists Has Albums</h1>
+        
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+
+        <div>
+            
+            <div id="browse_artist_has_albums">
+
+                <table border="1" cellpadding="5">
+                    <tr>
+                        <th><a href="../update_albums" class="btn btn-outline-danger btn-md">New</a></th>
+                        <th></th>
+                        <th>artist_has_albums_id</th>
+                        <th>Artist ID</th>
+                        <th>Album ID</th>
+                    </tr>
+
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">1</td>
+                        <td align="center">990</td>
+                        <td align="center">5001</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">2</td>
+                        <td align="center">991</td>
+                        <td align="center">5002</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">3</td>
+                        <td align="center">992</td>
+                        <td align="center">5003</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">4</td>
+                        <td align="center">993</td>
+                        <td align="center">5004</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">5</td>
+                        <td align="center">994</td>
+                        <td align="center">5005</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">6</td>
+                        <td align="center">992</td>
+                        <td align="center">5005</td>
+                    </tr>
+                    <tr>
+                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.artist_has_albums_id')">Delete</a></td>
+                        <td align="center">7</td>
+                        <td align="center">993</td>
+                        <td align="center">5006</td>
+                    </tr>
+
+                </table>
+                <p>&nbsp;</p>
+            </div> <!-- browse -->
+
+            <!-- DELETE M:M Relationship Deletion: dis-associate an album from an artist -->
+
+
+            <div id="delete_artists_has_albums" hidden>
+                <form method="POST" id="deleteartisthasalbums">
+                    <legend><strong>Dis-associate an album from an artist</strong></legend>
+                    
+                    <fieldset class="fields">
+                        <p>Are you sure you wish to delete the following?</p>
+                        <input type="hidden" name="artist_has_albums_id" id="deleteartisthasalbumsID" value="1">
+                        <label> artist_has_albums_id </label> <input type="number" name="artist_has_albums_id">
+
+                    
+                    </fieldset>
+                    
+                    <input class="btn" type="submit" id="deleteartisthasalbums" value="Submit">
+                    <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
+                </form> 
+            </div><!-- delete -->
+
+            <script>
+                function deleteFunction() {
+                  var x = document.getElementById("delete_artists_has_albums");
+                  x.hidden
+                  x.hidden = !x.hidden
+                }
+            </script>
+
+
+            <!--seach function display the albums belong to the artist-->
+            <div>
+                <h3>Display all albums belong to an artist</h3>
+
+                <form class="seachAlbums">
+                    <input type="text" placeholder="Please enter an artist name..." name="search">
+                    <input class="btn" type="submit" id="searchAlbums" value="Search">
+                  </form>
+            </div>
+
+
+        </div>
+
+    </body>
+</html>

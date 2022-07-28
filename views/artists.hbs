@@ -1,0 +1,114 @@
+
+<html>
+    <head>
+        <title>Artists</title>
+        
+        <link href="style.css" rel="stylesheet" type="text/css" />
+
+        <script language="JavaScript" src="../js_functs/artists/gen_artists.js"></script>
+
+    </head>
+
+    <body onload="browseArtist()">
+        <h1>Artists</h1>
+
+        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        
+        <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
+
+        <br>
+        
+        <div id="browse">
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th><a href="../insert_artists" onClick="newArtist()">New</a></th>
+                    <th></th>
+                    <th>Artist ID</th>
+                    <th>Artist Name</th>
+                    <th>Country</th>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">990</td>
+                    <td align="center">Nas</td>
+                    <td align="center">United States of America</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">991</td>
+                    <td align="center">Neutral Milk Hotel</td>
+                    <td align="center">United States of America</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">992</td>
+                    <td align="center">Summoning</td>
+                    <td align="center">Austria</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">993</td>
+                    <td align="center">Iggy & The Stooges</td>
+                    <td align="center">United States of America</td>
+                </tr>
+
+                <tr>
+                    <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
+                    <td align="center">994</td>
+                    <td align="center">Ed Harris</td>
+                    <td align="center">Australia</td>
+                </tr>
+
+            </table>
+            <p>&nbsp;</p>
+        </div> <!-- browse -->
+
+        <!--seach function display the artist information by searching artist name-->
+        <div>
+            <h3>Search artist information by artist name</h3>
+
+            <form class="searchArtist">
+                <input type="text" placeholder="Please enter an artist name..." name="search">
+                <input class="btn" type="submit" id="searchArtist" value="Search">
+                </form>
+        </div><!-- search-->
+
+
+        <p>&nbsp;</p>
+
+        <div id="delete" hidden>
+            <form method="POST" id="deleteArtist">
+                <legend><strong>Delete Artist</strong></legend>
+
+                <fieldset class="fields">
+                    <p>Are you sure you wish to delete the following?</p>
+                    <input type="hidden" name="ArtistID" id="deleteArtistID" value="1">
+                    <label> Artist ID </label> <input type="number" name="arid">
+                </fieldset>
+
+                <input class="btn" type="submit" id="deleteArtist" value="Delete Artist">
+                <input class="btn" type="button" value="cancel" onClick="window.location.reload();">
+            </form> 
+        </div><!-- delete -->
+
+
+        <script>
+            function deleteFunction() {
+              var x = document.getElementById("delete");
+              x.hidden
+              x.hidden = !x.hidden
+            }
+        </script>
+
+    </body>
+</html>
