@@ -4,7 +4,7 @@
         
         <link href="style.css" rel="stylesheet" type="text/css" />
 
-        <script language="JavaScript" src="/js_functs/orders/update_orders.js"></script>
+        <script language="JavaScript"></script>
 
     </head>
 
@@ -19,7 +19,7 @@
         <br>
 
         <div id="update_orders">
-            <form method="POST" id="updateOrder">      
+            <form method="POST" id="update-order-ajax">      
                 <fieldset>
                     <h3>Selected Order Details</h3>
                     <div class="form-group">
@@ -38,10 +38,10 @@
                     <h3>Existing Albums in Order</h3>
                     <table id="orders_has_albums" border="1" cellpadding="5">
                         <tr>
-                        <th> Item </th>
-                        <th> Album Name </th>
-                        <th> Quantity </th>
-                        <th> Unit Price </th>
+                            <th> Item </th>
+                            <th> Album Name </th>
+                            <th> Quantity </th>
+                            <th> Unit Price </th>
                         </tr>
 
                         <tr>
@@ -112,5 +112,15 @@
             </form> 
         </div><!-- update -->
 
+    <script language="JavaScript">
+        // let queryString = location.search.substring(1);
+        // console.log(queryString);
+
+        // let partial_query1 = "SELECT @id_of_order := order_id FROM Orders_Has_Albums WHERE Orders_Albums_ID = ";
+        // let query1 = partial_query1.concat(queryString);
+        // let query2 = "SELECT * FROM Orders WHERE order_id = @id_of_order";
+    
+    </script>
+    
     </body>
 </html>

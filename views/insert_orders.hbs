@@ -4,8 +4,6 @@
         
         <link href="style.css" rel="stylesheet" type="text/css" />
 
-        <script language="JavaScript" src="/js_functs/orders/insert_orders.js"></script>
-
     </head>
 
     <body>
@@ -15,25 +13,29 @@
         | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
         
         <p><a href="http://flip2.engr.oregonstate.edu:34853/">Return to Index Page</a></p>
-        
-        <br>
 
         <div id="insert_orders">
-            <form method="POST" id="addOrder">
+            <h3>Provide Order Details</h3>
+
+            <form method="POST" id="add-order-ajax">
                 <fieldset>
-                    <h3>Provide Order Details</h3>
                     <div class="form-group">
-                        <label for="custID"> Customer ID: </label> 
-                        <select>
-                            <option value="1001">1001</option>
-                            <option value="1002">1002</option>
-                            <option value="1003">1003</option>
-                            <option value="1004">1004</option>
-                            <option value="1005">1005</option>
-                        </select><br><br>
+                        <label for="input-customer_id"> Customer ID: </label> 
                         
-                        <label> Album Name: </label> <input type="text" name="cid"><br><br>
-                        <label> Quantity: </label> <input type="number" name="cid"><br><br>
+                        <select>
+                            {{#each customer_ids}}
+                            <option>{{this}}</option>
+                            {{/each}}
+                        </select>
+
+                        <br><br>
+
+                        <label for="input-album_name"> Album Name: </label> 
+                        <input type="text" name="input-album_name"><br><br>
+                        
+                        <label for="input-quantity"> Quantity: </label> 
+                        <input type="number" name="input-quantity"><br><br>
+                    
                     </div>
                 </fieldset>
                 <br>
@@ -41,6 +43,8 @@
                 <input class="btn" type="submit" id="addOrder" value="Add Order" onclick="insertOrder()">
                 <a href="../orders"><input class="btn" type="button" value="Cancel"></a>
             </form> 
+
+            <script language="JavaScript" src="../js/orders/update_orders.js"></script>
         </div>
 
     </body>
