@@ -55,7 +55,11 @@ app.get('/albums', function(req, res)
 
 app.get('/genres', function(req, res)
     {
-        res.render('genres');
+        let query1 = "SELECT * FROM Genres";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('genres', {data: rows});
+        });
     });
 
 app.get('/genres_has_albums', function(req, res)
@@ -116,8 +120,67 @@ app.get('/insert_genres', function(req, res)
 
 app.get('/update_genres', function(req, res)
     {
-        res.render('update_genres');
+        var context_1 = {};
+        var context_2 = {};
+
+        query1 = "SELECT genre_id FROM Genres";
+        query2 = "SELECT genre_name FROM Genres";
+
+        db.pool.query(query1, function(err, rows, fields){
+            context_1.res = rows;
+            var genre_ids = [];
+
+            for (var i = 0; i < rows.length; i++){
+                genre_ids.push(rows[i]["genre_id"]);
+            }
+
+            db.pool.query(query2, function(err, rows, fields){
+                context_2.res = rows;
+                var genre_names = [];
+    
+                for (var i = 0; i < rows.length; i++){
+                    genre_names.push(rows[i]["genre_name"]);
+                }
+                res.render('update_genres', {genre_names:genre_names, genre_ids:genre_ids});
+            });
+        });
     });
+
+app.put('/put-genre-ajax', function(req,res,next){
+    let data = req.body;
+    
+    let genre_id = parseInt(data.genreid);
+    alert("hello")
+    let genre_name = parseInt(data.genrename);
+    
+    let queryUpdateGenres = `UPDATE Genres SET genre_name = ? WHERE genre_id = ?`;
+    let selectGenres = `SELECT * FROM Genres WHERE genre_id = ?`
+    
+            // Run the 1st query
+            db.pool.query(queryUpdateGenres, [genre_name, genre_id], function(error, rows, fields){
+                if (error) {
+    
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+                }
+    
+                // If there was no error, we run our second query and return that data so we can use it to update the gnere
+                // table on the front-end
+                else
+                {
+                    // Run the second query
+                    db.pool.query(selectGenres, [genre_name], function(error, rows, fields) {
+    
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            res.send(rows);
+                        }
+                    })
+                }
+    })});
 
 app.get('/insert_artists', function(req, res)
     {

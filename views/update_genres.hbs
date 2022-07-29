@@ -2,9 +2,7 @@
     <head>
         <title>Update Genres</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
-
-        <script language="JavaScript" src="/js_functs/genres/update_genres.js"></script>
+        {{!-- <link href="style.css" rel="stylesheet" type="text/css" /> --}}
 
     </head>
 
@@ -19,21 +17,24 @@
         <br>
 
         <div id="update_genres">
-            <form method="POST" id="updateGenre">
-                <fieldset>
-                    <h3>Selected Genre Details</h3>
-                    <div class="form-group">
-                        <label for="gid"> Genre ID: </label> 
-                        <input type="number" name="gid" value="1"><br><br>
-                        <label for="gname"> Genre Name: </label> 
-                        <input type="text" name="gname" value="genre name">
-                    </div>
-                </fieldset>
-                <br>
-                
-                <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre">
-                <a href="../genres"><input class="btn" type="button" value="Cancel"></a>
+            <form method="PUT" id="update-genre-form-ajax">
+
+                <label for="input-genre_id">Genre ID: </label>
+                <select name="input-genre_id" id="mySelect">
+                    <option value="test">Select a Genre ID</option>
+                    {{#each genre_ids}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+
+                <label for="input-genre_name">Genre Name: </label>
+                <input type="text" name="input-genre_name" id="input-genre_name-update">
+                <input type="submit">
+
             </form> 
+
+            <script src="/js/update_genres.js"></script>
+
         </div><!-- update -->
 
     </body>
