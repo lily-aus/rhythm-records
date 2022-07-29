@@ -5,8 +5,6 @@
         
         <link href="style.css" rel="stylesheet" type="text/css" />
 
-        <script language="JavaScript" src="../js_functs/genres/gen_genres.js"></script>
-
     </head>
 
     <body>
@@ -20,86 +18,31 @@
         <br>
         
         <div id="browse">
-            <table border="1" cellpadding="5">
-
-                <tr>
-                    <th><a href="../insert_genres" onClick="newGenre()">New</a></th>
-                    <th></th>
-                    <th>Genre ID</th>
-                    <th>Genre Name</th>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">1</td>
-                    <td align="center"> East Coast Hiphop </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">2</td>
-                    <td align="center"> Hardcore Hiphop </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">3</td>
-                    <td align="center"> Indie Rock </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">4</td>
-                    <td align="center"> Psychedlic Folk </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">5</td>
-                    <td align="center"> Black Metal </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">6</td>
-                    <td align="center"> Ambient/Atmospheric </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">7</td>
-                    <td align="center"> Proto-Punk </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">8</td>
-                    <td align="center"> Hard Rock </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">9</td>
-                    <td align="center"> Soundtrack </td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_genres" class="btn btn-outline-danger btn-md">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.AlbumID')">Delete</a></td>
-                    <td align="center">10</td>
-                    <td align="center"> Drum and Bass </td>
-                </tr>
-
-            </table>
+            <table id="genres-table" border="1" cellpadding="5">
+                    
+                    <thead>
+                        <tr>
+                            <th><a href="../insert_genres" class="btn btn-outline-danger btn-md">New</a></th>
+                            <th></th>
+                            {{#each data.[0]}}
+                            <th>
+                                {{@key}}
+                            </th>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {{#each data}}
+                        <tr>
+                            <td><a href="../update_genres?{{this.genre_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                            <td><a href="#" onclick="deleteFunction('this.genre_id')">Delete</a></td>
+                            <td>{{this.genre_id}}</td>
+                            <td>{{this.genre_name}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             <p>&nbsp;</p>
         </div> <!-- browse -->
 
