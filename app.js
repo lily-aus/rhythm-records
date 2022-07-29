@@ -5,12 +5,12 @@
 // Express
 var express = require('express');
 var app = express();
-
+var path = require("path");
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
 
 PORT = 34853;
-app.use(express.static('public'))
 
 // Database
 var db = require('./database/db-connector');
@@ -157,10 +157,51 @@ app.post('/add-artist-ajax', function(req, res)
 })
 });
 
-app.get('/update_artists', function(req, res)
+app.get("/update_artists/:artist_id", async(req, res) =>
     {
-        res.render('update_artists');
+        var artistId = req.params.artist_id;
+        let getArtistById = `SELECT artist_id, artist_name, country FROM Artists WHERE artist_id = ${artistId}`;
+        db.pool.query(getArtistById, function(error, rows, fields){
+            res.render("update_artists", { data: rows, active: { Artists: true } });
+
+        });
     });
+
+
+app.post("/update_artists/:artist_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+        // Capture NULL values
+        let artist_id = parseInt(data.artist_id);
+        let artist_name = parseInt(data.artist_name);
+        if (isNaN(artist_name))
+        {
+            artist_name = 'NULL'
+        }
+    
+        let country = parseInt(data.country);
+        if (isNaN(country))
+        {
+            country = 'NULL'
+        }
+    
+        updateArtist = `UPDATE Artists SET artist_name = '${data.artist_name}', country = '${data.country}'
+        WHERE artist_id = ${artist_id}`;
+
+        db.pool.query(updateArtist, function(error, result)
+        {
+          if (error) {
+            console.log(error);
+            res.sendStatus(400);
+          } else {
+            console.log(result.affectedRows + ' record(s) updated');
+          }
+        });
+    });
+
+
 
 app.get('/insert_albums', function(req, res)
     {

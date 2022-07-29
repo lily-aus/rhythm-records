@@ -40,7 +40,7 @@
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
                     <tr data-value={{this.artist_id}}>
-                        <td><a href="../update_artists" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="../update_artists/{{this.artist_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
                         <td><button onclick="deleteArtist({{this.artist_id}})">Delete</button></td>                       
                         <td align="center">{{this.artist_id}}</td>
                         <td align="center">{{this.artist_name}}</td>
