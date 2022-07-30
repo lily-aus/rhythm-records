@@ -3,12 +3,11 @@
         <title>Customers</title>
         
         <link href="style.css" rel="stylesheet" type="text/css" />
-
-        <script language="JavaScript" src="../js_functs/customers/gen_customers.js"></script>
-
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        
     </head>
 
-    <body onload="browseCustomer()">
+    <body>
         <h1>Customers</h1>
 
         [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
@@ -38,7 +37,7 @@
                     {{#each data}}
                     <tr>
                         <td><a href="../update_customers?{{this.[Customer ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.[Customer ID]')">Delete</a></td>
+                        <td><button onclick="deleteCustomer({{this.[Customer ID]}})">Delete</button></td>
                         <td>{{this.[Customer ID]}}</td>
                         <td>{{this.[First Name]}}</td>
                         <td>{{this.[Last Name]}}</td>
@@ -49,6 +48,7 @@
                     {{/each}}
                 </tbody>
             </table>
+            <script src="/js/delete_customer.js"></script>
 
             <p>&nbsp;</p>
         </div> <!-- browse -->
@@ -64,29 +64,6 @@
         </div><!-- search-->
 
         <p>&nbsp;</p>
-
-        <div id="delete" hidden>
-            <form method="POST" id="deleteCustomer">
-                <legend><strong>Delete Customer</strong></legend>
-
-                <fieldset class="fields">
-                    <p>Are you sure you wish to delete the following?</p>
-                    <input type="hidden" name="CustomerID" id="deleteCustomerID" value="1">
-                    <label> Customer ID </label> <input type="number" name="cid">
-                </fieldset>
-
-                <input class="btn" type="submit" id="deleteArtist" value="Delete Artist">
-                <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
-            </form> 
-        </div><!-- delete -->
-
-        <script>
-            function deleteFunction() {
-              var x = document.getElementById("delete");
-              x.hidden
-              x.hidden = !x.hidden
-            }
-        </script>
 
     </body>
 </html>

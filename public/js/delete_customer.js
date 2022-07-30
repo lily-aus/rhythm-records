@@ -1,7 +1,7 @@
-function deleteArtist(artistID) {
-    let link = '/delete-artist-ajax/';
+function deleteCustomer(customerID) {
+    let link = '/delete-customer-ajax/';
     let data = {
-      artist_id: artistID
+      customer_id: customerID
     };
   
     $.ajax({
@@ -10,16 +10,16 @@ function deleteArtist(artistID) {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       success: function(result) {
-        deleteRow(artistID);
+        deleteRow(customerID);
       }
     });
     location.reload();
   }
   
-  function deleteRow(artistID){
-      let table = document.getElementById("artists-table");
+  function deleteRow(customerID){
+      let table = document.getElementById("customers-table");
       for (let i = 0, row; row = table.rows[i]; i++) {
-         if (table.rows[i].getAttribute("data-value") == artistID) {
+         if (table.rows[i].getAttribute("data-value") == customerID) {
               table.deleteRow(i);
               break;
          }

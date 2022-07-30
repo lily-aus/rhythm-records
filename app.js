@@ -293,35 +293,85 @@ app.delete('/delete-artist-ajax/', function(req,res,next)
         let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE artist_id = ?`;
         let deleteArtists = `DELETE FROM Artists WHERE artist_id = ?`;
 
-      
-      
-            // Run the 1st query
-            db.pool.query(deleteArtists_has_Albums, [artistID], function(error, rows, fields){
-                if (error) {
-    
+        // Run the 1st query
+        db.pool.query(deleteArtists_has_Albums, [artistID], function(error, rows, fields){
+            if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+            }
+
+            else
+            {
+                // Run the second query
+                db.pool.query(deleteArtists, [artistID], function(error, rows, fields) {
+
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                })
+            }
+    })});
+ 
+app.delete('/delete-customer-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let customerID = parseInt(data.customer_id);
+        let deleteCustomers = `DELETE FROM Customers WHERE customer_id = ?`;
+
+        // Run the 1st query
+        db.pool.query(deleteCustomers, [customerID], function(error, rows, fields){
+            if (error) {
+
                 // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
                 console.log(error);
                 res.sendStatus(400);
-                }
-    
-                else
-                {
-                    // Run the second query
-                    db.pool.query(deleteArtists, [artistID], function(error, rows, fields) {
-    
-                        if (error) {
-                            console.log(error);
-                            res.sendStatus(400);
-                        } else {
-                            res.sendStatus(204);
-                        }
-                    })
-                }
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
     })});
- 
+
+app.delete('/delete-order-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let orderID = parseInt(data.order_id);
+        let deleteOrders_has_Albums = `DELETE FROM Orders_has_Albums WHERE order_id = ?`;
+        let deleteOrders = `DELETE FROM Orders WHERE order_id = ?`;
+
+        // Run the 1st query
+        db.pool.query(deleteOrders_has_Albums, [orderID], function(error, rows, fields){
+            if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+            }
+
+            else
+            {
+                // Run the second query
+                db.pool.query(deleteOrders, [orderID], function(error, rows, fields) {
+
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                })
+            }
+    })});
+
 /*
     LISTENER
 */
-app.listen(PORT, function(){
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
-});
+app.listen(PORT, function()
+    {
+        console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    });
