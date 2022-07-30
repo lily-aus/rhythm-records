@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34853;
+PORT = 34860;
 
 // Database
 var db = require('./database/db-connector');
@@ -31,19 +31,28 @@ app.get('/', function(req, res)
 
 app.get('/customers', function(req, res)
     {
-        res.render('customers');
+        let query1 = "SELECT customer_id AS 'Customer ID', first_name AS 'First Name', last_name AS 'Last Name', email AS Email, phone AS Phone, address AS Address FROM Customers;";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('customers',{data: rows});                                      
+        })
     });
 
 app.get('/orders', function(req, res)
     {
-        res.render('orders');
+        let query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
+        
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('orders', {data: rows});
+        });
     });
 
 app.get('/artists', function(req, res)
     {
         let query1 = "SELECT * FROM Artists;";
+
         db.pool.query(query1, function(error, rows, fields){
-        res.render('artists',{data: rows});                                      
+            res.render('artists',{data: rows});                                      
         })
     
     });  

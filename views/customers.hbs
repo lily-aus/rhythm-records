@@ -20,73 +20,36 @@
 
         <div id="browse">
             
-            <table border="1" cellpadding="5">
-                <tr>
-                    <th><a href="../insert_customers" onClick="newCustomer()">New</a></th>
-                    <th></th>
-                    <th>Customer ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_customers" onClick="updateCustomer('this.customerID')">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.customerID')">Delete</a></td>
-                    <td align="center">1001</td>
-                    <td align="center">Robert</td>
-                    <td align="center">Smith</td>
-                    <td align="center">rsmith@gmail.com</td>
-                    <td align="center">998 464 8001</td>
-                    <td align="center">123 Fake Street, Towner, CO 73892</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_customers" onClick="updateCustomer('this.customerID')">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.customerID')">Delete</a></td>
-                    <td align="center">1002</td>
-                    <td align="center">Amanda</td>
-                    <td align="center">Bergen</td>
-                    <td align="center">abergen@yahoo.com</td>
-                    <td align="center">154 614 0854</td>
-                    <td align="center">456 Unreal Drive, Cityberg, UT 98903</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_customers" onClick="updateCustomer('this.customerID')">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.customerID')">Delete</a></td>
-                    <td align="center">1003</td>
-                    <td align="center">Jon</td>
-                    <td align="center">Johnson</td>
-                    <td align="center">jjohnson@hotmail.com</td>
-                    <td align="center">613 554 9641</td>
-                    <td align="center">789 Wheresit Road, Whoville, NY 30432</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_customers" onClick="updateCustomer('this.customerID')">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.customerID')">Delete</a></td>
-                    <td align="center">1004</td>
-                    <td align="center">Jacob</td>
-                    <td align="center">Lichtenstein</td>
-                    <td align="center">jlichtenstein@aol.com</td>
-                    <td align="center">881 341 1452</td>
-                    <td align="center">987 Theresit Street, Realville, CA 45034</td>
-                </tr>
-
-                <tr>
-                    <td><a href="../update_customers" onClick="updateCustomer('this.customerID')">Edit</a></td>
-                    <td><a href="#" onclick="deleteFunction('this.customerID')">Delete</a></td>
-                    <td align="center">1005</td>
-                    <td align="center">Mark</td>
-                    <td align="center">Nunda</td>
-                    <td align="center">mnunda@comcast.net</td>
-                    <td align="center">776 301 5124</td>
-                    <td align="center">654 Someplace Avenue, Someplace, WA 53403</td>
-                </tr>
+            <table id="customers-table" border="1" cellpadding="5">
+                    
+                <thead>
+                    <tr>
+                        <th><a href="../insert_customers" class="btn btn-outline-danger btn-md">New</a></th>
+                        <th></th>
+                        {{#each data.[0]}}
+                        <th>
+                            {{@key}}
+                        </th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {{#each data}}
+                    <tr>
+                        <td><a href="../update_customers?{{this.[Customer ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="#" onclick="deleteFunction('this.[Customer ID]')">Delete</a></td>
+                        <td>{{this.[Customer ID]}}</td>
+                        <td>{{this.[First Name]}}</td>
+                        <td>{{this.[Last Name]}}</td>
+                        <td>{{this.Email}}</td>
+                        <td>{{this.Phone}}</td>
+                        <td>{{this.Address}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
             </table>
+
             <p>&nbsp;</p>
         </div> <!-- browse -->
 
