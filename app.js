@@ -21,6 +21,9 @@ var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
+const http = require('http');
+const url = require('url');
+
 /*
     ROUTES
 */
@@ -139,9 +142,17 @@ app.get('/insert_customers', function(req, res)
         res.render('insert_customers');
     });
 
-app.get('/update_customers', function(req, res)
+app.get("/update_customers/:customer_id", async(req, res) =>
     {
-        res.render('update_customers');
+
+        var customerId = req.params.customer_id;
+        let getCustomerById = `SELECT customer_id AS 'Customer ID', first_name AS 'First Name', last_name AS 'Last Name', email AS 'Email', phone AS 'Phone', address AS 'Address' FROM Customers WHERE customer_id = ${customerId}`;
+        
+        // Run the 1st query
+        db.pool.query(getCustomerById, function(error, rows, fields){
+            // Run the query
+            return res.render("update_customers", {data: rows, active: { Customers: true} });
+        });
     });
 
 app.get('/insert_orders', function(req, res)
@@ -374,6 +385,7 @@ app.get("/update_artists/:artist_id", async(req, res) =>
     {
         var artistId = req.params.artist_id;
         let getArtistById = `SELECT artist_id, artist_name, country FROM Artists WHERE artist_id = ${artistId}`;
+        
         db.pool.query(getArtistById, function(error, rows, fields){
             res.render("update_artists", { data: rows, active: { Artists: true } });
 
@@ -386,6 +398,7 @@ app.post("/update_artists/:artist_id", function(req,res)
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
         console.log();
+
         // Capture NULL values
         let artist_id = parseInt(data.artist_id);
         let artist_name = parseInt(data.artist_name);
@@ -415,7 +428,58 @@ app.post("/update_artists/:artist_id", function(req,res)
         });
     });
 
+app.post("/update_customers/:customer_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+        
+        // Capture NULL values
+        let customer_id = parseInt(data.customer_id);
+        let fname = parseInt(data.fname);
+        let lname = parseInt(data.lname);
+        let email = parseInt(data.email);
+        let phone = parseInt(data.phone);
+        let address = parseInt(data.address);
 
+        if (isNaN(customer_id))
+        {
+            customer_id = 'NULL'
+        }
+    
+        if (isNaN(fname))
+        {
+            fname = 'NULL'
+        }
+
+        if (isNaN(email))
+        {
+            email = 'NULL'
+        }
+
+        if (isNaN(phone))
+        {
+            phone = 'NULL'
+        }
+
+        if (isNaN(address))
+        {
+            address = 'NULL'
+        }
+
+        updateCustomer = `UPDATE Customers SET first_name = '${data.fname}', last_name = '${data.lname}', email = '${data.email}', phone = '${data.phone}', address = '${data.address}'
+        WHERE customer_id = ${customer_id}`;
+
+        db.pool.query(updateCustomer, function(error, result)
+        {
+          if (error) {
+            console.log(error);
+            res.sendStatus(400);
+          } else {
+            console.log(result.affectedRows + ' record(s) updated');
+          }
+        });
+    });
 
 app.get('/insert_albums', function(req, res)
     {

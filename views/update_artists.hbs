@@ -18,27 +18,28 @@
         <br>
         <div id="update_artist">
             <form id="updateArtist">
-        {{#each data}}
-        <!-- update existing artist -->
-            <fieldset>
-                <h3>Selected Artist Details</h3>
-                <div class="form-group">
-                    <p>Artist (<a id="artist_id">{{this.artist_id}}</a>)</p>
-                    <label for="arname">Name: </label> 
-                    <input id="arname" type="text" class="form-control" name="artist_name" value="{{this.artist_name}}">
+                {{#each data}}
+                <!-- update existing artist -->
+                    <fieldset>
+                        <h3>Selected Artist Details</h3>
+                        <div class="form-group">
+                            <p>Artist (<a id="artist_id">{{this.artist_id}}</a>)</p>
+                            <label for="arname">Name: </label> 
+                            <input id="arname" type="text" class="form-control" name="artist_name" value="{{this.artist_name}}">
 
-                    <label for="country"> Country: </label> 
-                    <input id="country" type="text" class="form-control" name="country" value="{{this.country}}">
-                </div>
-            </fieldset>
-            <br>
-                <div>
-                    <input onclick= "window.location.href='/artists';" class="btn" type="submit" value="Update artist">
-                    <a href="/artists"><input class="btn" type="button" value="Cancel"></a>
-                </div>
-        <!-- update -->
-        {{/each}}
-        </form>
+                            <label for="country"> Country: </label> 
+                            <input id="country" type="text" class="form-control" name="country" value="{{this.country}}">
+                        </div>
+                    </fieldset>
+                    <br>
+                    
+                    <div>
+                        <input onclick="window.location.href='/artists';" class="btn" type="submit" value="Update artist">
+                        <a href="/artists"><input class="btn" type="button" value="Cancel"></a>
+                    </div>
+                <!-- update -->
+                {{/each}}
+            </form>
         </div>
     <script src="/js/update_artist.js"></script>
     </body>
