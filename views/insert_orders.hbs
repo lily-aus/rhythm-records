@@ -1,8 +1,11 @@
 <html>
+
+    {{!-- THE BELOW CODE IS NON-FUNCTIONAL, BUG UNKOWN --}}
+
     <head>
         <title>Add Orders</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script language="JavaScript"></script>
 
     </head>
 
@@ -14,36 +17,38 @@
         
         <p><a href="../">Return to Index Page</a></p>
 
-        <div id="insert_orders">
-            <h3>Provide Order Details</h3>
+        <br>
 
-            <form method="POST" id="add-order-ajax">
+        <div id="add_orders">
+
+            <form id="addOrder">
                 <fieldset>
+                    <h3>Provide Order Details</h3>
                     <div class="form-group">
-                        <label for="input-customer_id"> Customer ID: </label> 
-                        
+                        <label for="customer_id"> Customer ID: </label> 
                         <select>
                             {{#each customer_ids}}
-                            <option>{{this}}</option>
+                            <option type="int" name="customer_id" id="customer_id">{{this}}</option>
                             {{/each}}
                         </select>
 
                         <br><br>
 
-                        <label for="input-album_name"> Album Name: </label> 
-                        <input type="text" name="input-album_name"><br><br>
+                        <label> Album Name: </label> 
+                        <input type="text" name="album_name" id="album_name"><br><br>
                         
-                        <label for="input-quantity"> Quantity: </label> 
-                        <input type="number" name="input-quantity"><br><br>
-                    
+                        <label> Quantity: </label> 
+                        <input type="number" name="quantity" id="quantity"><br><br>
                     </div>
                 </fieldset>
                 <br>
                 
-                <input class="btn" type="submit" id="addOrder" value="Add Order" onclick="insertOrder()">
-                <a href="../orders"><input class="btn" type="button" value="Cancel"></a>
+                <div>
+                    <input class="btn" type="submit" value="Add Order">
+                    <a href="/orders"><input class="btn" type="button" value="Cancel"></a>
+                </div>
             </form> 
-
+            <script src="/js/add_order.js"></script>
             
         </div>
 

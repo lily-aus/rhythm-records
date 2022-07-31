@@ -55,12 +55,16 @@
 
         <!--seach function display the customer information by searching customer name-->
         <div>
-            <h3>Search customer information by customer last name</h3>
+            <h2>Search Using an HTML Form</h2>
+            <p>Search customers by last name using the field below. Partial last names are OK too!</p>
+            <form id="search-person-html" method='GET' action='/customers'>
+                <label for="input-lname">Search by Last Name: </label>
+                <input type="text" name="lname" id="input-lname-html-search">
+                
+                <input type="submit">
+                <a href='/customers'><button>Reset</button></a>
+            </form>
 
-            <form class="searchCustomer">
-                <input type="text" placeholder="Enter a customer's last name..." name="search">
-                <input class="btn" type="submit" id="searchCustomer" value="Search">
-                </form>
         </div><!-- search-->
 
         <p>&nbsp;</p>

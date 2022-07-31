@@ -1,8 +1,10 @@
 <html>
+
+    {{!-- THE BELOW CODE IS NON-FUNCTIONAL, BUG UNKNOWN --}}
+
     <head>
         <title>Orders</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     </head>
@@ -53,12 +55,20 @@
 
         <!--seach function display the order information by searching customer ID-->
         <div>
-            <h3>Search order information by customer ID</h3>
+            <h2>Search Using an HTML Form</h2>
+            <p>Search orders by customer ID using the field below.</p>
+            <form id="search-order-html" method='GET' action='/orders'>
+                <label for="input-customer_id">Customer ID: </label>
+                <select name="custo_id" id="input-customer_id-ajax">
+                    <option value="undefined">Select a Customer ID</option>
+                    {{#each customer_ids}}
+                    <option value="{{this.customer_id}}">{{this.customer_id}}</option>
+                    {{/each}}
+                </select>
 
-            <form class="searchOrder">
-                <input type="int" placeholder="Enter a customer's ID..." name="search">
-                <input class="btn" type="submit" id="searchOrder" value="Search">
-                </form>
+                <input type="submit">
+                <a href='/orders'><button>Reset</button></a>
+            </form>
         </div><!-- search-->
 
         <p>&nbsp;</p>

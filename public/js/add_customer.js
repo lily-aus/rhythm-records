@@ -1,30 +1,39 @@
 // Get the objects we need to modify
-let addArtistForm = document.getElementById('addArtist');
+let addCustomerForm = document.getElementById('addCustomer');
 
 // Modify the objects we need
-addArtistForm.addEventListener("submit", function (e) {
+addCustomerForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputName = document.getElementById("arname");
-    let inputCountry = document.getElementById("country");
-
+    let inputFirstName = document.getElementById("fname");
+    let inputLastName = document.getElementById("lname");
+    let inputEmail = document.getElementById("email");
+    let inputPhone = document.getElementById("phone");
+    let inputAddress = document.getElementById("address");
 
     // Get the values from the form fields
-    let NameValue = inputName.value;
-    let CountryValue = inputCountry.value;
+    let FirstNameValue = inputFirstName.value;
+    let LastNameValue = inputLastName.value;
+    let EmailValue = inputEmail.value;
+    let PhoneValue = inputPhone.value;
+    let AddressValue = inputAddress.value;
 
     // Put our data we want to send in a javascript object
     let data = {
-        artist_name: NameValue,
-        country: CountryValue
+        first_name: FirstNameValue,
+        last_name: LastNameValue,
+        email: EmailValue,
+        phone: PhoneValue,
+        address: AddressValue
     }
+    console.log(JSON.stringify(data));
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/add-artist-ajax", true);
+    xhttp.open("POST", "/add-customer-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -35,8 +44,11 @@ addArtistForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
-            inputName.value = '';
-            inputCountry.value = '';
+            inputFirstName.value = '';
+            inputLastName.value = '';
+            inputEmail.value = '';
+            inputPhone.value = '';
+            inputAddress.value = '';
         }
         else if (xhttp.readyState == 3 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -53,7 +65,7 @@ addArtistForm.addEventListener("submit", function (e) {
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
-    let currentTable =  document.getElementById("artists-table").innerHTML="/artists";
+    let currentTable =  document.getElementById("customers-table").innerHTML="/customers";
 
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
@@ -62,12 +74,15 @@ addRowToTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 3 cells
+    // Create a row and 6 cells
     let row = document.createElement("TR");
     let deleteCell = document.createElement("TD"); 
     let idCell = document.createElement("TD");
-    let nameCell = document.createElement("TD");
-    let countryCell = document.createElement("TD");
+    let first_nameCell = document.createElement("TD");
+    let last_nameCell = document.createElement("TD");
+    let emailCell = document.createElement("TD");
+    let phoneCell = document.createElement("TD");
+    let addressCell = document.createElement("TD");
 
     // Fill the cells with correct data
     deleteCell = document.createElement("button");
@@ -76,15 +91,21 @@ addRowToTable = (data) => {
         deletePerson(newRow.id);
     };
     
-    idCell.innerText = newRow.artist_id;
-    nameCell.innerText = newRow.artist_name;
-    countryCell.innerText = newRow.country;
+    idCell.innerText = newRow.customer_id;
+    first_nameCell.innerText = newRow.first_name;
+    last_nameCell.innerText = newRow.last_name;
+    emailCell.innerText = newRow.email;
+    phoneCell.innerText = newRow.phone;
+    addressCell.innerText = newRow.address;
 
     // Add the cells to the row 
     row.appendChild(deleteCell)
     row.appendChild(idCell);
-    row.appendChild(nameCell);
-    row.appendChild(countryCell);
+    row.appendChild(first_nameCell);
+    row.appendChild(last_nameCell);
+    row.appendChild(emailCell);
+    row.appendChild(phoneCell);
+    row.appendChild(addressCell);
 
      // Add a row attribute so the deleteRow function can find a newly added row
      row.setAttribute('data-value', newRow.id);
@@ -93,10 +114,10 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
 
-    let selectMenu = document.getElementById("artist_name");
+    let selectMenu = document.getElementById("last_name");
     let option = document.createElement("option");
-    option.text = newRow.artist_name;
-    option.value = newRow.artist_id;
+    option.text = newRow.last_name;
+    option.value = newRow.customer_id;
     selectMenu.add(option);
-    
+
 }

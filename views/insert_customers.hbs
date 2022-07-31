@@ -3,8 +3,7 @@
         <title>Add Customers</title>
         
         <link href="style.css" rel="stylesheet" type="text/css" />
-
-        <script language="JavaScript" src="/js_functs/customers/insert_customers.js"></script>
+        <script language="JavaScript"></script>
 
     </head>
 
@@ -18,23 +17,37 @@
         
         <br>
 
-        <div id="insert_customers">
-            <form method="POST" id="insertCustomer">
+        <div id="add_customer">
+
+            <form id="addCustomer">
                 <fieldset>
                     <h3>Provide Customer Details</h3>
                     <div class="form-group">
-                        <label> First Name: </label> <input type="text" name="fname"><br><br>
-                        <label> Last Name: </label> <input type="text" name="lname"><br><br> 
-                        <label> Email: </label> <input type="email" name="email"><br><br>
-                        <label> Phone: </label> <input type="tel" name="phonenum"><br><br>
-                        <label> Address: </label> <input type="text" name="address">
+                        <label> First Name: </label> 
+                        <input type="text" name="fname" id="fname"><br><br>
+
+                        <label> Last Name: </label> 
+                        <input type="text" name="lname" id="lname"><br><br>
+
+                        <label> Email: </label> 
+                        <input type="email" name="email" id="email"><br><br>
+
+                        <label> Phone: </label> 
+                        <input type="tel" name="phone" id="phone"><br><br>
+
+                        <label> Address: </label> 
+                        <input type="text" name="address" id="address">
                     </div>
                 </fieldset>
                 <br>
                 
-                <input class="btn" type="submit" id="insertCustomer" value="Add Customer" onclick="insertCustomer()">
-                <a href="../customers"><input class="btn" type="button" value="Cancel"></a>
+                <div>
+                    <input onclick="window.location.href='/customers';" class="btn" type="submit" value="Add Customer">
+                    <a href="/customers"><input class="btn" type="button" value="Cancel"></a>
+                </div>
+
             </form> 
+            <script src="/js/add_customer.js"></script>
         </div><!-- insert -->
 
     </body>
