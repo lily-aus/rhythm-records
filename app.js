@@ -264,6 +264,52 @@ app.get('/update_orders/:order_id', function(req, res)
         });
     });
 
+app.post("/update_orders/:order_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+
+        // Capture NULL values
+        let order_id = parseInt(data.order_id);
+        let order_date = parseInt(data.order_date);
+        let order_total = parseFloat(data.order_total);
+        let customer_id = parseInt(data.customer_id);
+
+        if (isNaN(order_id))
+        {
+            order_id = 'NULL'
+        }
+
+        if (isNaN(order_date))
+        {
+            order_date = 'NULL'
+        }
+
+        if (isNaN(order_total))
+        {
+            order_total = 'NULL'
+        }
+
+        if (isNaN(customer_id))
+        {
+            customer_id = 'NULL'
+        }
+
+        updateOrder = `UPDATE Orders SET order_date = '${data.order_date}', order_total = '${data.order_total}'
+        WHERE order_id = ${order_id}`;
+
+        db.pool.query(updateOrder, function(error, result)
+        {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                console.log(result.affectedRows + ' record(s) updated');
+            }
+        });
+    });
+
 app.get('/insert_genres', function(req, res)
     {
         res.render('insert_genres');

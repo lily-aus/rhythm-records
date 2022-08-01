@@ -23,11 +23,11 @@
                     <fieldset>
                         <h3>Selected Order Details</h3>
                         <div class="form-group">
-                            <p>Order ID (<a id="order_id">{{this.order_id}}</a>)</p>
+                            <p>Order ID (<a id="order_id" value="{{this.order_id}}">{{this.order_id}}</a>)</p>
                             {{!-- <label for="order_id">Order ID: </label> 
                             <input id="order_id" type="text" class="form-control" name="order_id" value="{{this.order_id}}"> --}}
 
-                            <label for="order_date"> Order Date:  </label> 
+                            <label for="order_date"> Order Date YYYY/MMM/DD:  </label> 
                             <input id="order_date" type="text" class="form-control" name="order_date" value="{{this.order_date}}">
 
                             <label for="order_total">Order Total: </label> 
@@ -42,8 +42,8 @@
                     <br>
 
                     <div>
-                        <input class="btn" type="submit" id="UpdateSaveOrder" value="Update Order">
-                        <a href="../orders"><input class="btn" type="button" value="Cancel"></a>
+                        <input onclick="window.location.href='/orders';" class="btn" type="submit" id="UpdateSaveOrder" value="Update Order">
+                        <a href="/orders"><input class="btn" type="button" value="Cancel"></a>
                     </div>
                 {{/each}}
             </form> 
