@@ -170,6 +170,7 @@ app.post('/add-order-ajax', function(req, res)
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
         console.log(JSON.stringify(data));
+
         // Capture NULL values
         let customerID = parseInt(data.customer_id);
         let albumName = parseInt(data.album_name);
@@ -252,9 +253,15 @@ app.post('/add-order-ajax', function(req, res)
         });
     });
 
-app.get('/update_orders', function(req, res)
+app.get('/update_orders/:order_id', function(req, res)
     {
-        res.render('update_orders');
+        
+        var orderId = req.params.order_id;
+        let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%M %d %Y') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${orderId}`;
+
+        db.pool.query(getOrderById, function(error, rows, fields){
+            res.render("update_orders", { data: rows, active: { Orders: true } });
+        });
     });
 
 app.get('/insert_genres', function(req, res)
