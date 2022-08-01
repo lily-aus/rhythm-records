@@ -36,14 +36,14 @@
                 <tbody>
                     {{#each data}}
                     <tr>
-                        <td><a href="../update_customers?{{this.[Customer ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><a href="../update_customers/{{this.[Customer ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
                         <td><button onclick="deleteCustomer({{this.[Customer ID]}})">Delete</button></td>
-                        <td>{{this.[Customer ID]}}</td>
-                        <td>{{this.[First Name]}}</td>
-                        <td>{{this.[Last Name]}}</td>
-                        <td>{{this.Email}}</td>
-                        <td>{{this.Phone}}</td>
-                        <td>{{this.Address}}</td>
+                        <td align="center">{{this.[Customer ID]}}</td>
+                        <td align="center">{{this.[First Name]}}</td>
+                        <td align="center">{{this.[Last Name]}}</td>
+                        <td align="center">{{this.Email}}</td>
+                        <td align="center">{{this.Phone}}</td>
+                        <td align="center">{{this.Address}}</td>
                     </tr>
                     {{/each}}
                 </tbody>

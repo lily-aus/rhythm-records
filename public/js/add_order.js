@@ -1,5 +1,3 @@
-// THE BELOW CODE IS CURRENTLY NON-FUNCTIONAL, AND BUG UNKNOWN
-
 // Get the objects we need to modify
 let addOrderForm = document.getElementById('addOrder');
 
@@ -10,7 +8,7 @@ addOrderForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerID = document.getElementById("customer_id");
+    let inputCustomerID = document.getElementById("someSelect");
     let inputAlbumName = document.getElementById("album_name");
     let inputQuantity = document.getElementById("quantity");
 

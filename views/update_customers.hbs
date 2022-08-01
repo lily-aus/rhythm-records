@@ -2,9 +2,8 @@
     <head>
         <title>Update Customers</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
-
-        <script language="JavaScript" src="/js_functs/customers/update_customers.js"></script>
+        {{!-- <link href="style.css" rel="stylesheet" type="text/css" /> --}}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     </head>
 
@@ -20,29 +19,32 @@
 
         <div id="update_customers">
             <form method="POST" id="updateCustomer">
+                {{#each data}}
                 <fieldset>
-                    <h3>Selected Customer Details</h3>
+                    <h3>Selected Customer Details - Make Edits in the Input Fields Below</h3>
                     <div class="form-group">
-                        <label for="cid"> Customer ID: </label> 
-                        <input type="number" name="cid" value="1"><br><br>
-                        <label for="fname"> First Name: </label> 
-                        <input type="text" name="fname" value="customer first name"><br><br>
-                        <label for="lname"> Last Name: </label> 
-                        <input type="text" name="lnamedate" value="customer last name"><br><br>
-                        <label for="email"> Email: </label> 
-                        <input type="email" name="email" value="customer email"><br><br>
-                        <label for="phone"> Phone: </label> 
-                        <input type="tel" name="phone" value="123-456-7890"><br><br>
-                        <label for="address"> Address: </label> 
-                        <input type="text" name="address" value="customer address"><br><br>
+                        <div>
+                            <p>Customer (<a id="customer_id">{{this.[Customer ID]}}</a>)</p>
+                            <label for="fname"> First Name: </label> 
+                            <input id="fname" type="text" class="form-control" name="fname" value="{{this.[First Name]}}"><br><br>
+                            <label for="lname"> Last Name: </label> 
+                            <input id="lname" type="text" class="form-control" name="lname" value="{{this.[Last Name]}}"><br><br>
+                            <label for="email"> Email: </label> 
+                            <input id="email" type="email" class="form-control" name="email" value="{{this.[Email]}}"><br><br>
+                            <label for="phone"> Phone: </label> 
+                            <input id="phone" type="tel" class="form-control" name="phone" value="{{this.[Phone]}}"><br><br>
+                            <label for="address"> Address: </label> 
+                            <input id="address" type="text" class="form-control" name="address" value="{{this.[Address]}}"><br><br>
+                        </div>
                     </div>
                 </fieldset>
                 <br>
                 
-                <input class="btn" type="submit" id="UpdateSaveCustomer" value="Update Customer">
-                <a href="../customers"><input class="btn" type="button" value="Cancel"></a>
+                <input onclick="window.location.href='/customers';" class="btn" type="submit" id="UpdateSaveCustomer" value="Update Customer">
+                <a href="/customers"><input class="btn" type="button" value="Cancel"></a>
+                {{/each}}
             </form> 
         </div><!-- update -->
-
+    <script src="/js/update_customer.js"></script>
     </body>
 </html>

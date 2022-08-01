@@ -1,12 +1,7 @@
 <html>
-
-    {{!-- THE BELOW CODE IS NON-FUNCTIONAL, BUG UNKOWN --}}
-
     <head>
         <title>Add Orders</title>
-        
-        <script language="JavaScript"></script>
-
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -26,9 +21,10 @@
                     <h3>Provide Order Details</h3>
                     <div class="form-group">
                         <label for="customer_id"> Customer ID: </label> 
-                        <select>
+                        <select id="someSelect">
+                            <option value="test">Select a Customer ID</option>
                             {{#each customer_ids}}
-                            <option type="int" name="customer_id" id="customer_id">{{this}}</option>
+                            <option value={{this}} type="int" name="customer_id" id="cid">{{this}}</option>
                             {{/each}}
                         </select>
 
@@ -44,7 +40,7 @@
                 <br>
                 
                 <div>
-                    <input class="btn" type="submit" value="Add Order">
+                    <input onclick="window.location.href='/orders';" class="btn" type="submit" value="Add Order">
                     <a href="/orders"><input class="btn" type="button" value="Cancel"></a>
                 </div>
             </form> 

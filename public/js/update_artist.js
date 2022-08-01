@@ -24,6 +24,7 @@ updateArtistForm.addEventListener("submit", function (e) {
         country: CountryValue
     }
     console.log(data)
+    
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/update_artists/" + ArtistID, true);

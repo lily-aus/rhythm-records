@@ -1,7 +1,5 @@
 <html>
 
-    {{!-- THE BELOW CODE IS NON-FUNCTIONAL, BUG UNKNOWN --}}
-
     <head>
         <title>Orders</title>
         
@@ -38,8 +36,8 @@
                 <tbody>
                     {{#each data}}
                     <tr>
-                        <td><a href="../update_orders?{{this.[Order ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteOrder({{this.[Order ID]}})">Delete</a></td>
+                        <td><a href="../update_orders/{{this.[Order ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><button onclick="deleteOrder({{this.[Order ID]}})">Delete</button></td>
                         <td>{{this.[Order ID]}}</td>
                         <td>{{this.[Order Date]}}</td>
                         <td>{{this.[Order Total]}}</td>
@@ -60,7 +58,7 @@
             <form id="search-order-html" method='GET' action='/orders'>
                 <label for="input-customer_id">Customer ID: </label>
                 <select name="custo_id" id="input-customer_id-ajax">
-                    <option value="undefined">Select a Customer ID</option>
+                    <option value="">Select a Customer ID</option>
                     {{#each customer_ids}}
                     <option value="{{this.customer_id}}">{{this.customer_id}}</option>
                     {{/each}}
