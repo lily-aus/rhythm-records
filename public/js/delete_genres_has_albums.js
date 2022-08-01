@@ -1,7 +1,7 @@
-function deleteArtist(artistID) {
-    let link = '/delete-artist-ajax/';
+function deleteGenresHasAlbums(genres_has_albumsID) {
+    let link = '/delete-genres-has-albums-ajax/';
     let data = {
-      artist_id: artistID
+        Genres_Albums_id: genres_has_albumsID
     };
   
     $.ajax({
@@ -10,17 +10,17 @@ function deleteArtist(artistID) {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       success: function(result) {
-        deleteRow(artistID);
+        deleteRow(genres_has_albumsID);
         location.reload();
       }
     });
 
   }
   
-  function deleteRow(artistID){
-      let table = document.getElementById("artists-table");
+  function deleteRow(genres_has_albumsID){
+      let table = document.getElementById("artists-albums-table");
       for (let i = 0, row; row = table.rows[i]; i++) {
-         if (table.rows[i].getAttribute("data-value") == artistID) {
+         if (table.rows[i].getAttribute("data-value") == genres_has_albumsID) {
               table.deleteRow(i);
               break;
          }
