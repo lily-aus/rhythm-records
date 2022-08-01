@@ -5,7 +5,7 @@
         
         <!-- Link CSS and JS files -->
         <link href="style.css" rel="stylesheet" type="text/css" />
-        <script language="JavaScript" src="../js_functs/intersectionals/gha.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     </head>
 
@@ -19,115 +19,37 @@
             
             <div id="browse_genres_has_albums">
 
-                <table border="1" cellpadding="5">
+                <table border="1" cellpadding="5" id="genres-albums-table">
+      
+                <thead>
                     <tr>
-                        <th><a href="../update_albums" class="btn btn-outline-danger btn-md">New</a></th>
-                        <th></th>
-                        <th>genres_albums_id</th>
-                        <th>Genre ID</th>
-                        <th>Album ID</th>
+                        <th><a href="../insert_artists_has_albums" onClick="newArtistsHasAlbums()">New</a></th>
+                        <th>Delete</th>
+                            {{#each data.[0]}}
+                            <th>
+                                {{@key}}
+                            </th>
+                            {{/each}}
                     </tr>
+                </thead>
 
-                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">1</td>
-                        <td align="center">1</td>
-                        <td align="center">5001</td>
+                <tbody>
+
+                    {{!-- For each row, print the id, name and country in order --}}
+                    {{#each data}}
+                    <tr data-value={{this.[Genres_Albums_ID]}}>
+                        <td><a href="../update_genres_has_albums/{{this.[Genres_Albums_ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><button onclick="deleteGenresHasAlbums({{this.[Genres_Albums_ID]}})">Delete</button></td>                       
+                        <td>{{this.[Genres_Albums_ID]}}</td>
+                        <td>{{this.[Genre ID]}}</td>
+                        <td>{{this.[Album ID]}}</td>
                     </tr>
-                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">2</td>
-                        <td align="center">1</td>
-                        <td align="center">5002</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">3</td>
-                        <td align="center">2</td>
-                        <td align="center">5002</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">4</td>
-                        <td align="center">2</td>
-                        <td align="center">5003</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">5</td>
-                        <td align="center">2</td>
-                        <td align="center">5005</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">6</td>
-                        <td align="center">3</td>
-                        <td align="center">5004</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">7</td>
-                        <td align="center">4</td>
-                        <td align="center">5001</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">8</td>
-                        <td align="center">5</td>
-                        <td align="center">5002</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">9</td>
-                        <td align="center">5</td>
-                        <td align="center">5003</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">10</td>
-                        <td align="center">6</td>
-                        <td align="center">5001</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">11</td>
-                        <td align="center">7</td>
-                        <td align="center">5004</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">12</td>
-                        <td align="center">7</td>
-                        <td align="center">5002</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">13</td>
-                        <td align="center">7</td>
-                        <td align="center">5003</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">14</td>
-                        <td align="center">8</td>
-                        <td align="center">5004</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">15</td>
-                        <td align="center">9</td>
-                        <td align="center">5005</td>
-                    </tr>                    <tr>
-                        <td><a href="../update_albums" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><a href="#" onclick="deleteFunction('this.genres_has_albums_id')">Delete</a></td>
-                        <td align="center">16</td>
-                        <td align="center">10</td>
-                        <td align="center">5006</td>
-                    </tr>
+                    {{/each}}
+                </tbody>
+
 
                 </table>
+                <script src="/js/delete_genres_has_albums.js"></script>
                 <p>&nbsp;</p>
             </div> <!-- browse -->
 

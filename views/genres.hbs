@@ -5,6 +5,7 @@
         
         <link href="style.css" rel="stylesheet" type="text/css" />
 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -23,7 +24,7 @@
                     <thead>
                         <tr>
                             <th><a href="../insert_genres" class="btn btn-outline-danger btn-md">New</a></th>
-                            <th></th>
+                            <th>Delete</th>
                             {{#each data.[0]}}
                             <th>
                                 {{@key}}
@@ -33,16 +34,18 @@
                     </thead>
                     
                     <tbody>
+                        {{!-- For each row, print the id and name in order --}}
                         {{#each data}}
-                        <tr>
-                            <td><a href="../update_genres?{{this.genre_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                            <td><a href="#" onclick="deleteFunction('this.genre_id')">Delete</a></td>
-                            <td>{{this.genre_id}}</td>
-                            <td>{{this.genre_name}}</td>
+                        <tr data-value={{this.[Genre ID]}}>
+                            <td><a href="../update_genres/{{this.[Genre ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                            <td><button onclick="deleteGenre({{this.[Genre ID]}})">Delete</button></td>
+                            <td align="center">{{this.[Genre ID]}}</td>
+                            <td align="center">{{this.[Genre Name]}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
                 </table>
+                <script src="/js/delete_genre.js"></script>
             <p>&nbsp;</p>
         </div> <!-- browse -->
 
@@ -57,31 +60,6 @@
                 </form>
         </div><!-- search-->
 
-
-
-        <div id="delete" hidden>
-            <form method="POST" id="deleteGenre">
-                <legend><strong>Delete Genre</strong></legend>
-
-                <fieldset class="fields">
-                    <p>Are you sure you wish to delete the following?</p>
-                    <input type="hidden" name="GenreID" id="deleteGenreID" value="1">
-                    <label> Genre ID </label> <input type="number" name="gid">
-                </fieldset>
-                
-                <input class="btn" type="submit" id="deleteGenre" value="Delete Genre">
-                <input class="btn" type="button" value="cancel" onClick="window.location.reload();">
-            </form> 
-        </div><!-- delete -->
-
-
-        <script>
-            function deleteFunction() {
-              var x = document.getElementById("delete");
-              x.hidden
-              x.hidden = !x.hidden
-            }
-        </script>
 
     </body>
 </html>

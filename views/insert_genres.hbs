@@ -19,23 +19,23 @@
 
         <div id="add_genre">
             
-            <form method="POST" id="addGenre">
+            <form id="addGenre">
                 <fieldset>
                     <h3>Provide Genre Details</h3>
                     <div class="form-group">
                         <label for="gname"> Genre Name: </label> 
-                        <input type="text" name="arname" ><br><br>
+                        <input type="text" name="gname" id="gname"><br><br>
                     </div>
                 </fieldset>
+
+                <div>
+                    <input onclick= "window.location.href='/genres';" class="btn" type="submit" value="Add genre">
+                    <a href="/genres"><input class="btn" type="button" value="Cancel"></a>
+                </div>
+
             </form> 
-        </div><!-- add -->
-
-        <p>&nbsp;</p>
-
-        <div>
-            <input class="btn" type="submit" id="addGenre" value="Add genre">
-            <a href="../genres"><input class="btn" type="button" value="Cancel"></a>
-        </div>
+            <script src="/js/add_genre.js"></script>
+        </div><!-- insert -->
 
     </body>
 </html>

@@ -38,12 +38,12 @@
 
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
-                    <tr data-value={{this.artist_id}}>
-                        <td><a href="../update_artists/{{this.artist_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><button onclick="deleteArtist({{this.artist_id}})">Delete</button></td>                       
-                        <td align="center">{{this.artist_id}}</td>
-                        <td align="center">{{this.artist_name}}</td>
-                        <td align="center">{{this.country}}</td>
+                    <tr data-value={{this.[Artist ID]}}>
+                        <td><a href="../update_artists/{{this.[Artist ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                        <td><button onclick="deleteArtist({{this.[Artist ID]}})">Delete</button></td>                       
+                        <td align="center">{{this.[Artist ID]}}</td>
+                        <td align="center">{{this.[Artist Name]}}</td>
+                        <td align="center">{{this.[Country]}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -57,10 +57,13 @@
         <div>
             <h3>Search artist information by artist name</h3>
 
-            <form class="searchArtist">
-                <input type="text" placeholder="Please enter an artist name..." name="search">
-                <input class="btn" type="submit" id="searchArtist" value="Search">
-                </form>
+            <form id="search-artist-html" method='GET' action='/artists'>
+                <label for="input-arname">Search by Name: </label>
+                <input type="text" name="arname" id="input-arname-html-search">
+                
+                <input type="submit">
+                <a href='/artists'><button>Reset</button></a>
+            </form>
         </div><!-- search-->
 
     </body>

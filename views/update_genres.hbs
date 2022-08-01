@@ -17,25 +17,28 @@
         <br>
 
         <div id="update_genres">
-            <form method="PUT" id="update-genre-form-ajax">
+            <form id="updateGenre">
+        {{#each data}}
+        <!-- update existing genre -->
+            <fieldset>
+                <h3>Selected Genre Details</h3>
+                <div class="form-group">
+                    <p>Genre (<a id="genre_id">{{this.genre_id}}</a>)</p>
+                    <label for="gname">Name: </label> 
+                    <input id="gname" type="text" class="form-control" name="genre_name" value="{{this.genre_name}}">
 
-                <label for="input-genre_id">Genre ID: </label>
-                <select name="input-genre_id" id="mySelect">
-                    <option value="test">Select a Genre ID</option>
-                    {{#each genre_ids}}
-                    <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                </select>
-
-                <label for="input-genre_name">Genre Name: </label>
-                <input type="text" name="input-genre_name" id="input-genre_name-update">
-                <input type="submit">
-
-            </form> 
-
-            <script src="/js/update_genres.js"></script>
-
-        </div><!-- update -->
+                </div>
+            </fieldset>
+            <br>
+                <div>
+                    <input onclick= "window.location.href='/genres';" class="btn" type="submit" value="Update genre">
+                    <a href="/genres"><input class="btn" type="button" value="Cancel"></a>
+                </div>
+        <!-- update -->
+        {{/each}}
+        </form>
+        </div>
+    <script src="/js/update_genre.js"></script>
 
     </body>
 </html>
