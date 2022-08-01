@@ -1,7 +1,4 @@
 <html>
-
-    {{!-- THE BELOW CODE IS NON-FUNCTIONAL, BUG UNKOWN --}}
-
     <head>
         <title>Add Orders</title>
         
@@ -26,9 +23,10 @@
                     <h3>Provide Order Details</h3>
                     <div class="form-group">
                         <label for="customer_id"> Customer ID: </label> 
-                        <select>
+                        <select id="someSelect">
+                            <option value="test">Select a Customer ID</option>
                             {{#each customer_ids}}
-                            <option type="int" name="customer_id" id="customer_id">{{this}}</option>
+                            <option value={{this}} type="int" name="customer_id" id="cid">{{this}}</option>
                             {{/each}}
                         </select>
 

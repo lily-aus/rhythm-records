@@ -97,6 +97,5 @@ addRowToTable = (data) => {
     let option = document.createElement("option");
     option.text = newRow.artist_name;
     option.value = newRow.artist_id;
-    selectMenu.add(option);
-    
+    selectMenu.add(option);   
 }

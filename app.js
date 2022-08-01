@@ -21,9 +21,6 @@ var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
-const http = require('http');
-const url = require('url');
-
 /*
     ROUTES
 */
@@ -60,19 +57,12 @@ app.get('/orders', function(req, res)
     {
 
         // Declare Query 1
-        let query1;
+        let query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
 
         // Query 2 for dropdown menu customer IDs
         let query2 = "SELECT customer_id FROM Customers;";
 
-
-        if (req.query.custo_id == "undefined")
-        {
-            query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
-        }
-
-        // If there is a query string, we assume this is a search, and return desired results
-        else
+        if (req.query.custo_id)
         {
             query1 = `SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders WHERE customer_id = "${req.query.custo_id}%"`
         }
@@ -155,20 +145,110 @@ app.get("/update_customers/:customer_id", async(req, res) =>
         });
     });
 
+
 app.get('/insert_orders', function(req, res)
-    {   
-        var context = {};
+    {
+        var context_1 = {};
+        let query1 = "SELECT customer_id FROM Customers";
 
-        query1 = "SELECT customer_id FROM Customers";
-
-        db.pool.query(query1, function(err, rows, fields){
-            context.res = rows;
+        db.pool.query(query1, function(error, rows, fields){
+            context_1.res = rows;
             var customer_ids = [];
 
             for (var i = 0; i < rows.length; i++){
                 customer_ids.push(rows[i]["customer_id"]);
-            }
-            res.render('insert_orders', {customer_ids:customer_ids});
+            };
+
+            res.render('insert_orders', {customer_ids: customer_ids});
+        });
+
+    });
+
+app.post('/add-order-ajax', function(req, res)
+    {   
+
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log(JSON.stringify(data));
+        // Capture NULL values
+        let customerID = parseInt(data.customer_id);
+        let albumName = parseInt(data.album_name);
+        let buyQuantity = parseInt(data.quantity);
+
+        console.log(albumName);
+
+        if (isNaN(customerID))
+        {
+            customerID = 'NULL'
+        }
+
+        if (isNaN(albumName))
+        {
+            albumName = 'NULL'
+        }
+
+        if (isNaN(buyQuantity))
+        {
+            buyQuantity = 'NULL'
+        }
+
+        // Get date for the order (today's date)
+        let today = new Date().toDateString();
+
+        // Calculated Order Total = Album Price * stock quantity input
+        var calculatedTotal;
+
+        // Adjusted stock quantity of album being ordered = Old Stock Quantity - Quantity Purchased
+        var newQuantity;
+
+        // Query to get desired album price
+        let albumPrice = `SELECT price FROM Albums WHERE album_name = ${albumName}`;
+
+        // Query to get existing stock quantity of desired album
+        let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = ${albumName}`;
+
+        // Query to update stock quantity of desired album 
+        let updQuant = `INSERT INTO Albums (stock_qty) VALUES (${newQuantity})`;
+
+        // Query to finally add new order
+        let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${calculatedTotal}', ${customerID})`;
+        
+        db.pool.query(albumPrice, function(error, rows, fields){
+
+            // calculatedTotal = [Result of albumPrice query] * buyQuantity;
+            calculatedTotal = rows[0] * buyQuantity;
+
+            db.pool.query(oldQuantity, function(error, rows, fields){
+
+                // newQuantity = [Result of oldQuantity query] - buyQuantity;
+                newQuantity = rows[0] - buyQuantity;
+
+                db.pool.query(updQuant, function(error, rows, fields){
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    else{
+                        db.pool.query(insertOrder, function(error, rows, fields){
+                            if (error) {
+                                console.log(error);
+                                res.sendStatus(400);
+                            }
+    
+                            else
+                            {
+                                db.pool.query(insertOrder, function(error, rows, fields){
+                                    
+                                    if (error){
+                                        console.log(error);
+                                        res.sendStatus(400);
+                                    }
+                                });
+                            };
+                        });
+                    };
+                });
+            });
         });
     });
 
@@ -215,7 +295,6 @@ app.put('/put-genre-ajax', function(req,res,next)
         let data = req.body;
         
         let genre_id = parseInt(data.genreid);
-        alert("hello")
         let genre_name = parseInt(data.genrename);
         
         let queryUpdateGenres = `UPDATE Genres SET genre_name = ? WHERE genre_id = ?`;
@@ -225,9 +304,9 @@ app.put('/put-genre-ajax', function(req,res,next)
         db.pool.query(queryUpdateGenres, [genre_name, genre_id], function(error, rows, fields){
             if (error) {
 
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error);
-            res.sendStatus(400);
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
             }
 
             // If there was no error, we run our second query and return that data so we can use it to update the gnere
@@ -338,49 +417,6 @@ app.post('/add-customer-ajax', function(req, res)
         })
     });
 
-// THE BELOW POST req '/add-order-ajax' IS NON-FUNCTIONAL, BUG UNKNOWN
-app.post('/add-order-ajax', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-        console.log(JSON.stringify(data));
-
-        // Capture NULL values
-        let customer_id = parseInt(data.customer_id);
-        if (isNaN(customer_id))
-        {
-            customer_id = 'NULL'
-        }
-
-        let album_name = parseInt(data.album_name);
-        if (isNaN(album_name))
-        {
-            album_name = 'NULL'
-        }
-
-        let quantity = parseInt(data.quantity);
-        if (isNaN(quantity))
-        {
-            quantity = 'NULL'
-        }
-
-        // Query for getting quantity and price based on album name
-        query1 = `SELECT stock_qty, price FROM Albums WHERE album_name = '${album_name}'`;
-        
-        db.pool.query(query1, function(error, rows, fields){
-            // Check to see if there was an error
-
-            console.log("hello2")
-            if (error) {
-
-                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-
-        })
-    });
-
 app.get("/update_artists/:artist_id", async(req, res) =>
     {
         var artistId = req.params.artist_id;
@@ -450,6 +486,11 @@ app.post("/update_customers/:customer_id", function(req,res)
         if (isNaN(fname))
         {
             fname = 'NULL'
+        }
+
+        if (isNaN(lname))
+        {
+            lname = 'NULL'
         }
 
         if (isNaN(email))
