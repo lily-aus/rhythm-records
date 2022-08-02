@@ -169,14 +169,12 @@ app.post('/add-order-ajax', function(req, res)
 
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
-        console.log(JSON.stringify(data));
+        console.log();
 
         // Capture NULL values
         let customerID = parseInt(data.customer_id);
         let albumName = parseInt(data.album_name);
         let buyQuantity = parseInt(data.quantity);
-
-        console.log(albumName);
 
         if (isNaN(customerID))
         {
@@ -203,53 +201,61 @@ app.post('/add-order-ajax', function(req, res)
         var newQuantity;
 
         // Query to get desired album price
-        let albumPrice = `SELECT price FROM Albums WHERE album_name = ${albumName}`;
+        let albumPrice = `SELECT price FROM Albums WHERE album_name = '${data.album_name}'`;
+        // let albumPrice = `SELECT price FROM Albums WHERE album_name = ?`;
 
         // Query to get existing stock quantity of desired album
-        let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = ${albumName}`;
-
-        // Query to update stock quantity of desired album 
-        let updQuant = `INSERT INTO Albums (stock_qty) VALUES (${newQuantity})`;
-
-        // Query to finally add new order
-        let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${calculatedTotal}', ${customerID})`;
+        let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = '${data.album_name}'`;
+        // let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = ?`;
         
-        db.pool.query(albumPrice, function(error, rows, fields){
+        db.pool.query(albumPrice, function(error, rows, fields)
+        {
+            // console.log(JSON.stringify(rows));
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
 
-            // calculatedTotal = [Result of albumPrice query] * buyQuantity;
-            calculatedTotal = rows[0] * buyQuantity;
+            else{
+                // calculatedTotal = [Result of albumPrice query] * buyQuantity;
+                
+                // How do I access the result of rows RowDataPacket {price: 24.5}
+                // var price_Album = JSON.parse(JSON.stringify(rows));
+                let price_Album = rows[0].price;
 
-            db.pool.query(oldQuantity, function(error, rows, fields){
+                let calculatedTotal = price_Album * buyQuantity;
 
-                // newQuantity = [Result of oldQuantity query] - buyQuantity;
-                newQuantity = rows[0] - buyQuantity;
+                db.pool.query(oldQuantity, function(error, rows, fields){
 
-                db.pool.query(updQuant, function(error, rows, fields){
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    else{
-                        db.pool.query(insertOrder, function(error, rows, fields){
-                            if (error) {
-                                console.log(error);
-                                res.sendStatus(400);
-                            }
-    
-                            else
-                            {
-                                db.pool.query(insertOrder, function(error, rows, fields){
-                                    
-                                    if (error){
-                                        console.log(error);
-                                        res.sendStatus(400);
-                                    }
-                                });
-                            };
-                        });
-                    };
+                    console.log(JSON.stringify(rows));
+                    // newQuantity = [Result of oldQuantity query] - buyQuantity;
+                    let quantity_Old = rows[0].stock_qty;
+
+                    let newQuantity = quantity_Old - buyQuantity;
+
+                    // Query to update stock quantity of desired album 
+                    let updQuant = `INSERT INTO Albums (stock_qty) VALUES (${newQuantity})`;
+
+                    db.pool.query(updQuant, function(error, rows, fields){
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        }
+                        else{
+
+                            // Query to finally add new order
+                            let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${calculatedTotal}', ${data.customer_id})`;
+                            
+                            db.pool.query(insertOrder, function(error, rows, fields){
+                                if (error) {
+                                    console.log(error);
+                                    res.sendStatus(400);
+                                };
+                            });
+                        };
+                    });
                 });
-            });
+            };
         });
     });
 
@@ -407,6 +413,8 @@ app.post('/add-artist-ajax', function(req, res)
         // Create the query and run it on the database
         query1 = `INSERT INTO Artists(artist_name, country) VALUES ('${data.artist_name}', '${data.country}')`;
         db.pool.query(query1, function(error, rows, fields){
+
+            console.log(JSON.stringify(rows));
             // Check to see if there was an error
             if (error) {
 
