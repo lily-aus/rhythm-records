@@ -228,33 +228,25 @@ app.post('/add-order-ajax', function(req, res)
 
         // Query to get desired album price
         let albumPrice = `SELECT price FROM Albums WHERE album_name = '${data.album_name}'`;
-        // let albumPrice = `SELECT price FROM Albums WHERE album_name = ?`;
 
         // Query to get existing stock quantity of desired album
         let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = '${data.album_name}'`;
-        // let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = ?`;
         
         db.pool.query(albumPrice, function(error, rows, fields)
         {
-            // console.log(JSON.stringify(rows));
             if (error) {
                 console.log(error);
                 res.sendStatus(400);
             }
 
             else{
-                // calculatedTotal = [Result of albumPrice query] * buyQuantity;
-                
-                // How do I access the result of rows RowDataPacket {price: 24.5}
-                // var price_Album = JSON.parse(JSON.stringify(rows));
+
                 let price_Album = rows[0].price;
 
                 let calculatedTotal = price_Album * buyQuantity;
 
                 db.pool.query(oldQuantity, function(error, rows, fields){
 
-                    console.log(JSON.stringify(rows));
-                    // newQuantity = [Result of oldQuantity query] - buyQuantity;
                     let quantity_Old = rows[0].stock_qty;
 
                     let newQuantity = quantity_Old - buyQuantity;
