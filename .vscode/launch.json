@@ -14,6 +14,7 @@
             ],
             "program": "${workspaceFolder}\\app.js",
             "runtimeArgs": ["--preserve-symlinks"]
+
         }
     ]
 }
