@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34860;
+PORT = 34861;
 
 // Database
 var db = require('./database/db-connector');
@@ -86,9 +86,23 @@ app.get('/orders', function(req, res)
 
 app.get('/artists', function(req, res)
     {
-        let query1 = "SELECT * FROM Artists;";
+        // Declare Query
+        let query;
 
-        db.pool.query(query1, function(error, rows, fields){
+        // If there is no query string, we just perform a basic SELECT
+        if (req.query.arname === undefined)
+        {
+            query = "SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists;";
+        }
+
+        // If there is a query string, we assume this is a search, and return desired results
+        else
+        {
+            query = `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists WHERE artist_name LIKE "${req.query.arname}%"`;
+        }
+
+
+        db.pool.query(query, function(error, rows, fields){
             res.render('artists',{data: rows});                                      
         })
     
@@ -96,12 +110,16 @@ app.get('/artists', function(req, res)
 
 app.get('/albums', function(req, res)
     {
-        res.render('albums');
+        let query1 = "SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%M %d %Y') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums;";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('albums', {data: rows});
+        });
     });
 
 app.get('/genres', function(req, res)
     {
-        let query1 = "SELECT * FROM Genres";
+        let query1 = "SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres";
 
         db.pool.query(query1, function(error, rows, fields){
             res.render('genres', {data: rows});
@@ -110,12 +128,20 @@ app.get('/genres', function(req, res)
 
 app.get('/genres_has_albums', function(req, res)
     {
-        res.render('genres_has_albums');
+        let query1 = "SELECT Genres_Albums_id AS 'Genres_Albums_ID', genre_id AS 'Genre ID', album_id AS 'Album ID' FROM Genres_has_Albums";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('genres_has_albums', {data: rows});
+        });
     });
 
 app.get('/artists_has_albums', function(req, res)
     {
-        res.render('artists_has_albums');
+        let query1 = "SELECT Artists_Albums_id AS 'Artists_Albums_ID', artist_id AS 'Artist ID', album_id AS 'Album ID' FROM Artists_has_Albums";
+
+        db.pool.query(query1, function(error, rows, fields){
+            res.render('artists_has_albums', {data: rows});
+        });
     });
 
 app.get('/orders_has_albums', function(req, res)
@@ -321,70 +347,74 @@ app.get('/insert_genres', function(req, res)
         res.render('insert_genres');
     });
 
-app.get('/update_genres', function(req, res)
+
+app.post('/add-genre-ajax', function(req, res) 
     {
-        var context_1 = {};
-        var context_2 = {};
-
-        query1 = "SELECT genre_id FROM Genres";
-        query2 = "SELECT genre_name FROM Genres";
-
-        db.pool.query(query1, function(err, rows, fields){
-            context_1.res = rows;
-            var genre_ids = [];
-
-            for (var i = 0; i < rows.length; i++){
-                genre_ids.push(rows[i]["genre_id"]);
-            }
-
-            db.pool.query(query2, function(err, rows, fields){
-                context_2.res = rows;
-                var genre_names = [];
-    
-                for (var i = 0; i < rows.length; i++){
-                    genre_names.push(rows[i]["genre_name"]);
-                }
-                res.render('update_genres', {genre_names:genre_names, genre_ids:genre_ids});
-            });
-        });
-    });
-
-app.put('/put-genre-ajax', function(req,res,next)
-    {
+        // Capture the incoming data and parse it back to a JS object
         let data = req.body;
-        
-        let genre_id = parseInt(data.genreid);
-        let genre_name = parseInt(data.genrename);
-        
-        let queryUpdateGenres = `UPDATE Genres SET genre_name = ? WHERE genre_id = ?`;
-        let selectGenres = `SELECT * FROM Genres WHERE genre_id = ?`
-        
-        // Run the 1st query
-        db.pool.query(queryUpdateGenres, [genre_name, genre_id], function(error, rows, fields){
+        console.log();
+        // Capture NULL values
+        let genre_name = parseInt(data.genre_name);
+        if (isNaN(genre_name))
+        {
+            genre_name = 'NULL'
+        }
+
+    
+        // Create the query and run it on the database
+        query1 = `INSERT INTO Genres(genre_name) VALUES ('${data.genre_name}')`;
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
             if (error) {
 
                 // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error);
+                console.log(error)
                 res.sendStatus(400);
             }
+ 
+        })
+    });
 
-            // If there was no error, we run our second query and return that data so we can use it to update the gnere
-            // table on the front-end
-            else
-            {
-                // Run the second query
-                db.pool.query(selectGenres, [genre_name], function(error, rows, fields) {
+app.get("/update_genres/:genre_id", async(req, res) =>
+    {
+        var genreId = req.params.genre_id;
+        let getGenreById = `SELECT genre_id, genre_name FROM Genres WHERE genre_id = ${genreId}`;
+        db.pool.query(getGenreById, function(error, rows, fields){
+            res.render("update_genres", { data: rows, active: { Genres: true } });
 
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    } else {
-                        res.send(rows);
-                    }
-                });
-            }
         });
     });
+
+
+app.post("/update_genres/:genre_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+        // Capture NULL values
+        let genre_id = parseInt(data.genre_id);
+        let genre_name = parseInt(data.genre_name);
+
+        if (isNaN(genre_name))
+        {
+            genre_name = 'NULL'
+        }
+    
+    
+        updateGenre = `UPDATE Genres SET genre_name = '${data.genre_name}'
+        WHERE genre_id = ${genre_id}`;
+
+        db.pool.query(updateGenre, function(error, result)
+        {
+          if (error) {
+            console.log(error);
+            res.sendStatus(400);
+          } else {
+            console.log(result.affectedRows + ' record(s) updated');
+          }
+        });
+    });
+
 
 app.get('/insert_artists', function(req, res)
     {
@@ -588,6 +618,27 @@ app.get('/insert_albums', function(req, res)
         res.render('insert_albums');
     });
 
+
+app.post('/add-album-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+
+        // Create the query and run it on the database
+        query1 = `INSERT INTO Albums(album_name, release_date, stock_qty, price) VALUES ('${data.album_name}', '${data.release_date}', '${data.stock_qty}','${data.price}')`;
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+ 
+        })
+    });
+
 app.get('/update_albums', function(req, res)
     {
         res.render('update_albums');
@@ -675,6 +726,130 @@ app.delete('/delete-order-ajax/', function(req,res,next)
                 })
             }
     })});
+
+
+app.delete('/delete-genre-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let genreID = parseInt(data.genre_id);
+        let deleteGenres_has_Albums = `DELETE FROM Genres_has_Albums WHERE genre_id = ?`;
+        let deleteGenres = `DELETE FROM Genres WHERE genre_id = ?`;
+
+        // Run the 1st query
+        db.pool.query(deleteGenres_has_Albums, [genreID], function(error, rows, fields){
+            if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+            }
+
+            else
+            {
+                // Run the second query
+                db.pool.query(deleteGenres, [genreID], function(error, rows, fields) {
+
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                })
+            }
+    })});
+
+
+app.delete('/delete-album-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let albumID = parseInt(data.album_id);
+        let deleteGenres_has_Albums = `DELETE FROM Genres_has_Albums WHERE album_id = ?`;
+        let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE album_id = ?`;
+        let deleteAlbums = `DELETE FROM Albums WHERE album_id = ?`;
+
+        // Run the 1st query
+        db.pool.query(deleteGenres_has_Albums, [albumID], function(error, rows, fields){
+            if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+            }
+
+            else
+            {
+                // Run the second query
+                db.pool.query(deleteArtists_has_Albums, [albumID], function(error, rows, fields){
+                    if (error) {
+        
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                    }
+        
+                    else
+                    {       
+                        // run the third query    
+                        db.pool.query(deleteAlbums, [albumID], function(error, rows, fields) {
+
+                            if (error) {
+                                console.log(error);
+                                res.sendStatus(400);
+                            } else {
+                                res.sendStatus(204);
+                            }
+                        })
+                    }    
+                })
+            }
+    })});
+
+
+
+app.delete('/delete-artists-has-albums-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let artists_has_albumsID = parseInt(data.Artists_Albums_id);
+        let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE Artists_Albums_id = ?`;
+
+
+        // Run the 1st query
+        db.pool.query(deleteArtists_has_Albums, [artists_has_albumsID], function(error, rows, fields){
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+    })});
+
+
+app.delete('/delete-genres-has-albums-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let genres_has_albumsID = parseInt(data.Genres_Albums_id);
+        let deleteGenres_has_Albums = `DELETE FROM Genres_has_Albums WHERE Genres_Albums_id = ?`;
+
+
+        // Run the 1st query
+        db.pool.query(deleteGenres_has_Albums, [genres_has_albumsID], function(error, rows, fields){
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+    })});
+
 
 /*
     LISTENER
