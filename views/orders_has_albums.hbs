@@ -5,7 +5,6 @@
         
         <!-- Link CSS and JS files -->
         <link href="style.css" rel="stylesheet" type="text/css" />
-        <script language="JavaScript" src="../js/intersectionals/oha.js"></script>
 
     </head>
 
@@ -37,7 +36,7 @@
                     <tbody>
                         {{#each data}}
                         <tr>
-                            <td><a href="../update_orders?{{this.Orders_Albums_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
+                            <td><a href="../update_orders/{{this.Orders_Albums_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
                             <td><a href="#" onclick="deleteFunction('this.Orders_Albums_id')">Delete</a></td>
                             <td>{{this.Orders_Albums_id}}</td>
                             <td>{{this.order_id}}</td>
@@ -82,7 +81,7 @@
             <div>
                 <h3>Display all albums purchased in an order</h3>
 
-                <form class="seachAlbums">
+                <form class="searchAlbums">
                     <input type="text" placeholder="Please enter an order ID..." name="search">
                     <input class="btn" type="submit" id="searchAlbums" value="Search">
                   </form>
