@@ -60,7 +60,7 @@ app.get('/orders', function(req, res)
         let query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
 
         // Query 2 for dropdown menu customer IDs
-        let query2 = "SELECT customer_id FROM Customers;";
+        let query2 = "SELECT DISTINCT customer_id FROM Orders;";
 
         if (req.query.custo_id)
         {
