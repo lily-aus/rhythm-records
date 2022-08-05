@@ -55,15 +55,20 @@
 
         <!--seach function display the artist information by searching artist name-->
         <div>
-            <h3>Search artist information by artist name</h3>
+        
+        <h3>Search artist information by artist name</h3>
+        <form id="search-person-html" method='GET' action='/'>
+            <select name="input-artist" id="input-artist-ajax">
+                <option value="">Select an artist</option>
+                {{#each data}}
+                <option artist_id="{{this.[Artist ID]}}">{{this.[Artist Name]}}</option>
+                {{/each}}
+            </select>
+            <input type="submit">
+            <a href='/artists'><button>Reset</button></a>
+        </form>
 
-            <form id="search-artist-html" method='GET' action='/artists'>
-                <label for="input-arname">Search by Name: </label>
-                <input type="text" name="arname" id="input-arname-html-search">
-                
-                <input type="submit">
-                <a href='/artists'><button>Reset</button></a>
-            </form>
+
         </div><!-- search-->
 
     </body>

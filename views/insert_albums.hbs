@@ -1,4 +1,5 @@
 <html>
+
     <head>
         <title>Add Album</title>     
         <link href="style.css" rel="stylesheet" type="text/css" />
@@ -28,72 +29,74 @@
                         <label for="date"> Release Date: </label> 
                         <input type="date" name="date" id="date"><br><br>
                         <label for="quan"> Quantity in Stock: </label> 
-                        <input type="number" name="qty" id="qty"><br><br>
+                        <input type="number" min="1" step="1" name="qty" id="qty"><br><br>
                         <label for="price"> Price: </label> 
                         <input type="number" step="0.01" name="price" id="price"><br><br>
                     </div>
                 </fieldset>
                 <br>
+            </form>
+
+            <form id="addArtist">
+                <fieldset>
+                    <h3>Add Artists - (multiple artists allowed)</h3>
+                    <select class="form-control" id="artistSelect">
+                        {{#each data}}
+                        <option artist_id="{{this.artist_id}}">{{this.artist_name}}</option>
+                        {{/each}}
+                    </select>
+                    <button type="button" onclick="addMoreArtist()"> Add more artist</button>
+                    <br>
+                    <br>
+                    <table id="addArtist-table" border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>Artist ID</th>
+                                <th>Artist Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </fieldset>
+                <br>
+            </form>
+
+            <form id="addGenre">
+                <fieldset>
+                    <h3>Add Genres - (multiple genres allowed)</h3>
+                    <select class="form-control" id="genreSelect">
+                        {{#each genre}}
+                        <option genre_id="{{this.genre_id}}">{{this.genre_name}}</option>
+                        {{/each}}
+                    </select>
+                    <button type="button" onclick="addMoreGenre()">Add more genre</button>
+                    <br>
+                    <br>
+                    <table id="addGenre-table" border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>Genre ID</th>
+                                <th>Genre Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </fieldset>
+                <br>
+            </form>
+
+            <form id="submitForm">
                 <div>
-                    <input onclick= "window.location.href='/albums';" class="btn" type="submit" value="Please save and continue">
+                    <input onclick= "window.location.href='/albums';" class="btn" type="submit" value="Add album">
                     <a href="/albums"><input class="btn" type="button" value="Cancel"></a>
                 </div>
-
             </form>
+        
             <script src="/js/add_album.js"></script>
-
-
-            <br><br>
-            <table id="artists_has_albums" border="1" cellpadding="5">
-                <tr>
-                <th> </th>
-                <th>Artist Name</th>
-                </tr>
-                <tr>
-                    <td>1 </td>
-                    <td>
-                        <select class="form-control" id="artistSelect">
-                            <option value="none" selected disabled hidden>Select an artist</option>
-                            <option>Nas</option>
-                            <option>Neutral Milk Hotel</option>
-                            <option>Summoning</option>
-                            <option>Iggy & The Stooges</option>
-                            <option>Ed Harris</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <button onclick="AddArtistFunction()">Add another artist</button>
-
-            <br><br>
-
-            <table id="genres_has_albums" border="1" cellpadding="5">
-                <tr>
-                <th> </th>
-                <th>Genre Name</th>
-                </tr>
-                <tr>
-                    <td>1 </td>
-                    <td>
-                        <select class="form-control" id="genreSelect">
-                            <option value="none" selected disabled hidden>Select a genre</option>
-                            <option>East Coast Hiphop</option>
-                            <option>Hardcore Hiphop</option>
-                            <option>Indie Rock</option>
-                            <option>Psychedelic Folk</option>
-                            <option>Black Metal</option>
-                            <option>Ambient/Atmospheric</option>
-                            <option>Proto-Punk</option>
-                            <option>Hard Rock</option>
-                            <option>Soundtrack</option>
-                            <option>Drum and Bass</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <button onclick="AddGenreFunction()">Add another genre</button>
 
         </div><!-- insert -->
 
