@@ -18,7 +18,7 @@ function deleteGenresHasAlbums(genres_has_albumsID) {
   }
   
   function deleteRow(genres_has_albumsID){
-      let table = document.getElementById("artists-albums-table");
+      let table = document.getElementById("genres-albums-table");
       for (let i = 0, row; row = table.rows[i]; i++) {
          if (table.rows[i].getAttribute("data-value") == genres_has_albumsID) {
               table.deleteRow(i);

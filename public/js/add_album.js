@@ -1,8 +1,87 @@
 // Get the objects we need to modify
 let addAlbumForm = document.getElementById('addAlbum');
+let addArtist = document.getElementById('addArtist');
+let addGenre = document.getElementById('addGenre');
+let submitForm = document.getElementById('submitForm');
+
+function addMoreArtist() {
+
+    // Get a reference to the current table on the page and clear it out.
+    let currentTable =  document.getElementById("addArtist-table");
+
+    // Get the value of the variable
+    let artistSelect = document.getElementById("artistSelect")
+    let artist = artistSelect.options[artistSelect.selectedIndex];
+    let artistName = artist.innerText;
+    let artistId = artist.getAttribute("artist_id");
+
+    // Create a row and 2 cells
+    let row = document.createElement("TR");
+    let idCell = document.createElement("TD");
+    let nameCell = document.createElement("TD");
+
+    // Fill the cells with correct data
+    idCell.innerText = artistId;
+    nameCell.innerText = artistName;
+
+    // Add the cells to the row 
+    row.appendChild(idCell);
+    row.appendChild(nameCell);
+
+    // Add the row to the table
+    currentTable.querySelector("tbody").appendChild(row);
+
+    //delete the selected one from dropdown list
+    let selectElement = document.getElementById("artistSelect");
+    for (child of selectElement.children) {
+        if (child.innerText==artistName) {
+            child.parentNode.removeChild(child);
+            break;
+        }
+    }
+}
+
+
+function addMoreGenre() {
+
+    // Get a reference to the current table on the page and clear it out.
+    let currentTable =  document.getElementById("addGenre-table");
+
+    // Get the value of the variable
+    let genreSelect = document.getElementById("genreSelect")
+    let genre = genreSelect.options[genreSelect.selectedIndex];
+    let genreName = genre.innerText;
+    let genreId = genre.getAttribute("genre_id");
+
+    // Create a row and 2 cells
+    let row = document.createElement("TR");
+    let idCell = document.createElement("TD");
+    let nameCell = document.createElement("TD");
+
+    // Fill the cells with correct data
+    idCell.innerText = genreId;
+    nameCell.innerText = genreName;
+
+    // Add the cells to the row 
+    row.appendChild(idCell);
+    row.appendChild(nameCell);
+
+    // Add the row to the table
+    currentTable.querySelector("tbody").appendChild(row);
+
+    //delete the selected one from dropdown list
+    let selectElement = document.getElementById("genreSelect");
+    for (child of selectElement.children) {
+        if (child.innerText==genreName) {
+            child.parentNode.removeChild(child);
+            break;
+        }
+    }
+}
+
 
 // Modify the objects we need
-addAlbumForm.addEventListener("submit", function (e) {
+submitForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
     e.preventDefault();
@@ -19,6 +98,19 @@ addAlbumForm.addEventListener("submit", function (e) {
     let DateValue = inputDate.value;
     let QtyValue = inputQty.value;
     let PriceValue = inputPrice.value;
+    
+    var ArtisttableInfo = Array.prototype.map.call(document.querySelectorAll('#addArtist-table tbody tr'), function(tr){
+        return tr.querySelector("td").innerText;
+        });
+
+    let ArtistValue = ArtisttableInfo;
+
+    var GenretableInfo = Array.prototype.map.call(document.querySelectorAll('#addGenre-table tbody tr'), function(tr){
+        return tr.querySelector("td").innerText;
+        });
+
+    let GenreValue = GenretableInfo;
+
 
 
 
@@ -27,7 +119,9 @@ addAlbumForm.addEventListener("submit", function (e) {
         album_name: NameValue,
         release_date: DateValue,
         stock_qty: QtyValue,
-        price: PriceValue
+        price: PriceValue,
+        artist_id: ArtistValue,
+        genre_id: GenreValue
     }
     
     // Setup our AJAX request
@@ -39,7 +133,7 @@ addAlbumForm.addEventListener("submit", function (e) {
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 5 && xhttp.status == 200) {
 
-            // Add the new data to the table
+            // Add the new data to the table Albums
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
