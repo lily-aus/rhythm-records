@@ -360,6 +360,7 @@ app.post('/add-genre-ajax', function(req, res)
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
         console.log();
+        
         // Capture NULL values
         let genre_name = parseInt(data.genre_name);
         if (isNaN(genre_name))
