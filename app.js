@@ -86,23 +86,10 @@ app.get('/orders', function(req, res)
 
 app.get('/artists', function(req, res)
     {
-        // Declare Query
-        let query;
-
-        // If there is no query string, we just perform a basic SELECT
-        if (req.query.arname === undefined)
-        {
-            query = "SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists;";
-        }
-
-        // If there is a query string, we assume this is a search, and return desired results
-        else
-        {
-            query = `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists WHERE artist_name LIKE "${req.query.arname}%"`;
-        }
-
-
-        db.pool.query(query, function(error, rows, fields){
+        let query1 = "SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists;";
+        
+        db.pool.query(query1, function(error, rows, fields){
+            
             res.render('artists',{data: rows});                                      
         })
     
@@ -607,7 +594,17 @@ app.post("/update_customers/:customer_id", function(req,res)
 
 app.get('/insert_albums', function(req, res)
     {
-        res.render('insert_albums');
+        let getArtist = `SELECT artist_id, artist_name FROM Artists`;
+        let getGenre =  `SELECT genre_id, genre_name FROM Genres`;
+        
+        db.pool.query(getArtist, function(error, rows, fields){
+
+            db.pool.query(getGenre, function(error, rows2, fields){
+
+            res.render('insert_albums', { data: rows, genre: rows2});
+        });
+    });
+        
     });
 
 
@@ -615,10 +612,19 @@ app.post('/add-album-ajax', function(req, res)
     {
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
-        console.log();
 
-        // Create the query and run it on the database
-        query1 = `INSERT INTO Albums(album_name, release_date, stock_qty, price) VALUES ('${data.album_name}', '${data.release_date}', '${data.stock_qty}','${data.price}')`;
+        // Insert into albums table
+        query1 = `
+        INSERT INTO Albums(
+            album_name, release_date, stock_qty, 
+            price
+          ) 
+          VALUES 
+            (
+              '${data.album_name}', '${data.release_date}', 
+              '${data.stock_qty}', '${data.price}'
+            )          
+        `;       
         db.pool.query(query1, function(error, rows, fields){
             // Check to see if there was an error
             if (error) {
@@ -626,7 +632,44 @@ app.post('/add-album-ajax', function(req, res)
                 // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
                 console.log(error)
                 res.sendStatus(400);
-            }
+            } else {
+                // add a new relationship to Artists_has_albums
+                query2 = `
+                    INSERT INTO Artists_has_Albums(artist_id, album_id) 
+                    VALUES 
+                    ` + Array.from(
+                        data.artist_id,
+                        x => `(${x}, ${rows.insertId})`
+                    ).join(", ");
+                
+                db.pool.query(query2, function(error, rows2, fields){
+                    if (error) {
+
+                        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                        console.log(error)
+                        res.sendStatus(400);
+                    } else {
+                        // add a new relationship to Genres_has_albums
+                        query3 = `
+                            INSERT INTO Genres_has_Albums(genre_id, album_id) 
+                            VALUES 
+                            ` + Array.from(
+                                data.genre_id,
+                                x => `(${x}, ${rows.insertId})`
+                            ).join(", ");
+                            
+                        db.pool.query(query3, function(error, rows3, fields){
+                            if (error) {
+        
+                                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                                console.log(error)
+                                res.sendStatus(400);
+                            }
+                        })
+                    }              
+                })
+            }   
+        
  
         })
     });
