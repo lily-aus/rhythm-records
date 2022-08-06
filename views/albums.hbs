@@ -2,31 +2,35 @@
 <html>
     <head>
         <title>Albums</title>
-        
-        <link href="style.css" rel="stylesheet" type="text/css" />
 
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
     </head>
 
-    <body onload="browseAlbum()">
-        <h1>Albums</h1>
-
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+    <body class="first-color">
+        <h1 class="title-format">Albums</h1>
         
-        <p><a href="../">Return to Index Page</a></p>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
 
-        <br>
-        
         <div id="browse">
             <table border="1" cellpadding="5" id="albums-table">
                 <thead>
                     <tr>
-                        <th><a href="../insert_albums" onClick="newAlbum()">New</a></th>
-                        <th>Delete</th>
+                        <th>
+                            <div class="aligner">
+                                <a href="../insert_albums"><i class="material-icons button add_circle">add_circle</i></a>                        
+                            </div>
+                        </th>
+                        
+                        <th class="text-font-headers">Delete</th>
                             {{#each data.[0]}}
-                            <th>
+                            <th class="text-font-headers">
                                 {{@key}}
                             </th>
                             {{/each}}
@@ -37,9 +41,9 @@
 
                     {{!-- For each row, print the id, name, release data, stock quantity and price in order --}}
                     {{#each data}}
-                    <tr data-value={{this.[Album ID]}}>
-                        <td><a href="../update_albums/{{this.[Album ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><button onclick="deleteAlbum({{this.[Album ID]}})">Delete</button></td>                       
+                    <tr class="text-font" data-value={{this.[Album ID]}}>
+                        <td><a href="../update_albums/{{this.[Album ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="#" onclick="deleteAlbum({{this.[Album ID]}})"><i class="material-icons button delete">delete</i></a></td>                       
                         <td>{{this.[Album ID]}}</td>
                         <td>{{this.[Album Name]}}</td>
                         <td>{{this.[Release Date]}}</td>
@@ -55,13 +59,14 @@
         </div> <!-- browse -->
 
         <!--seach function display the albums information by searching album name-->
-        <div>
+        <div class="text-font">
             <h3>Search album information by album name</h3>
 
             <form class="seachAlbums">
                 <input type="text" placeholder="Please enter an album name..." name="search">
                 <input class="btn" type="submit" id="searchAlbums" value="Search">
-                </form>
+                <a href='/orders'><button>Reset</button></a>
+            </form>
         </div><!-- search-->
 
 

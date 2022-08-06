@@ -4,88 +4,97 @@
         <title>Orders Has Albums</title>
         
         <!-- Link CSS and JS files -->
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     </head>
 
-    <body>
-        <h1>Orders Has Albums</h1>
+    <body class="first-color">
+        <h1 class="title-format">Orders Has Albums</h1>
         
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
         
-        <p><a href="../">Return to Index Page</a></p>
-
-        <div>
-            <div id="browse_orders_has_albums">
-
-                <table id="orders-has-albums-table" border="1" cellpadding="5">
-                    
-                    <thead>
-                        <tr>
-                            <th><a href="../insert_orders" class="btn btn-outline-danger btn-md">New</a></th>
-                            <th></th>
-                            {{#each data.[0]}}
-                            <th>
-                                {{@key}}
-                            </th>
-                            {{/each}}
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        {{#each data}}
-                        <tr>
-                            <td><a href="../update_orders/{{this.Orders_Albums_id}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                            <td><a href="#" onclick="deleteFunction('this.Orders_Albums_id')">Delete</a></td>
-                            <td>{{this.Orders_Albums_id}}</td>
-                            <td>{{this.order_id}}</td>
-                            <td>{{this.album_id}}</td>
-                            <td>{{this.quantity}}</td>
-                            <td>{{this.unit_price}}</td>
-                            <td>{{this.line_total}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-
-                <p>&nbsp;</p>
-            </div> <!-- browse -->
-
-            <!-- DELETE M:M Relationship Deletion: dis-associate an album from an order -->
-            <div id="delete_orders_has_albums" hidden>
-                <form method="POST" id="deleteordershasalbums">
-                    <legend><strong>Dis-associate an album from an order</strong></legend>
-                    
-                    <fieldset class="fields">
-                        <p>Are you sure you wish to delete the following?</p>
-                        <input type="hidden" name="artist_has_albums_id" id="deleteordershasalbumsID" value="1">
-                        <label> orders_has_albums_id </label> <input type="number" name="orders_has_albums_id">
-                    
-                    </fieldset>
-                    
-                    <input class="btn" type="submit" id="deleteordershasalbums" value="Submit">
-                    <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
-                </form> 
-            </div><!-- delete -->
-
-            <script>
-                function deleteFunction() {
-                  var x = document.getElementById("delete_orders_has_albums");
-                  x.hidden
-                  x.hidden = !x.hidden
-                }                
-            </script>
-
-            <!--seach function display the albums belong to the artist-->
-            <div>
-                <h3>Display all albums purchased in an order</h3>
-
-                <form class="searchAlbums">
-                    <input type="text" placeholder="Please enter an order ID..." name="search">
-                    <input class="btn" type="submit" id="searchAlbums" value="Search">
-                  </form>
-            </div>
+            <p><a href="../">Return to Index Page</a></p>
         </div>
+
+        <div id="browse_orders_has_albums">
+
+            <table id="orders-has-albums-table" border="1" cellpadding="5">
+                
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="aligner">
+                                <a href="../insert_orders"><i class="material-icons button add_circle">add_circle</i></a>
+                            </div>
+                        </th>
+
+                        <th class="text-font-headers">Delete</th>
+                        {{#each data.[0]}}
+                        <th class="text-font-headers">
+                            {{@key}}
+                        </th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {{#each data}}
+                    <tr class="text-font">
+                        <td><a href="../update_orders/{{this.Orders_Albums_id}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="#" onclick="deleteFunction('this.Orders_Albums_id')"><i class="material-icons button delete">delete</i></a></td>
+                        <td>{{this.Orders_Albums_id}}</td>
+                        <td>{{this.order_id}}</td>
+                        <td>{{this.album_id}}</td>
+                        <td>{{this.quantity}}</td>
+                        <td>{{this.unit_price}}</td>
+                        <td>{{this.line_total}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <p>&nbsp;</p>
+        </div> <!-- browse -->
+
+        <!-- DELETE M:M Relationship Deletion: dis-associate an album from an order -->
+        <div id="delete_orders_has_albums" hidden>
+            <form method="POST" id="deleteordershasalbums">
+                <legend><strong>Dis-associate an album from an order</strong></legend>
+                
+                <fieldset class="fields">
+                    <p>Are you sure you wish to delete the following?</p>
+                    <input type="hidden" name="artist_has_albums_id" id="deleteordershasalbumsID" value="1">
+                    <label> orders_has_albums_id </label> <input type="number" name="orders_has_albums_id">
+                
+                </fieldset>
+                
+                <input class="btn" type="submit" id="deleteordershasalbums" value="Submit">
+                <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
+            </form> 
+        </div><!-- delete -->
+
+        <script>
+            function deleteFunction() {
+                var x = document.getElementById("delete_orders_has_albums");
+                x.hidden
+                x.hidden = !x.hidden
+            }                
+        </script>
+
+        <!--seach function display the albums belong to the artist-->
+        <div class="text-font">
+            <h3>Display all albums purchased in an order</h3>
+
+            <form class="searchAlbums">
+                <input type="text" placeholder="Please enter an order ID..." name="search">
+                <input class="btn" type="submit" id="searchAlbums" value="Search">
+                <a href='/albums'><button>Reset</button></a>
+            </form>
+        </div>
+
     </body>
 </html>

@@ -703,11 +703,10 @@ app.post('/add-album-ajax', function(req, res)
         })
     });
 
-app.get('/update_albums', function(req, res)
+app.get('/update_albums/:album_id', function(req, res)
     {
-        res.render('update_albums');
+        res.render("update_albums");
     });
-
 
 app.delete('/delete-artist-ajax/', function(req,res,next)
     {

@@ -3,20 +3,20 @@
     <head>
         <title>Artists Has Albums</title>
         
-        <!-- Link CSS and JS files -->
-        <link href="style.css" rel="stylesheet" type="text/css" />
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    
     </head>
 
-    <body>
-        <h1>Artists Has Albums</h1>
+    <body class="first-color">
+        <h1 class="title-format">Artists Has Albums</h1>
         
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
 
         <div>
             
@@ -26,10 +26,15 @@
 
                 <thead>
                     <tr>
-                        <th><a href="../insert_artists_has_albums" onClick="newArtistsHasAlbums()">New</a></th>
-                        <th>Delete</th>
+                        <th>
+                            <div>
+                                <a href="../insert_artists_has_albums"><i class="material-icons button add_circle">add_circle</i></a>
+                            </div>
+                        </th>
+
+                        <th class="text-font-headers">Delete</th>
                             {{#each data.[0]}}
-                            <th>
+                            <th class="text-font-headers">
                                 {{@key}}
                             </th>
                             {{/each}}
@@ -40,9 +45,9 @@
 
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
-                    <tr data-value={{this.[Artists_Albums_ID]}}>
-                        <td><a href="../update_artists_has_albums/{{this.[Artists_Albums_ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><button onclick="deleteArtistsHasAlbums({{this.[Artists_Albums_ID]}})">Delete</button></td>                       
+                    <tr class="text-font" data-value={{this.[Artists_Albums_ID]}}>
+                        <td><a href="../update_artists_has_albums/{{this.[Artists_Albums_ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="#" onclick="deleteArtistsHasAlbums({{this.[Artists_Albums_ID]}})"><i class="material-icons button delete">delete</i></a></td>                       
                         <td>{{this.[Artists_Albums_ID]}}</td>
                         <td>{{this.[Artist ID]}}</td>
                         <td>{{this.[Album ID]}}</td>
@@ -85,17 +90,16 @@
 
 
             <!--seach function display the albums belong to the artist-->
-            <div>
+            <div class="text-font">
                 <h3>Display all albums belong to an artist</h3>
 
                 <form class="searchAlbums">
                     <input type="text" placeholder="Please enter an artist name..." name="search">
                     <input class="btn" type="submit" id="searchAlbums" value="Search">
-                  </form>
+                    <a href='/artists'><button>Reset</button></a>
+                </form>
+                
             </div>
-
-
         </div>
-
     </body>
 </html>

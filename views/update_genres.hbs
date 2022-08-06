@@ -1,42 +1,42 @@
 <html>
     <head>
         <title>Update Genres</title>
-        
-        {{!-- <link href="style.css" rel="stylesheet" type="text/css" /> --}}
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
-    <body>
-        <h1>Update Genre</h1>
+    <body class="first-color">
+        <h1 class="title-format">Update Genre</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
 
-        <div id="update_genres">
-            <form id="updateGenre">
-        {{#each data}}
-        <!-- update existing genre -->
-            <fieldset>
-                <h3>Selected Genre Details</h3>
-                <div class="form-group">
-                    <p>Genre (<a id="genre_id">{{this.genre_id}}</a>)</p>
-                    <label for="gname">Name: </label> 
-                    <input id="gname" type="text" class="form-control" name="genre_name" value="{{this.genre_name}}">
+        <div class="text-font" id="update_genres">
+            <form class="text-font" id="updateGenre">
+                {{#each data}}
+                <!-- update existing genre -->
+                    <fieldset>
+                        <h3>Selected Genre Details</h3>
+                        <div class="form-group">
+                            <p>Genre (<a id="genre_id">{{this.genre_id}}</a>)</p>
+                            <label for="gname">Name: </label> 
+                            <input id="gname" type="text" class="form-control" name="genre_name" value="{{this.genre_name}}">
 
-                </div>
-            </fieldset>
-            <br>
-                <div>
-                    <input onclick= "window.location.href='/genres';" class="btn" type="submit" value="Update genre">
-                    <a href="/genres"><input class="btn" type="button" value="Cancel"></a>
-                </div>
-        <!-- update -->
-        {{/each}}
-        </form>
+                        </div>
+                    </fieldset>
+                    <br>
+                        <div>
+                            <input onclick= "window.location.href='/genres';" class="btn" type="submit" value="Update genre">
+                            <a href="/genres"><input class="btn" type="button" value="Cancel"></a>
+                        </div>
+                <!-- update -->
+                {{/each}}
+            </form>
         </div>
     <script src="/js/update_genre.js"></script>
 

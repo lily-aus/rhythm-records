@@ -1,0 +1,137 @@
+.first-color { 
+	background: #66bfbf; 
+}
+	
+.second-color { 
+	background: #eaf6f6; 
+}
+
+.third-color { 
+	background: #fcfefe; 
+}
+
+.fourth-color { 
+	background: #f76b8a;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+  
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+.text-font {
+    font-family: "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    font-size: larger;
+}
+
+.text-font a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.text-font-headers {
+    font-family: "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    font-size: x-large;
+}
+
+.boxhead a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.title-format {
+    font-family: "Lucida Console", "Courier New", monospace;
+    background: #f76b8a;
+    color:black;
+    text-align: center;
+}
+
+table {
+    border: 1px solid #eaf6f6;
+    table-layout: auto;
+    width: 100%;
+}
+
+thead tr:first-child {
+    background: #f76b8a;
+    color: #fff;
+    border: 1px solid #eaf6f6;
+    text-align: center;
+}
+
+th:first-child,
+td:first-child {
+    text-align: center;
+}
+
+i {
+    position: relative;
+    align-items: center;
+}
+
+th {
+    text-align: center;
+}
+
+thead tr:last-child th {
+    border-bottom: 1px solid #eaf6f6;
+    text-align: center;
+}
+
+tbody tr:hover {
+    background-color: #eaf6f6;
+    cursor: default;
+}
+
+tbody tr:last-child td {
+    border: 1px solid #eaf6f6;
+}
+
+tbody td {
+    border-bottom: 1px solid #eaf6f6;
+    text-align: center;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+.button {
+    color: black;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.edit:hover {
+    color: #0a79df;
+}
+
+.delete:hover {
+    color: #dc2a2a;
+}
+
+.add_circle:hover {
+    color: #0a79df;
+}

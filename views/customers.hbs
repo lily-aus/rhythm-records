@@ -2,20 +2,21 @@
     <head>
         <title>Customers</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         
     </head>
 
-    <body>
-        <h1>Customers</h1>
+    <body class="first-color">
+        <h1 class="title-format">Customers</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
 
         <div id="browse">
             
@@ -23,10 +24,13 @@
                     
                 <thead>
                     <tr>
-                        <th><a href="../insert_customers" class="btn btn-outline-danger btn-md">New</a></th>
-                        <th></th>
+                        <th class="aligner">
+                            <a href="../insert_customers"><i class="material-icons button add_circle">add_circle</i></a>
+                        </th>
+                        
+                        <th class="text-font-headers">Delete</th>
                         {{#each data.[0]}}
-                        <th>
+                        <th class="text-font-headers">
                             {{@key}}
                         </th>
                         {{/each}}
@@ -35,9 +39,9 @@
                 
                 <tbody>
                     {{#each data}}
-                    <tr>
-                        <td><a href="../update_customers/{{this.[Customer ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                        <td><button onclick="deleteCustomer({{this.[Customer ID]}})">Delete</button></td>
+                    <tr class="text-font">
+                        <td><a href="../update_customers/{{this.[Customer ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="#" onclick="deleteCustomer({{this.[Customer ID]}})"><i class="material-icons button delete">delete</i></a></td>
                         <td align="center">{{this.[Customer ID]}}</td>
                         <td align="center">{{this.[First Name]}}</td>
                         <td align="center">{{this.[Last Name]}}</td>
@@ -54,7 +58,7 @@
         </div> <!-- browse -->
 
         <!--seach function display the customer information by searching customer name-->
-        <div>
+        <div class="text-font">
             <h2>Search Using an HTML Form</h2>
             <p>Search customers by last name using the field below. Partial last names are OK too!</p>
             <form id="search-person-html" method='GET' action='/customers'>

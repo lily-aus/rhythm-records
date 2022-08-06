@@ -3,30 +3,34 @@
     <head>
         <title>Genres</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
-    <body>
-        <h1>Genres</h1>
+    <body class="first-color">
+        <h1 class="title-format">Genres</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]    
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
         
         <div id="browse">
             <table id="genres-table" border="1" cellpadding="5">
                     
                     <thead>
                         <tr>
-                            <th><a href="../insert_genres" class="btn btn-outline-danger btn-md">New</a></th>
-                            <th>Delete</th>
-                            {{#each data.[0]}}
                             <th>
+                                <div class="aligner">
+                                    <a href="../insert_genres"><i class="material-icons button add_circle">add_circle</i></a>
+                                </div>
+                            </th>
+                            
+                            <th class="text-font-headers">Delete</th>
+                            {{#each data.[0]}}
+                            <th class="text-font-headers">
                                 {{@key}}
                             </th>
                             {{/each}}
@@ -36,9 +40,9 @@
                     <tbody>
                         {{!-- For each row, print the id and name in order --}}
                         {{#each data}}
-                        <tr data-value={{this.[Genre ID]}}>
-                            <td><a href="../update_genres/{{this.[Genre ID]}}" class="btn btn-outline-danger btn-md">Edit</a></td>
-                            <td><button onclick="deleteGenre({{this.[Genre ID]}})">Delete</button></td>
+                        <tr class="text-font" data-value={{this.[Genre ID]}}>
+                            <td><a href="../update_genres/{{this.[Genre ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                            <td><a href="#" onclick="deleteGenre({{this.[Genre ID]}})"><i class="material-icons button delete">delete</i></a></td>
                             <td align="center">{{this.[Genre ID]}}</td>
                             <td align="center">{{this.[Genre Name]}}</td>
                         </tr>
@@ -51,7 +55,7 @@
 
 
         <!--seach function display the genre id by searching genre name-->
-        <div>
+        <div class="text-font">
             <h3>Search genre ID by genre name</h3>
 
             <form class="searchGenre">

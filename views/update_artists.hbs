@@ -1,45 +1,45 @@
 <html>
     <head>
         <title>Update Artist</title>     
-        <link href="style.css" rel="stylesheet" type="text/css" />
-        <script language="JavaScript">
-        </script>
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
-    <body>
-        <h1>Update Artist</h1>
+    <body class="first-color">
+        <h1 class="title-format">Update Artist</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
-        <div id="update_artist">
-        <form id="updateArtist">
-        {{#each data}}
-        <!-- update existing artist -->
-            <fieldset>
-                <h3>Selected Artist Details</h3>
-                <div class="form-group">
-                    <p>Artist (<a id="artist_id">{{this.artist_id}}</a>)</p>
-                    <label for="arname">Name: </label> 
-                    <input id="arname" type="text" class="form-control" name="artist_name" value="{{this.artist_name}}">
-
-                    <label for="country"> Country: </label> 
-                    <input id="country" type="text" class="form-control" name="country" value="{{this.country}}">
-                </div>
-            </fieldset>
-            <br>
-                <div>
-                    <input onclick= "window.location.href='/artists';" class="btn" type="submit" value="Update artist">
-                    <a href="/artists"><input class="btn" type="button" value="Cancel"></a>
-                </div>
-        <!-- update -->
-        {{/each}}
-        </form>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
         </div>
-    <script src="/js/update_artist.js"></script>
+        
+        <div class="text-font" id="update_artist">
+            <form class="text-font" id="updateArtist">
+                {{#each data}}
+                <!-- update existing artist -->
+                    <fieldset>
+                        <h3>Selected Artist Details</h3>
+                        <div class="form-group">
+                            <p>Artist (<a id="artist_id">{{this.artist_id}}</a>)</p>
+                            <label for="arname">Name: </label> 
+                            <input id="arname" type="text" class="form-control" name="artist_name" value="{{this.artist_name}}">
+
+                            <label for="country"> Country: </label> 
+                            <input id="country" type="text" class="form-control" name="country" value="{{this.country}}">
+                        </div>
+                    </fieldset>
+                    <br>
+                        <div>
+                            <input onclick= "window.location.href='/artists';" class="btn" type="submit" value="Update artist">
+                            <a href="/artists"><input class="btn" type="button" value="Cancel"></a>
+                        </div>
+                <!-- update -->
+                {{/each}}
+            </form>
+        </div>
+        <script src="/js/update_artist.js"></script>
     </body>
 </html>

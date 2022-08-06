@@ -1,25 +1,24 @@
 <html>
     <head>
         <title>Update Album</title>     
-        <link href="style.css" rel="stylesheet" type="text/css" />
-        <script language="JavaScript">
-        </script>
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </head>
 
-    <body>
-        <h1>Update Album</h1>
+    <body class="first-color">
+        <h1 class="title-format">Update Album</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
         
         <!-- Update of An Existing Album -->
-        <div id="update_album">
-            <form method="POST" id="updateAlbum">
+        <div class="text-font" id="update_album">
+            <form class="text-font" method="POST" id="updateAlbum">
                 <fieldset>
                     <h3>Selected Album Details</h3>
                     <div class="form-group">
@@ -41,7 +40,7 @@
 
                 <table id="artists_has_albums" border="1" cellpadding="5">
                     <tr>
-                      <th>Artist Name</th>
+                      <th class="text-font-headers">Artist Name</th>
                       <th> </th>
                     </tr>
                     <tr>

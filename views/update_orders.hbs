@@ -1,33 +1,33 @@
 <html>
     <head>
+        
         <title>Update Orders</title>
         
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
+    
     </head>
 
-    <body>
-        <h1>Update Orders</h1>
+    <body class="first-color">
+        <h1 class="title-format">Update Orders</h1>
 
-        [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
-        | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
-        
-        <p><a href="../">Return to Index Page</a></p>
-        
-        <br>
+        <div class="text-font">
+            [ <a href="../orders">Orders</a> | <a href="../customers">Customers</a> | <a href="../artists">Artists</a> | <a href="../albums">Albums</a> | <a href="../genres">Genres</a>
+            | <a href="../artists_has_albums">Artists Has Albums</a> | <a href="../genres_has_albums">Genres Has Albums</a>  | <a href="../orders_has_albums">Orders Has Albums</a> ]
+            
+            <p><a href="../">Return to Index Page</a></p>
+        </div>
 
-        <div id="update_order">
-            <form id="updateOrder">
+        <div class="text-font" id="update_order">
+            <form class="text-font" id="updateOrder">
                 {{#each data}}      
                     <fieldset>
                         <h3>Selected Order Details</h3>
                         <div class="form-group">
                             <p>Order ID (<a id="order_id" value="{{this.order_id}}">{{this.order_id}}</a>)</p>
-                            {{!-- <label for="order_id">Order ID: </label> 
-                            <input id="order_id" type="text" class="form-control" name="order_id" value="{{this.order_id}}"> --}}
 
-                            <label for="order_date"> Order Date YYYY/MM/DD:  </label> 
+                            <label for="order_date"> Order Date (Format YYYY/MM/DD):  </label> 
                             <input id="order_date" type="text" class="form-control" name="order_date" value="{{this.order_date}}">
 
                             <label for="order_total">Order Total: </label> 
