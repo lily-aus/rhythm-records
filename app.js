@@ -18,6 +18,7 @@ var db = require('./database/db-connector');
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
+const { type } = require('os');
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
@@ -161,20 +162,14 @@ app.get("/update_customers/:customer_id", async(req, res) =>
 
 app.get('/insert_orders', function(req, res)
     {
-        var context_1 = {};
         let query1 = "SELECT customer_id FROM Customers";
+        let query2 = "SELECT album_id, album_name FROM Albums";
 
         db.pool.query(query1, function(error, rows, fields){
-            context_1.res = rows;
-            var customer_ids = [];
-
-            for (var i = 0; i < rows.length; i++){
-                customer_ids.push(rows[i]["customer_id"]);
-            };
-
-            res.render('insert_orders', {customer_ids: customer_ids});
+            db.pool.query(query2, function(error, rows2, fields){
+                res.render('insert_orders', {data: rows, album: rows2});
+            });
         });
-
     });
 
 app.post('/add-order-ajax', function(req, res)
@@ -182,82 +177,86 @@ app.post('/add-order-ajax', function(req, res)
 
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
-        console.log();
 
         // Capture NULL values
         let customerID = parseInt(data.customer_id);
-        let albumName = parseInt(data.album_name);
-        let buyQuantity = parseInt(data.quantity);
-
-        if (isNaN(customerID))
-        {
-            customerID = 'NULL'
-        }
-
-        if (isNaN(albumName))
-        {
-            albumName = 'NULL'
-        }
-
-        if (isNaN(buyQuantity))
-        {
-            buyQuantity = 'NULL'
-        }
-
-        // Get date for the order (today's date)
-        let today = new Date().toDateString();
+        let albumIds = data.album_ids;
+        let albumQuantities = data.quantities;
 
         // Query to get desired album price
-        let albumPrice = `SELECT price FROM Albums WHERE album_name = '${data.album_name}'`;
+        let albumPrice = `SELECT price FROM Albums WHERE album_id = ?`;
 
         // Query to get existing stock quantity of desired album
-        let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_name = '${data.album_name}'`;
-        
-        db.pool.query(albumPrice, function(error, rows, fields)
-        {
-            if (error) {
-                console.log(error);
-                res.sendStatus(400);
-            }
+        let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_id = ?`;
 
-            else{
+        // Running order total and insertion query command
+        var orderTotal = 0;
+        let insertOrder;
 
-                let price_Album = rows[0].price;
+        for (let i = 0; i < albumIds.length; i++) {
+            db.pool.query(albumPrice, [albumIds[i]], function(error, rows, fields)
+            {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    let price_Album = rows[0].price;
 
-                // Calculated Order Total = Album Price * stock quantity input
-                let calculatedTotal = price_Album * buyQuantity;
+                    // Calculated Order Total = Album Price * stock quantity input
+                    let calculatedTotal = price_Album * albumQuantities[i];
+                    orderTotal = orderTotal + calculatedTotal;
 
-                db.pool.query(oldQuantity, function(error, rows, fields){
+                    db.pool.query(oldQuantity, [albumIds[i]], function(error, rows, fields){
 
-                    let quantity_Old = rows[0].stock_qty;
+                        let quantity_Old = rows[0].stock_qty;
 
-                    // Adjusted stock quantity of album being ordered = Old Stock Quantity - Quantity Purchased
-                    let newQuantity = quantity_Old - buyQuantity;
+                        // Adjusted stock quantity of album being ordered = Old Stock Quantity - Quantity Purchased
+                        let newQuantity = quantity_Old - albumQuantities[i];
 
-                    // Query to update stock quantity of desired album 
-                    let updQuant = `INSERT INTO Albums (stock_qty) VALUES (${newQuantity})`;
+                        // Query to update stock quantity of desired album 
+                        let updQuant = `UPDATE Albums SET stock_qty = '${newQuantity}' WHERE album_id = ${albumIds[i]}`;
 
-                    db.pool.query(updQuant, function(error, rows, fields){
-                        if (error) {
-                            console.log(error);
-                            res.sendStatus(400);
-                        }
-                        else{
+                        db.pool.query(updQuant, function(error, rows, fields){
+                            if (error) {
+                                console.log(error);
+                                res.sendStatus(400);
+                            }
+                            else
+                            {
+                                if (i == 0){
+                                    insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES (CURDATE(), '${orderTotal}', ${customerID})`;
+                                }
+                                else
+                                {
+                                    insertOrder = `UPDATE Orders SET order_total = '${orderTotal}' WHERE order_id = (SELECT max(order_id) FROM Orders)`;
+                                }
+                                console.log(insertOrder);
+                                console.log(i);
 
-                            // Query to finally add new order
-                            let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${calculatedTotal}', ${data.customer_id})`;
-                            
-                            db.pool.query(insertOrder, function(error, rows, fields){
-                                if (error) {
-                                    console.log(error);
-                                    res.sendStatus(400);
-                                };
-                            });
-                        };
+                                db.pool.query(insertOrder, function(error, rows, fields){
+                                    if (error) {
+                                        console.log(error);
+                                        res.sendStatus(400);
+                                    };
+                                });
+                            };
+                        });
                     });
-                });
-            };
-        });
+                };
+            });
+        };
+        // // Query to finally add new order
+        // let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${orderTotal}', ${customerID})`;
+        
+        // db.pool.query(insertOrder, function(error, rows, fields){
+        //     if (error) {
+        //         console.log(error);
+        //         res.sendStatus(400);
+        //     };
+        // });
+    
     });
 
 app.get('/update_orders/:order_id', function(req, res)
@@ -631,9 +630,8 @@ app.get('/insert_albums', function(req, res)
             db.pool.query(getGenre, function(error, rows2, fields){
 
             res.render('insert_albums', { data: rows, genre: rows2});
-        });
-    });
-        
+            });
+        });        
     });
 
 
