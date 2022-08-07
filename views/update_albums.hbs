@@ -16,109 +16,77 @@
             <p><a href="../">Return to Index Page</a></p>
         </div>
         
-        <!-- Update of An Existing Album -->
+        
         <div class="text-font" id="update_album">
             <form class="text-font" method="POST" id="updateAlbum">
+                {{#each data}}
+                <!-- Update of An Existing Album -->
                 <fieldset>
                     <h3>Selected Album Details</h3>
                     <div class="form-group">
-                        <input type="hidden" name="AlbumID" id="updateAlbumID" value="1">
-                        <label for="alid"> Album ID: </label> 
-                        <input type="number" name="alid" value="5001"><br><br>
+                        <p>Album (<a id="album_id">{{this.album_id}}</a>)</p>
+
                         <label for="alname"> Album Name: </label> 
-                        <input type="text" name="alname" value="Illamtic"><br><br>
-                        <label for="date"> Release Date: </label> 
-                        <input type="date" name="date" value="1994-04-19"><br><br>
-                        <label for="quan"> Quantity in Stock: </label> 
-                        <input type="number" name="quan" value="15"><br><br>
+                        <input id="alname" type="text" name="alname" value="{{this.album_name}}"><br><br>
+                        <label for="release_date"> Release Date: </label> 
+                        <input id="release_date" type="date" name="release_date" DisplayFormat="dd-mm-yyyy" value="{{this.release_date}}"><br><br>
+                        <label for="stock_qty"> Quantity in Stock: </label> 
+                        <input id="stock_qty" type="number" name="stock_qty" value="{{this.stock_qty}}"><br><br>
                         <label for="price"> Price: </label> 
-                        <input type="number" step="0.01" name="price" value="24.5"><br><br>
+                        <input id="price" type="number" step="0.01" name="price" value="{{this.price}}"><br><br>
                     </div>
                 </fieldset>
+                {{/each}}
                 <br><br>
 
-
-                <table id="artists_has_albums" border="1" cellpadding="5">
+                <fieldset>
+                <h3>Current Artists</h3>
+                <table id="artists-albums-table" border="1" cellpadding="5">
                     <tr>
+                      <th class="text-font-headers">Artist ID</th>
                       <th class="text-font-headers">Artist Name</th>
-                      <th> </th>
+                      <th class="text-font-headers">Delete</th>
+
                     </tr>
-                    <tr>
-                        <td>Nas</td>
-                        <td>
-                            <button onclick="DeleteArtistFunction()">Delete artist</button>
-                        </td>
+                    {{#each currentArtist}}
+                    <tr class="text-font" data-value={{this.Artists_Albums_id}}>  
+                        <td align="center">{{this.artist_id}}</td>
+                        <td align="center">{{this.artist_name}}</td>
+                        <td><a href="#" onclick="deleteArtistsHasAlbums({{this.Artists_Albums_id}})"><i class="material-icons button delete">delete</i></a></td>
                     </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control" id="artistSelect">
-                                <option value="none" selected disabled hidden>Select an artist</option>
-                                <option>Nas</option>
-                                <option>Neutral Milk Hotel</option>
-                                <option>Summoning</option>
-                                <option>Iggy & The Stooges</option>
-                                <option>Ed Harris</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button onclick="DeleteArtistFunction()">Delete artist</button>
-                        </td>                        
-                    </tr>
+                    {{/each}}
+                    <script src="/js/delete_artists_has_albums.js"></script>
                 </table>
                 <br>
-                <button onclick="AddArtistFunction()">Add another artist</button>
+                <br>
+                Please click <a href="../artists_has_albums">here</a> to add more artists to the album
 
-                <br><br>
-                
-                <table id="genres_has_albums" border="1" cellpadding="5">
-                    <tr>
-                      <th>Genre Name</th>
-                      <th> </th>
-                    </tr>
-                    <tr>
-                        <td>East Coast Hiphop</td>
-                        <td>
-                            <button onclick="DeleteGenreFunction()">Delete genre</button>
-                        </td>
-                    </tr>
+                </fieldset>
+                <br>
+                <br>
 
+                <fieldset>
+                <h3>Current Genres</h3>
+                <table id="genres-albums-table" border="1" cellpadding="5">
                     <tr>
-                        <td>Psychedelic Folk</td>
-                        <td>
-                            <button onclick="DeleteGenreFunction()">Delete genre</button>
-                        </td>
-                    </tr>
+                      <th class="text-font-headers">Genre ID</th>
+                      <th class="text-font-headers">Genre Name</th>
+                      <th class="text-font-headers">Delete</th>
 
-                    <tr>
-                        <td>Ambient/Atmospheric</td>
-                        <td>
-                            <button onclick="DeleteGenreFunction()">Delete genre</button>
-                        </td>
                     </tr>
-
-                    <tr>
-                        <td>
-                            <select class="form-control" id="genreSelect">
-                                <option value="none" selected disabled hidden>Select a genre</option>
-                                <option>East Coast Hiphop</option>
-                                <option>Hardcore Hiphop</option>
-                                <option>Indie Rock</option>
-                                <option>Psychedelic Folk</option>
-                                <option>Black Metal</option>
-                                <option>Ambient/Atmospheric</option>
-                                <option>Proto-Punk</option>
-                                <option>Hard Rock</option>
-                                <option>Soundtrack</option>
-                                <option>Drum and Bass</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button onclick="DeleteGenreFunction()">Delete genre</button>
-                        </td>
+                    {{#each currentGenre}}
+                    <tr class="text-font" data-value={{this.Genres_Albums_id}}>  
+                        <td align="center">{{this.genre_id}}</td>
+                        <td align="center">{{this.genre_name}}</td>
+                        <td><a href="#" onclick="deleteGenresHasAlbums({{this.Genres_Albums_id}})"><i class="material-icons button delete">delete</i></a></td>
                     </tr>
+                    {{/each}}
+                    <script src="/js/delete_genres_has_albums.js"></script>
                 </table>
                 <br>
-                <button onclick="AddGenreFunction()">Add another genre</button>
+                <br>
+                Please click <a href="../genres_has_albums">here</a> to add more genres to the album
+                </fieldset>
 
 
             </form> 
@@ -126,10 +94,13 @@
 
         <p>&nbsp;</p>
 
-        <div>
-            <input class="btn" type="submit" id="UpdateSaveAlbum" value="Save">
-            <a href="../albums"><input class="btn" type="button" value="Cancel"></a>
-        </div>
+        <form class="text-font" id="submitForm">
+            <div>
+                <input onclick= "window.location.href='/albums';" class="btn" type="submit" value="Save album">
+                <a href="/albums"><input class="btn" type="button" value="Cancel"></a>
+            </div>
+        </form>
 
+    <script src="/js/update_album.js"></script>
     </body>
 </html>
