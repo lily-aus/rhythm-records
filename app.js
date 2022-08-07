@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34862;
+PORT = 34860;
 
 // Database
 var db = require('./database/db-connector');
@@ -1187,7 +1187,8 @@ app.delete('/delete-orders-has-albums-ajax/', function(req,res,next)
             {
                 res.sendStatus(204);
             }
-    })});
+        });
+    });
 
 
 
