@@ -1,3 +1,11 @@
+//
+// # Citation for the project
+// # Date: 08/08/2022
+// # Adapted Based on the starter-app provided in CS340
+// # Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+//
+
+
 /*
     SETUP
 */
@@ -10,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34860;
+PORT = 34862;
 
 // Database
 var db = require('./database/db-connector');
@@ -58,14 +66,14 @@ app.get('/orders', function(req, res)
     {
 
         // Declare Query 1
-        let query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
+        let query1 = "SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders;";
 
         // Query 2 for dropdown menu customer IDs
         let query2 = "SELECT DISTINCT customer_id FROM Orders;";
 
         if (req.query.custo_id)
         {
-            query1 = `SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%M %d %Y') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders WHERE customer_id = "${req.query.custo_id}%"`
+            query1 = `SELECT order_id AS 'Order ID',  DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', order_total AS 'Order Total', customer_id AS 'Customer ID' FROM Orders WHERE customer_id = "${req.query.custo_id}%"`
         }
 
         // Run the 1st query
@@ -87,32 +95,76 @@ app.get('/orders', function(req, res)
 
 app.get('/artists', function(req, res)
     {
-        let query1 = "SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists;";
-        
+
+        let query1 = `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists`;
+        let query2 = `SELECT artist_id from Artists`;
+
+        if(req.query.input_artist)
+        {
+            query1= `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists WHERE artist_id = "${req.query.input_artist}%"`;
+        }
+
         db.pool.query(query1, function(error, rows, fields){
-            
-            res.render('artists',{data: rows});                                      
-        })
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('artists',{data: rows, artist_ids: rows2});                                      
+        });
+        
+    });
     
     });  
 
 app.get('/albums', function(req, res)
+
     {
-        let query1 = "SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%M %d %Y') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums;";
+
+        let query1 = `SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums`;
+        let query2 = `SELECT album_id from Albums`;
+
+        if(req.query.input_album)
+        {
+            query1= `SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums WHERE album_id = "${req.query.input_album}%"`;
+        }
 
         db.pool.query(query1, function(error, rows, fields){
-            res.render('albums', {data: rows});
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('albums',{data: rows, album_ids: rows2});                                      
         });
+        
     });
+    
+    });  
 
 app.get('/genres', function(req, res)
+    // {
+    //     let query1 = "SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres";
+
+    //     db.pool.query(query1, function(error, rows, fields){
+    //         res.render('genres', {data: rows});
+    //     });
+    // });
+
+
     {
-        let query1 = "SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres";
+
+        let query1 = `SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres`;
+        let query2 = `SELECT genre_id from Genres`;
+
+        if(req.query.input_genre)
+        {
+            query1= `SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres WHERE genre_id = "${req.query.input_genre}%"`;
+        }
 
         db.pool.query(query1, function(error, rows, fields){
-            res.render('genres', {data: rows});
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('genres',{data: rows, genre_ids: rows2});                                      
         });
+        
     });
+    
+    });  
 
 app.get('/genres_has_albums', function(req, res)
     {
@@ -134,7 +186,7 @@ app.get('/artists_has_albums', function(req, res)
 
 app.get('/orders_has_albums', function(req, res)
     {
-        let query1 = "SELECT * FROM Orders_has_Albums";
+        let query1 = "SELECT Orders_Albums_id AS 'Orders_Albums_ID', order_id AS 'Order ID', album_id AS 'Album ID', quantity AS 'Quantity', unit_price AS 'Unit Price', line_total AS 'Line Total' FROM Orders_has_Albums";
 
         db.pool.query(query1, function(error, rows, fields){
             res.render('orders_has_albums', {data: rows});
@@ -265,7 +317,7 @@ app.get('/update_orders/:order_id', function(req, res)
 
         if (incomingId >= 500)
         {
-            let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%M %d %Y') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${incomingId}`;
+            let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%Y/%m/%d') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${incomingId}`;
             
             db.pool.query(getOrderById, function(error, rows, fields){
                 res.render("update_orders", { data: rows, active: { Orders: true } });
@@ -284,7 +336,7 @@ app.get('/update_orders/:order_id', function(req, res)
                 else {
 
                     let orderID = rows[0].order_id;
-                    let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%M %d %Y') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${orderID}`;
+                    let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%Y/%m/%d') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${orderID}`;
 
                     db.pool.query(getOrderById, function(error, rows, fields){
 
@@ -701,10 +753,223 @@ app.post('/add-album-ajax', function(req, res)
         })
     });
 
-app.get('/update_albums/:album_id', function(req, res)
+app.get("/update_albums/:album_id", async(req, res) =>
     {
-        res.render("update_albums");
+        var albumId = req.params.album_id;
+        
+        
+        let getAlbumById = `SELECT album_id, album_name, DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty, price FROM Albums WHERE album_id = ${albumId}`;
+        let getArtistByAlbumID = `SELECT Artists.artist_id, Artists.artist_name, Artists_has_Albums.Artists_Albums_id 
+                FROM Artists 
+                JOIN Artists_has_Albums ON Artists.artist_id = Artists_has_Albums.artist_id 
+                WHERE Artists_has_Albums.album_id = ${albumId}`;
+        let getGenresByAlbumID = `SELECT Genres.genre_id, Genres.genre_name, Genres_has_Albums.Genres_Albums_id 
+                FROM Genres 
+                JOIN Genres_has_Albums ON Genres.genre_id = Genres_has_Albums.genre_id 
+                WHERE Genres_has_Albums.album_id = ${albumId}`;
+        
+        db.pool.query(getAlbumById, function(error, rows, fields){
+            db.pool.query(getArtistByAlbumID, function(error, rows2, fields){
+                db.pool.query(getGenresByAlbumID, function(error, rows3, fields){
+            res.render("update_albums", { data: rows, currentArtist: rows2, currentGenre: rows3});
+
+        });
     });
+    });
+    });
+
+
+app.post("/update_albums/:album_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+
+        // Capture NULL values
+        let album_id = parseInt(data.album_id);
+        let album_name = parseInt(data.album_name);
+        let release_date = parseInt(data.release_date);
+        let stock_qty = parseInt(data.stock_qty);
+        let price = parseInt(data.price);
+
+
+        updateAlbum = `UPDATE Albums SET album_name = '${data.album_name}', release_date = '${data.release_date}',  stock_qty = '${data.stock_qty}',  price = '${data.price}'
+        WHERE album_id = ${album_id}`;
+
+
+        db.pool.query(updateAlbum, function(error, result)
+        {
+          if (error) {
+            console.log(error);
+            res.sendStatus(400);
+          } else {
+            console.log(result.affectedRows + ' record(s) updated');
+          }
+        });
+    });
+
+
+app.get('/insert_artists_has_albums', function(req, res)
+    {
+        let getArtist = `SELECT artist_id, artist_name FROM Artists`;
+        let getAlbum =  `SELECT album_id, album_name FROM Albums`;
+        
+        db.pool.query(getArtist, function(error, rows, fields){
+
+            db.pool.query(getAlbum, function(error, rows2, fields){
+
+            res.render('insert_artists_has_albums', { data: rows, album: rows2});
+        });
+    });
+        
+    });
+
+
+app.post('/add-artists-has-albums-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        let album_id = parseInt(data.album_id);
+
+        // Insert into albums table
+        query1 = `
+        INSERT INTO Artists_has_Albums(artist_id, album_id) 
+        VALUES 
+        ` + Array.from(
+            data.artist_id,
+            x => `(${x}, ${album_id})`
+        ).join(", ");     
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            } else {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+        });
+    });
+
+
+
+app.get('/insert_genres_has_albums', function(req, res)
+    {
+        let getGenre = `SELECT genre_id, genre_name FROM Genres`;
+        let getAlbum =  `SELECT album_id, album_name FROM Albums`;
+        
+        db.pool.query(getGenre, function(error, rows, fields){
+
+            db.pool.query(getAlbum, function(error, rows2, fields){
+
+            res.render('insert_genres_has_albums', { data: rows, album: rows2});
+        });
+    });
+        
+    });
+
+app.post('/add-genres-has-albums-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        let album_id = parseInt(data.album_id);
+
+        // Insert into albums table
+        query1 = `
+        INSERT INTO Genres_has_Albums(genre_id, album_id) 
+        VALUES 
+        ` + Array.from(
+            data.genre_id,
+            x => `(${x}, ${album_id})`
+        ).join(", ");
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            } else {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+        });
+    });
+
+
+
+app.get('/insert_orders_has_albums', function(req, res)
+    {
+        let getOrder = `SELECT order_id, customer_id FROM Orders ORDER BY order_id`;
+        let getAlbum =  `SELECT album_id, album_name FROM Albums`;
+        
+        db.pool.query(getOrder, function(error, rows, fields){
+
+            db.pool.query(getAlbum, function(error, rows2, fields){
+
+            res.render('insert_orders_has_albums', { data: rows, album: rows2});
+        });
+    });
+        
+    });
+
+app.post('/add-orders-has-albums-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        let order_id = parseInt(data.order_id);
+
+        let albums = data.albums;
+
+        // Insert into Orders_has_Albums table
+        query1 = `
+        INSERT INTO Orders_has_Albums(order_id, album_id, quantity, unit_price) 
+        VALUES 
+        ` + Array.from(
+            albums,
+            x=> `(${order_id}, ${x.albumID}, ${x.qty}, ${x.uPrice})`
+        ).join(", ");
+        
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            } else {
+                // update line_total
+                query2 = `UPDATE Orders_has_Albums SET line_total = quantity * unit_price`;
+                db.pool.query(query2, function(error, rows, fields){
+                    // Check to see if there was an error
+                    if (error) {
+
+                        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                        console.log(error)
+                        res.sendStatus(400);
+                    } else {
+                        // update order total
+                        query3 = `UPDATE Orders SET Orders.order_total = (SELECT SUM(Orders_has_Albums.line_total) 
+                        FROM Orders_has_Albums
+                        WHERE Orders_has_Albums.order_id = Orders.order_id)`;
+                            
+                        db.pool.query(query3, function(error, rows3, fields){
+                            if (error) {
+        
+                                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                                console.log(error)
+                                res.sendStatus(400);
+                            }
+                        })
+                    }              
+                })
+            }   
+ 
+        })
+    });
+
+
 
 app.delete('/delete-artist-ajax/', function(req,res,next)
     {
@@ -910,6 +1175,30 @@ app.delete('/delete-genres-has-albums-ajax/', function(req,res,next)
                 res.sendStatus(204);
             }
     })});
+
+
+app.delete('/delete-orders-has-albums-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let orders_has_albumsID = parseInt(data.Orders_Albums_id);
+        let deleteOrders_has_Albums = `DELETE FROM Orders_has_Albums WHERE Orders_Albums_id = ?`;
+
+
+        // Run the 1st query
+        db.pool.query(deleteOrders_has_Albums, [orders_has_albumsID], function(error, rows, fields){
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+    })});
+
+
 
 
 /*

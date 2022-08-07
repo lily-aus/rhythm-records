@@ -46,7 +46,7 @@
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
                     <tr class="text-font" data-value={{this.[Artists_Albums_ID]}}>
-                        <td><a href="../update_artists_has_albums/{{this.[Artists_Albums_ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="../update_albums/{{this.[Album ID]}}"><i class="material-icons button edit">edit</i></a></td>
                         <td><a href="#" onclick="deleteArtistsHasAlbums({{this.[Artists_Albums_ID]}})"><i class="material-icons button delete">delete</i></a></td>                       
                         <td>{{this.[Artists_Albums_ID]}}</td>
                         <td>{{this.[Artist ID]}}</td>
@@ -59,34 +59,6 @@
                 <script src="/js/delete_artists_has_albums.js"></script>
                 <p>&nbsp;</p>
             </div> <!-- browse -->
-
-            <!-- DELETE M:M Relationship Deletion: dis-associate an album from an artist -->
-
-
-            <div id="delete_artists_has_albums" hidden>
-                <form method="POST" id="deleteartisthasalbums">
-                    <legend><strong>Dis-associate an album from an artist</strong></legend>
-                    
-                    <fieldset class="fields">
-                        <p>Are you sure you wish to delete the following?</p>
-                        <input type="hidden" name="artist_has_albums_id" id="deleteartisthasalbumsID" value="1">
-                        <label> artist_has_albums_id </label> <input type="number" name="artist_has_albums_id">
-
-                    
-                    </fieldset>
-                    
-                    <input class="btn" type="submit" id="deleteartisthasalbums" value="Submit">
-                    <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
-                </form> 
-            </div><!-- delete -->
-
-            <script>
-                function deleteFunction() {
-                  var x = document.getElementById("delete_artists_has_albums");
-                  x.hidden
-                  x.hidden = !x.hidden
-                }
-            </script>
 
 
             <!--seach function display the albums belong to the artist-->
