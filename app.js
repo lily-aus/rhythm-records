@@ -277,6 +277,7 @@ app.post('/add-order-ajax', function(req, res)
                             }
                             else
                             {
+                                // Check to see if Order is being created or if it's total is to be updated in final query
                                 if (i == 0){
                                     insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES (CURDATE(), '${orderTotal}', ${customerID})`;
                                 }
@@ -299,16 +300,6 @@ app.post('/add-order-ajax', function(req, res)
                 };
             });
         };
-        // // Query to finally add new order
-        // let insertOrder = `INSERT INTO Orders (order_date, order_total, customer_id) VALUES ('${today}', '${orderTotal}', ${customerID})`;
-        
-        // db.pool.query(insertOrder, function(error, rows, fields){
-        //     if (error) {
-        //         console.log(error);
-        //         res.sendStatus(400);
-        //     };
-        // });
-    
     });
 
 app.get('/update_orders/:order_id', function(req, res)
