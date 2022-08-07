@@ -46,7 +46,7 @@
                     {{!-- For each row, print the id, name and country in order --}}
                     {{#each data}}
                     <tr class="text-font" data-value={{this.[Artists_Albums_ID]}}>
-                        <td><a href="../update_artists_has_albums/{{this.[Artists_Albums_ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="../update_albums/{{this.[Album ID]}}"><i class="material-icons button edit">edit</i></a></td>
                         <td><a href="#" onclick="deleteArtistsHasAlbums({{this.[Artists_Albums_ID]}})"><i class="material-icons button delete">delete</i></a></td>                       
                         <td>{{this.[Artists_Albums_ID]}}</td>
                         <td>{{this.[Artist ID]}}</td>
