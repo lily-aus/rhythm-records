@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34860;
+PORT = 34861;
 
 // Database
 var db = require('./database/db-connector');
@@ -703,10 +703,106 @@ app.post('/add-album-ajax', function(req, res)
         })
     });
 
-app.get('/update_albums/:album_id', function(req, res)
+app.get("/update_albums/:album_id", async(req, res) =>
     {
-        res.render("update_albums");
+        var albumId = req.params.album_id;
+        
+        
+        let getAlbumById = `SELECT album_id, album_name, release_date, stock_qty, price FROM Albums WHERE album_id = ${albumId}`;
+        let getArtistByAlbumID = `SELECT Artists.artist_id, Artists.artist_name, Artists_has_Albums.Artists_Albums_id 
+                FROM Artists 
+                JOIN Artists_has_Albums ON Artists.artist_id = Artists_has_Albums.artist_id 
+                WHERE Artists_has_Albums.album_id = ${albumId}`;
+        let getGenresByAlbumID = `SELECT Genres.genre_id, Genres.genre_name, Genres_has_Albums.Genres_Albums_id 
+                FROM Genres 
+                JOIN Genres_has_Albums ON Genres.genre_id = Genres_has_Albums.genre_id 
+                WHERE Genres_has_Albums.album_id = ${albumId}`;
+        
+        db.pool.query(getAlbumById, function(error, rows, fields){
+            db.pool.query(getArtistByAlbumID, function(error, rows2, fields){
+                db.pool.query(getGenresByAlbumID, function(error, rows3, fields){
+            res.render("update_albums", { data: rows, currentArtist: rows2, currentGenre: rows3});
+
+        });
     });
+    });
+    });
+
+
+app.post("/update_albums/:album_id", function(req,res)
+    {   
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        console.log();
+
+        // Capture NULL values
+        let album_id = parseInt(data.album_id);
+        let album_name = parseInt(data.album_name);
+        let release_date = parseInt(data.release_date);
+        let stock_qty = parseInt(data.stock_qty);
+        let price = parseInt(data.price);
+
+
+        updateAlbum = `UPDATE Albums SET album_name = '${data.album_name}', release_date = '${data.release_date}',  stock_qty = '${data.stock_qty}',  price = '${data.price}'
+        WHERE album_id = ${album_id}`;
+
+
+        db.pool.query(updateAlbum, function(error, result)
+        {
+          if (error) {
+            console.log(error);
+            res.sendStatus(400);
+          } else {
+            console.log(result.affectedRows + ' record(s) updated');
+          }
+        });
+    });
+
+
+app.get('/insert_artists_has_albums', function(req, res)
+    {
+        let getArtist = `SELECT artist_id, artist_name FROM Artists`;
+        let getAlbum =  `SELECT album_id, album_name FROM Albums`;
+        
+        db.pool.query(getArtist, function(error, rows, fields){
+
+            db.pool.query(getAlbum, function(error, rows2, fields){
+
+            res.render('insert_artists_has_albums', { data: rows, album: rows2});
+        });
+    });
+        
+    });
+
+
+app.post('/add-artists-has-albums-ajax', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        let album_id = parseInt(data.album_id);
+
+        // Insert into albums table
+        query1 = `
+        INSERT INTO Artists_has_Albums(artist_id, album_id) 
+        VALUES 
+        ` + Array.from(
+            data.artist_id,
+            x => `(${x}, ${album_id})`
+        ).join(", ");     
+        db.pool.query(query1, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            } else {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+        });
+    });
+
 
 app.delete('/delete-artist-ajax/', function(req,res,next)
     {

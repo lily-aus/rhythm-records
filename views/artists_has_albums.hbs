@@ -60,34 +60,6 @@
                 <p>&nbsp;</p>
             </div> <!-- browse -->
 
-            <!-- DELETE M:M Relationship Deletion: dis-associate an album from an artist -->
-
-
-            <div id="delete_artists_has_albums" hidden>
-                <form method="POST" id="deleteartisthasalbums">
-                    <legend><strong>Dis-associate an album from an artist</strong></legend>
-                    
-                    <fieldset class="fields">
-                        <p>Are you sure you wish to delete the following?</p>
-                        <input type="hidden" name="artist_has_albums_id" id="deleteartisthasalbumsID" value="1">
-                        <label> artist_has_albums_id </label> <input type="number" name="artist_has_albums_id">
-
-                    
-                    </fieldset>
-                    
-                    <input class="btn" type="submit" id="deleteartisthasalbums" value="Submit">
-                    <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
-                </form> 
-            </div><!-- delete -->
-
-            <script>
-                function deleteFunction() {
-                  var x = document.getElementById("delete_artists_has_albums");
-                  x.hidden
-                  x.hidden = !x.hidden
-                }
-            </script>
-
 
             <!--seach function display the albums belong to the artist-->
             <div class="text-font">
