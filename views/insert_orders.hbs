@@ -27,30 +27,63 @@
                     <h3>Provide Order Details</h3>
                     <div class="form-group">
                         <label for="customer_id"> Customer ID: </label> 
-                        <select id="someSelect">
+                        <select id="customerSelect">
                             <option value="test">Select a Customer ID</option>
-                            {{#each customer_ids}}
-                            <option value={{this}} type="int" name="customer_id" id="cid">{{this}}</option>
+                            {{#each data}}
+                            <option value={{this.customer_id}} type="int" name="customer_id" id="cid">{{this.customer_id}}</option>
                             {{/each}}
                         </select>
 
                         <br><br>
 
-                        <label> Album Name: </label> 
-                        <input type="text" name="album_name" id="album_name"><br><br>
-                        
-                        <label> Quantity: </label> 
-                        <input type="number" name="quantity" id="quantity"><br><br>
+                        <form class="text-font" id="addAlbum">
+                            <fieldset>
+                                <h3>Add Albums & Quantities</h3>
+                                <select class="form-control" id="albumSelect">
+                                    <option value="test">Select an Album</option>
+                                    {{#each album}}
+                                    <option album_id="{{this.album_id}}">{{this.album_name}}</option>
+                                    {{/each}}
+                                </select>
+
+                                <select class="form-control" id="quanSelect">
+                                    <option value="test">Select a Quantity</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                                
+                                <button type="button" onclick="addMoreAlbum()">Add more albums</button>
+                                
+                                <br><br>
+                                
+                                <table id="addAlbum-table" border="1" cellpadding="5">
+                                    <thead>
+                                        <tr class="text-font-headers">
+                                            <th>Album ID</th>
+                                            <th>Album Name</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </form>
                     </div>
                 </fieldset>
-                <br>
-                
+            </form> 
+
+            <form class="text-font" id="submitForm">
                 <div>
-                    <input class="btn" type="submit" value="Add Order">
+                    <input onclick= "window.location.href='/orders';" class="btn" type="submit" value="Add order">
+                    {{!-- onclick= "window.location.href='/orders';"  --}}
                     <a href="/orders"><input class="btn" type="button" value="Cancel"></a>
                 </div>
-                
-            </form> 
+            </form>
 
             <script src="/js/add_order.js"></script>
             

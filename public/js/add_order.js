@@ -1,28 +1,78 @@
 // Get the objects we need to modify
-let addOrderForm = document.getElementById('addOrder');
+let addAlbumForm = document.getElementById('addAlbum');
+let submitForm = document.getElementById('submitForm');
+
+function addMoreAlbum() {
+
+    // Get a reference to the current table on the page and clear it out.
+    let currentTable =  document.getElementById("addAlbum-table");
+
+    // Get the value of the variable
+    let albumSelect = document.getElementById("albumSelect");
+    let quanSelect = document.getElementById("quanSelect");
+    let album = albumSelect.options[albumSelect.selectedIndex];
+    let albumQuantity = quanSelect.value;
+    let albumName = album.innerText;
+    let albumId = album.getAttribute("album_id");
+
+    // Create a row and 3 cells
+    let row = document.createElement("TR");
+    let idCell = document.createElement("TD");
+    let nameCell = document.createElement("TD");
+    let quanCell = document.createElement("TD");
+
+    // Fill the cells with correct data
+    idCell.innerText = albumId;
+    nameCell.innerText = albumName;
+    quanCell.innerText = albumQuantity;
+
+    // Add the cells to the row 
+    row.appendChild(idCell);
+    row.appendChild(nameCell);
+    row.appendChild(quanCell);
+
+    // Add the row to the table
+    currentTable.querySelector("tbody").appendChild(row);
+
+    //delete the selected one from dropdown list
+    let selectElement = document.getElementById("albumSelect");
+    for (child of selectElement.children) {
+        if (child.innerText==albumName) {
+            child.parentNode.removeChild(child);
+            break;
+        };
+    };
+};
 
 // Modify the objects we need
-addOrderForm.addEventListener("submit", function (e) {
+submitForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerID = document.getElementById("someSelect");
-    let inputAlbumName = document.getElementById("album_name");
-    let inputQuantity = document.getElementById("quantity");
+    let inputCustomerID = document.getElementById("customerSelect");
 
     // Get the values from the form fields
     let CustomerIDValue = inputCustomerID.value;
-    let AlbumNameValue = inputAlbumName.value;
-    let QuantityValue = inputQuantity.value;
+
+    var AlbumIDInfo = Array.prototype.map.call(document.querySelectorAll('#addAlbum-table tbody tr'), function(tr){
+        return tr.querySelector("td").innerText;
+    });
+
+    var QuantityInfo = Array.prototype.map.call(document.querySelectorAll('#addAlbum-table tbody tr'), function(tr){
+        return tr.querySelector("td:nth-child(3)").innerText;
+    });
+
+    let AlbumIDValue = AlbumIDInfo;
+    let QuantityValue = QuantityInfo;
 
     // Put our data we want to send in a javascript object
     let data = {
         customer_id: CustomerIDValue,
-        album_name: AlbumNameValue,
-        quantity: QuantityValue,
-    }
+        album_ids: AlbumIDValue,
+        quantities: QuantityValue
+    };
     console.log(JSON.stringify(data));
 
     // Setup our AJAX request
@@ -40,8 +90,6 @@ addOrderForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
-            inputAlbumName.value = '';
-            inputQuantity.value = '';
             inputCustomerID.value = '';
             
         }
@@ -58,7 +106,7 @@ addOrderForm.addEventListener("submit", function (e) {
 
 // Creates a single row from an Object representing a single record
 addRowToTable = (data) => {
-    console.log("hello")
+
     // Get a reference to the current table on the page and clear it out.
     let currentTable =  document.getElementById("orders-table").innerHTML="/orders";
 
@@ -83,10 +131,6 @@ addRowToTable = (data) => {
     deleteCell.onclick = function(){
         deletePerson(newRow.id);
     };
-    
-    // var order_total = data.line_price * data.quantity;
-    // console.log(data[0].value);
-    // console.log(parsedData[0].value);
     
     console.log(parsedData.success);
 
