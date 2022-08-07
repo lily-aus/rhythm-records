@@ -60,14 +60,20 @@
 
         <!--seach function display the albums information by searching album name-->
         <div class="text-font">
-            <h3>Search album information by album name</h3>
-
-            <form class="seachAlbums">
-                <input type="text" placeholder="Please enter an album name..." name="search">
-                <input class="btn" type="submit" id="searchAlbums" value="Search">
-                <a href='/orders'><button>Reset</button></a>
+        
+            <h3>Search album information by album ID</h3>
+            <form id="search-album-html" method='GET' action='/albums'>
+                <select name="input_album" id="input-album-ajax">
+                    <option value="">Select an album ID</option>
+                    {{#each album_ids}}
+                    <option value="{{this.album_id}}">{{this.album_id}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit">
+                <a href='/albums'><button>Reset</button></a>
             </form>
         </div><!-- search-->
+
 
 
 

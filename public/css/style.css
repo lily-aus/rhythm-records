@@ -135,3 +135,9 @@ td:last-child {
 .add_circle:hover {
     color: #0a79df;
 }
+
+footer {
+    font-family: "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    font-size: x-large;
+}

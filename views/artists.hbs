@@ -61,12 +61,12 @@
         <!--seach function display the artist information by searching artist name-->
         <div class="text-font">
         
-            <h3>Search artist information by artist name</h3>
-            <form id="search-person-html" method='GET' action='/'>
-                <select name="input-artist" id="input-artist-ajax">
-                    <option value="">Select an artist</option>
-                    {{#each data}}
-                    <option artist_id="{{this.[Artist ID]}}">{{this.[Artist Name]}}</option>
+            <h3>Search artist information by artist ID</h3>
+            <form id="search-person-html" method='GET' action='/artists'>
+                <select name="input_artist" id="input-artist-ajax">
+                    <option value="">Select an artist ID</option>
+                    {{#each artist_ids}}
+                    <option value="{{this.artist_id}}">{{this.artist_id}}</option>
                     {{/each}}
                 </select>
                 <input type="submit">
