@@ -22,13 +22,13 @@
 
         <div id="browse_orders_has_albums">
 
-            <table id="orders-has-albums-table" border="1" cellpadding="5">
+            <table id="orders-albums-table" border="1" cellpadding="5">
                 
                 <thead>
                     <tr>
                         <th>
                             <div class="aligner">
-                                <a href="../insert_orders"><i class="material-icons button add_circle">add_circle</i></a>
+                                <a href="../insert_orders_has_albums"><i class="material-icons button add_circle">add_circle</i></a>
                             </div>
                         </th>
 
@@ -43,47 +43,22 @@
                 
                 <tbody>
                     {{#each data}}
-                    <tr class="text-font">
-                        <td><a href="../update_orders/{{this.Orders_Albums_id}}"><i class="material-icons button edit">edit</i></a></td>
-                        <td><a href="#" onclick="deleteFunction('this.Orders_Albums_id')"><i class="material-icons button delete">delete</i></a></td>
-                        <td>{{this.Orders_Albums_id}}</td>
-                        <td>{{this.order_id}}</td>
-                        <td>{{this.album_id}}</td>
-                        <td>{{this.quantity}}</td>
-                        <td>{{this.unit_price}}</td>
-                        <td>{{this.line_total}}</td>
+                    <tr class="text-font" data-value={{this.[Orders_Albums_ID]}}>
+                        <td><a href="../update_orders/{{this.[Orders_Albums_ID]}}"><i class="material-icons button edit">edit</i></a></td>
+                        <td><a href="#" onclick="deleteOrdersHasAlbums({{this.[Orders_Albums_ID]}})"><i class="material-icons button delete">delete</i></a></td>                       
+                        <td>{{this.[Orders_Albums_ID]}}</td>
+                        <td>{{this.[Order ID]}}</td>
+                        <td>{{this.[Album ID]}}</td>
+                        <td>{{this.[Quantity]}}</td>
+                        <td>{{this.[Unit Price]}}</td>
+                        <td>{{this.[Line Total]}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
             </table>
-
+            <script src="/js/delete_orders_has_albums.js"></script>
             <p>&nbsp;</p>
-        </div> <!-- browse -->
-
-        <!-- DELETE M:M Relationship Deletion: dis-associate an album from an order -->
-        <div id="delete_orders_has_albums" hidden>
-            <form method="POST" id="deleteordershasalbums">
-                <legend><strong>Dis-associate an album from an order</strong></legend>
-                
-                <fieldset class="fields">
-                    <p>Are you sure you wish to delete the following?</p>
-                    <input type="hidden" name="artist_has_albums_id" id="deleteordershasalbumsID" value="1">
-                    <label> orders_has_albums_id </label> <input type="number" name="orders_has_albums_id">
-                
-                </fieldset>
-                
-                <input class="btn" type="submit" id="deleteordershasalbums" value="Submit">
-                <input class="btn" type="button" value="Cancel" onClick="window.location.reload();">
-            </form> 
-        </div><!-- delete -->
-
-        <script>
-            function deleteFunction() {
-                var x = document.getElementById("delete_orders_has_albums");
-                x.hidden
-                x.hidden = !x.hidden
-            }                
-        </script>
+        </div>
 
         <!--seach function display the albums belong to the artist-->
         <div class="text-font">

@@ -28,8 +28,8 @@
 
                         <label for="alname"> Album Name: </label> 
                         <input id="alname" type="text" name="alname" value="{{this.album_name}}"><br><br>
-                        <label for="release_date"> Release Date: </label> 
-                        <input id="release_date" type="date" name="release_date" DisplayFormat="dd-mm-yyyy" value="{{this.release_date}}"><br><br>
+                        <label for="release_date"> Release Date: (Format YYYY/MM/DD)</label> 
+                        <input id="release_date" type="text" name="release_date" value="{{this.[Release Date]}}"><br><br>
                         <label for="stock_qty"> Quantity in Stock: </label> 
                         <input id="stock_qty" type="number" name="stock_qty" value="{{this.stock_qty}}"><br><br>
                         <label for="price"> Price: </label> 
@@ -59,7 +59,7 @@
                 </table>
                 <br>
                 <br>
-                Please click <a href="../artists_has_albums">here</a> to add more artists to the album
+                Please click <a href="../insert_artists_has_albums">here</a> to add more artists to the album
 
                 </fieldset>
                 <br>
@@ -85,7 +85,7 @@
                 </table>
                 <br>
                 <br>
-                Please click <a href="../genres_has_albums">here</a> to add more genres to the album
+                Please click <a href="../insert_genres_has_albums">here</a> to add more genres to the album
                 </fieldset>
 
 
