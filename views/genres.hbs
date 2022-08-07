@@ -56,12 +56,18 @@
 
         <!--seach function display the genre id by searching genre name-->
         <div class="text-font">
-            <h3>Search genre ID by genre name</h3>
-
-            <form class="searchGenre">
-                <input type="text" placeholder="Please enter a genre name..." name="search">
-                <input class="btn" type="submit" id="searchGenre" value="Search">
-                </form>
+        
+            <h3>Search genre information by genre ID</h3>
+            <form id="search-genre-html" method='GET' action='/genres'>
+                <select name="input_genre" id="input-genre-ajax">
+                    <option value="">Select a genre ID</option>
+                    {{#each genre_ids}}
+                    <option value="{{this.genre_id}}">{{this.genre_id}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit">
+                <a href='/genres'><button>Reset</button></a>
+            </form>
         </div><!-- search-->
 
 

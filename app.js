@@ -1,3 +1,11 @@
+//
+// # Citation for the project
+// # Date: 08/08/2022
+// # Adapted Based on the starter-app provided in CS340
+// # Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+//
+
+
 /*
     SETUP
 */
@@ -86,33 +94,76 @@ app.get('/orders', function(req, res)
 
 app.get('/artists', function(req, res)
     {
-        
-        let query1 = "SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists;";
-        
+
+        let query1 = `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists`;
+        let query2 = `SELECT artist_id from Artists`;
+
+        if(req.query.input_artist)
+        {
+            query1= `SELECT artist_id AS 'Artist ID', artist_name AS 'Artist Name', country AS 'Country' FROM Artists WHERE artist_id = "${req.query.input_artist}%"`;
+        }
+
         db.pool.query(query1, function(error, rows, fields){
-            
-            res.render('artists',{data: rows});                                      
-        })
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('artists',{data: rows, artist_ids: rows2});                                      
+        });
+        
+    });
     
     });  
 
 app.get('/albums', function(req, res)
+
     {
-        let query1 = "SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums;";
+
+        let query1 = `SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums`;
+        let query2 = `SELECT album_id from Albums`;
+
+        if(req.query.input_album)
+        {
+            query1= `SELECT album_id AS 'Album ID', album_name AS 'Album Name',  DATE_FORMAT(release_date, '%Y/%m/%d') AS 'Release Date', stock_qty As 'Stock Quantity', price AS 'Price' FROM Albums WHERE album_id = "${req.query.input_album}%"`;
+        }
 
         db.pool.query(query1, function(error, rows, fields){
-            res.render('albums', {data: rows});
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('albums',{data: rows, album_ids: rows2});                                      
         });
+        
     });
+    
+    });  
 
 app.get('/genres', function(req, res)
+    // {
+    //     let query1 = "SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres";
+
+    //     db.pool.query(query1, function(error, rows, fields){
+    //         res.render('genres', {data: rows});
+    //     });
+    // });
+
+
     {
-        let query1 = "SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres";
+
+        let query1 = `SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres`;
+        let query2 = `SELECT genre_id from Genres`;
+
+        if(req.query.input_genre)
+        {
+            query1= `SELECT genre_id AS 'Genre ID', genre_name AS 'Genre Name' FROM Genres WHERE genre_id = "${req.query.input_genre}%"`;
+        }
 
         db.pool.query(query1, function(error, rows, fields){
-            res.render('genres', {data: rows});
+            db.pool.query(query2, function(error, rows2, fields){
+
+            res.render('genres',{data: rows, genre_ids: rows2});                                      
         });
+        
     });
+    
+    });  
 
 app.get('/genres_has_albums', function(req, res)
     {
