@@ -11,9 +11,9 @@ function deleteOrder(orderID) {
       contentType: "application/json; charset=utf-8",
       success: function(result) {
         deleteRow(orderID);
+        location.reload();
       }
     });
-    location.reload();
   }
   
   function deleteRow(orderID){

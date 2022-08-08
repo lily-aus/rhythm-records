@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT = 34860;
+PORT = 34861;
 
 // Database
 var db = require('./database/db-connector');
@@ -952,6 +952,30 @@ app.post('/add-orders-has-albums-ajax', function(req, res)
 
         let albums = data.albums;
 
+        // convert albums to a object that id is the key and qty is value
+        let albums_ = Object.assign(
+            {},
+            ...albums.map(
+                (x) => ({[x.albumID]: parseInt(x.qty)})
+            )
+        );
+
+        // Query to get existing stock quantity of desired album
+        queryQty = `SELECT album_id, stock_qty FROM Albums WHERE album_id IN
+        `+ `(` + Array.from(
+            albums,
+            x=> x.albumID
+        ).join(", ") + `)`;
+
+        // Query to check if the quantity exceeds the stock, if yes, return, else continue
+        db.pool.query(queryQty, function(error, rows, fields){
+            for (row of rows) {
+                if (row.stock_qty < albums_[row.album_id]) {
+                    console.log(row.album_id, row.stock_qty)
+                    res.sendStatus(400);
+                    return;
+                }
+
         // Insert into Orders_has_Albums table
         query1 = `
         INSERT INTO Orders_has_Albums(order_id, album_id, quantity, unit_price) 
@@ -996,6 +1020,16 @@ app.post('/add-orders-has-albums-ajax', function(req, res)
             }   
  
         })
+                // update the quantity
+                let remain_qty = row.stock_qty - albums_[row.album_id]
+                queryQtyUpdate = `UPDATE Albums SET stock_qty = ${remain_qty} WHERE album_id = ${row.album_id}`;
+                db.pool.query(queryQtyUpdate, function(error, rows, fields){
+
+                })
+
+            };
+        });
+
     });
 
 
