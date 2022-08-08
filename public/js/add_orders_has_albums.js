@@ -90,6 +90,13 @@ function addAlbumsToOrder() {
     xhttp.open("POST", "add-orders-has-albums-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
+    // Tell our AJAX request how to resolve
+    xhttp.onreadystatechange = () => {
+        if (xhttp.status == 400) {
+            alert("The quantity exceeds the stock! Please choose again.");
+        }
+    }
+
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
 
