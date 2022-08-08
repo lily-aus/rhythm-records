@@ -1194,6 +1194,30 @@ app.delete('/delete-album-ajax/', function(req,res,next)
             }
     })});
 
+
+app.delete('/delete-artists-has-albums-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let artists_has_albumsID = parseInt(data.Artists_Albums_id);
+        let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE Artists_Albums_id = ?`;
+
+
+        // Run the 1st query
+        db.pool.query(deleteArtists_has_Albums, [artists_has_albumsID], function(error, rows, fields){
+            if (error) {
+
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+    })});
+
+
+
 app.delete('/delete-genres-has-albums-ajax/', function(req,res,next)
     {
         let data = req.body;
