@@ -305,40 +305,77 @@ app.post('/add-order-ajax', function(req, res)
 app.get('/update_orders/:order_id', function(req, res)
     {
         var incomingId = req.params.order_id;
+        let albums = `SELECT album_id AS 'Album ID' FROM Orders_has_Albums WHERE order_id = ${incomingId}`;
 
         if (incomingId >= 500)
         {
-            let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%Y/%m/%d') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${incomingId}`;
+            let getOrderById = `SELECT order_id AS 'Order ID' , DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${incomingId}`;
             
             db.pool.query(getOrderById, function(error, rows, fields){
-                res.render("update_orders", { data: rows, active: { Orders: true } });
+                let data = rows;
+
+                if (error) {
+                    console.log(error);
+                    res.send(400);
+                } 
+                else 
+                {
+                    db.pool.query(albums, function(error, rows, fields){
+
+                        let order_albums = rows;
+
+                        if (error) {
+                            console.log(error);
+                            res.send(400);
+                        } 
+                        else
+                        {
+                            res.render("update_orders", { data, order_albums, active: { Orders: true }});
+                        };
+                    });
+                };
             });
         } 
         else
         {
             let getOrderId = `SELECT order_id FROM Orders_has_Albums WHERE Orders_Albums_id = ${incomingId}`;
-            
+
             db.pool.query(getOrderId, function(error, rows, fields){
 
                 if (error) {
                     console.log(error);
                     res.send(400);
                 } 
-                else {
-
+                else 
+                {
                     let orderID = rows[0].order_id;
-                    let getOrderById = `SELECT order_id, DATE_FORMAT(order_date, '%Y/%m/%d') AS order_date, order_total, customer_id FROM Orders WHERE order_id = ${orderID}`;
+
+                    let getOrderById = `SELECT order_id AS 'Order ID' , DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${orderID}`;
 
                     db.pool.query(getOrderById, function(error, rows, fields){
+
+                        let data = rows;
 
                         if(error) {
                             console.log(error);
                             res.send(400);
                         }
-                        else {
-                            res.render("update_orders", { data: rows, active: { Orders: true } });
-                        }
-                       
+                        else 
+                        {
+                            db.pool.query(albums, function(error, rows, fields){
+
+                                let order_albums = rows;
+        
+                                if (error) {
+                                    console.log(error);
+                                    res.send(400);
+                                } 
+                                else
+                                {
+                                    res.render("update_orders", { data: rows, order_albums: order_albums, active: { Orders: true }});
+                                };
+                            });
+                        };
                     });
                 };
             });
