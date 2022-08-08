@@ -149,7 +149,8 @@ VALUES
 
 -- Update line_price
 UPDATE `Orders_has_Albums`
-SET `line_total` = quantity * unit_price;
+INNER JOIN `Albums` ON Albums.album_id = Orders_has_Albums.album_id
+SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price;
 
 -- Update total price in Orders
 UPDATE `Orders`
@@ -180,7 +181,8 @@ WHERE `Orders_Albums_id`= :id_of_order_album_from_input;
 
 -- Update line_price
 UPDATE `Orders_has_Albums`
-SET `line_total` = quantity * unit_price;
+INNER JOIN `Albums` ON Albums.album_id = Orders_has_Albums.album_id
+SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price;
 
 -- Update total price in Orders
 UPDATE `Orders`
@@ -271,7 +273,8 @@ VALUES
 
 -- Update line_price
 UPDATE `Orders_has_Albums`
-SET `line_total` = quantity * unit_price;
+INNER JOIN `Albums` ON Albums.album_id = Orders_has_Albums.album_id
+SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price;
 
 -- Update total price in Orders
 UPDATE `Orders`
@@ -291,7 +294,8 @@ WHERE `Orders_Albums_id`= :id_of_order_album_from_input;
 
 -- Update line_price
 UPDATE `Orders_has_Albums`
-SET `line_total` = quantity * unit_price;
+INNER JOIN `Albums` ON Albums.album_id = Orders_has_Albums.album_id
+SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price;
 
 -- Update total price in Orders
 UPDATE `Orders`

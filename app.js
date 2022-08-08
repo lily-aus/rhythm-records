@@ -186,7 +186,7 @@ app.get('/artists_has_albums', function(req, res)
 
 app.get('/orders_has_albums', function(req, res)
     {
-        let query1 = "SELECT Orders_Albums_id AS 'Orders_Albums_ID', order_id AS 'Order ID', album_id AS 'Album ID', quantity AS 'Quantity', unit_price AS 'Unit Price', line_total AS 'Line Total' FROM Orders_has_Albums";
+        let query1 = "SELECT Orders_Albums_id AS 'Orders_Albums_ID', order_id AS 'Order ID', album_id AS 'Album ID', quantity AS 'Quantity', line_total AS 'Line Total' FROM Orders_has_Albums";
 
         db.pool.query(query1, function(error, rows, fields){
             res.render('orders_has_albums', {data: rows});
@@ -242,7 +242,7 @@ app.post('/add-order-ajax', function(req, res)
         let oldQuantity = `SELECT stock_qty FROM Albums WHERE album_id = ?`;
 
         // Running order total and insertion query command
-        var orderTotal = 0;
+        // var orderTotal = 0;
         let insertOrder;
 
         for (let i = 0; i < albumIds.length; i++) {
@@ -974,15 +974,20 @@ app.post('/add-orders-has-albums-ajax', function(req, res)
                     console.log(row.album_id, row.stock_qty)
                     res.sendStatus(400);
                     return;
-                }
+                }}});
 
+        // update the quantity
+        let remain_qty = row.stock_qty - albums_[row.album_id]
+        queryQtyUpdate = `UPDATE Albums SET stock_qty = ${remain_qty} WHERE album_id = ${row.album_id}`;
+        db.pool.query(queryQtyUpdate, function(error, rows, fields){
+        
         // Insert into Orders_has_Albums table
         query1 = `
-        INSERT INTO Orders_has_Albums(order_id, album_id, quantity, unit_price) 
+        INSERT INTO Orders_has_Albums(order_id, album_id, quantity) 
         VALUES 
         ` + Array.from(
             albums,
-            x=> `(${order_id}, ${x.albumID}, ${x.qty}, ${x.uPrice})`
+            x=> `(${order_id}, ${x.albumID}, ${x.qty})`
         ).join(", ");
         
         db.pool.query(query1, function(error, rows, fields){
@@ -993,7 +998,10 @@ app.post('/add-orders-has-albums-ajax', function(req, res)
                 res.sendStatus(400);
             } else {
                 // update line_total
-                query2 = `UPDATE Orders_has_Albums SET line_total = quantity * unit_price`;
+                query2 = `UPDATE Orders_has_Albums 
+                INNER JOIN Albums ON Albums.album_id = Orders_has_Albums.album_id 
+                SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price`;
+
                 db.pool.query(query2, function(error, rows, fields){
                     // Check to see if there was an error
                     if (error) {
@@ -1013,24 +1021,16 @@ app.post('/add-orders-has-albums-ajax', function(req, res)
                                 // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
                                 console.log(error)
                                 res.sendStatus(400);
-                            }
-                        })
-                    }              
-                })
-            }   
- 
-        })
-                // update the quantity
-                let remain_qty = row.stock_qty - albums_[row.album_id]
-                queryQtyUpdate = `UPDATE Albums SET stock_qty = ${remain_qty} WHERE album_id = ${row.album_id}`;
-                db.pool.query(queryQtyUpdate, function(error, rows, fields){
-
-                })
-
-            };
+                                }
+                            });
+                        }              
+                    });
+                }   
+    
+            });
         });
-
     });
+
 
 
 
