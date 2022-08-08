@@ -186,9 +186,10 @@ app.get('/artists_has_albums', function(req, res)
 
 app.get('/orders_has_albums', function(req, res)
     {
-        let query1 = "SELECT Orders_Albums_id AS 'Orders_Albums_ID', order_id AS 'Order ID', album_id AS 'Album ID', quantity AS 'Quantity', unit_price AS 'Unit Price', line_total AS 'Line Total' FROM Orders_has_Albums";
+        let query1 = "SELECT Orders_Albums_id AS 'Orders_Albums_ID', order_id AS 'Order ID', album_id AS 'Album ID', quantity AS 'Quantity', line_total AS 'Line Total' FROM Orders_has_Albums";
 
         db.pool.query(query1, function(error, rows, fields){
+            console.log(rows)
             res.render('orders_has_albums', {data: rows});
         });
     });
@@ -244,6 +245,7 @@ app.post('/add-order-ajax', function(req, res)
         // Running order total and insertion query command
         var orderTotal = 0;
         let insertOrder;
+        let insertOrderhasAlbums;
 
         for (let i = 0; i < albumIds.length; i++) {
             db.pool.query(albumPrice, [albumIds[i]], function(error, rows, fields)
@@ -285,14 +287,17 @@ app.post('/add-order-ajax', function(req, res)
                                 {
                                     insertOrder = `UPDATE Orders SET order_total = '${orderTotal}' WHERE order_id = (SELECT max(order_id) FROM Orders)`;
                                 }
-                                console.log(insertOrder);
-                                console.log(i);
 
                                 db.pool.query(insertOrder, function(error, rows, fields){
-                                    if (error) {
-                                        console.log(error);
-                                        res.sendStatus(400);
-                                    };
+
+                                    insertOrderhasAlbums = `INSERT INTO Orders_has_Albums (order_id, album_id, quantity, line_total) VALUES ((SELECT max(order_id) FROM Orders), '${albumIds[i]}', '${albumQuantities[i]}', '${calculatedTotal}')`;
+
+                                    db.pool.query(insertOrderhasAlbums, function(error, rows, fields){
+                                        if (error) {
+                                            console.log(error);
+                                            res.sendStatus(400);
+                                        };
+                                    });
                                 });
                             };
                         });
@@ -323,6 +328,12 @@ app.get('/update_orders/:order_id', function(req, res)
                     db.pool.query(albums, function(error, rows, fields){
 
                         let order_albums = rows;
+
+                        for (let i=0; i < order_albums.length; i++){
+                            var usr_inp = incomingId;
+                            var OrderID = 'OrderID'
+                            order_albums[i][OrderID] = parseInt(usr_inp); 
+                        }
 
                         if (error) {
                             console.log(error);
@@ -366,6 +377,11 @@ app.get('/update_orders/:order_id', function(req, res)
                             db.pool.query(albums, function(error, rows, fields){
 
                                 let order_albums = rows;
+
+                                order_albums.push({
+                                    key: "OrderID",
+                                    value: orderID
+                                });
         
                                 if (error) {
                                     console.log(error);
@@ -392,7 +408,6 @@ app.post("/update_orders/:order_id", function(req,res)
         // Capture NULL values
         let order_id = parseInt(data.order_id);
         let order_date = parseInt(data.order_date);
-        let order_total = parseFloat(data.order_total);
         let customer_id = parseInt(data.customer_id);
 
         if (isNaN(order_id))
@@ -405,18 +420,12 @@ app.post("/update_orders/:order_id", function(req,res)
             order_date = 'NULL'
         }
 
-        if (isNaN(order_total))
-        {
-            order_total = 'NULL'
-        }
-
         if (isNaN(customer_id))
         {
             customer_id = 'NULL'
         }
 
-        updateOrder = `UPDATE Orders SET order_date = '${data.order_date}', order_total = '${data.order_total}'
-        WHERE order_id = ${order_id}`;
+        updateOrder = `UPDATE Orders SET order_date = '${data.order_date}', customer_id ='${data.customer_id}' WHERE order_id = ${data.order_id}`;
 
         db.pool.query(updateOrder, function(error, result)
         {
@@ -1204,7 +1213,57 @@ app.delete('/delete-orders-has-albums-ajax/', function(req,res,next)
         });
     });
 
+app.delete('/delete-albums-from-orders-ajax/', function(req,res,next)
+    {
+        let data = req.body;
+        let order_albumID = parseInt(data.Orders_Albums_id);
+        let orderID = parseInt(data.Orders_Has_Albums_id);
 
+        let album_price_quantity = `SELECT price, stock_qty FROM Albums WHERE album_id = ${order_albumID}`;
+        let quantityAlbumRemoved = `SELECT quantity FROM Orders_has_Albums WHERE order_id = ${orderID} AND album_id = ${order_albumID}`;
+        
+        let oldOrderTotal = `SELECT order_total FROM Orders WHERE order_id = ${orderID}`;        
+        
+        let deleteAlbums_from_Order = `DELETE FROM Orders_has_Albums WHERE order_id = ${orderID} AND album_id = ${order_albumID}`;
+
+        db.pool.query(album_price_quantity, function(error, rows, fields){
+            
+            let AlbumPrice = rows[0].price;
+            let AlbumStock = rows[0].stock_qty;
+
+            db.pool.query(quantityAlbumRemoved, function(error, rows, fields){
+                
+                let quantityReturned = rows[0].quantity;
+                let NewQuantity = AlbumStock + quantityReturned;
+                let updateAlbumQuantity = `UPDATE Albums SET stock_qty = ${NewQuantity} WHERE album_id = ${order_albumID}`;
+
+                db.pool.query(updateAlbumQuantity, function(error, rows, fields){
+
+                    db.pool.query(oldOrderTotal, function(error, rows, fields){
+
+                        let prevOrderTotal = rows[0].order_total;
+                        let NewOrderTotal = prevOrderTotal - quantityReturned*AlbumPrice;
+                        let updateOrderTotal = `UPDATE Orders SET order_total = ${NewOrderTotal} WHERE order_id = ${orderID}`;
+
+                        db.pool.query(updateOrderTotal, function(error, rows, fields){
+
+                            db.pool.query(deleteAlbums_from_Order, function(error, rows, fields){
+                                if (error) {
+                                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                                    console.log(error);
+                                    res.sendStatus(400);
+                                }
+                                else
+                                {
+                                    res.sendStatus(204);
+                                }
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 
 
 /*

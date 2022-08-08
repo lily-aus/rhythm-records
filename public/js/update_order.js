@@ -10,20 +10,17 @@ updateOrderForm.addEventListener("submit", function (e) {
     // Get form fields we need to get data from
     let inputOrderId = document.getElementById("order_id");
     let inputOrderDate = document.getElementById("order_date");
-    let inputOrderTotal = document.getElementById("order_total");
     let inputCustomerId = document.getElementById("customer_id");
 
     // Get the values from the form fields
     let OrderID = inputOrderId.text;
     let OrderDate = inputOrderDate.value;
-    let OrderTotal = inputOrderTotal.value;
     let CustomerID = inputCustomerId.value;
 
     // Put our data we want to send in a javascript object
     let data = {
         order_id: OrderID,
         order_date: OrderDate,
-        order_total: OrderTotal,
         customer_id: CustomerID
     }
     console.log(data)

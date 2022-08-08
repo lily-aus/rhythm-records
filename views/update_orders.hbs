@@ -38,7 +38,7 @@
                 
                 <h4>Albums In Order</h4>
 
-                <table id="updateAlbum-table" border="1" cellpadding="5">
+                <table id="updateOrder-table" border="1" cellpadding="5">
                     <thead class="text-font-headers">
                         <tr class="text-font-headers">
                             <th class="text-font-headers">Delete</th>
@@ -48,11 +48,12 @@
                     
                     <tbody>
                         {{#each order_albums}}
-                            <tr class="text-font">
-                                <td><a href="#" onclick="deleteAlbum({{this.[Album ID]}})"><i class="material-icons button delete">delete</i></a></td>
+                            <tr class="text-font" data-value={{this.[Album ID]}}>
+                                <td><a href="#" onclick="deleteAlbumFromOrder({{this.[Album ID]}}, {{this.OrderID}})"><i class="material-icons button delete">delete</i></a></td>
                                 <td align="center">{{this.[Album ID]}}</td>
                             </tr>
                         {{/each}}
+                        <script src="/js/delete_album_from_order.js"></script>
                     </tbody>
                 </table>
                 
@@ -61,7 +62,6 @@
                 <div>
                     <input onclick="window.location.href='/orders';" class="btn" type="submit" id="UpdateSaveOrder" value="Update Order">
                     <a href="/orders"><input class="btn" type="button" value="Cancel"></a>
-                    <script src="/js/delete_album_from_order.js"></script>
                 </div>
             </form> 
         </div><!-- update -->
