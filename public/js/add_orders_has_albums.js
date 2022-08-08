@@ -18,7 +18,6 @@ function addMoreAlbum() {
     let idCell = document.createElement("TD");
     let nameCell = document.createElement("TD");
     let qtyCell = document.createElement("TD");
-    let priceCell = document.createElement("TD");
 
     // Fill the cells with correct data
     idCell.innerText = albumId;
@@ -27,16 +26,13 @@ function addMoreAlbum() {
     input.type= "number";
     input.step =1;
     qtyCell.appendChild(input);
-    let input2 = document.createElement("input");
-    input2.type= "number";
-    input2.step = 0.01;
-    priceCell.appendChild(input2);
+
 
     // Add the cells to the row 
     row.appendChild(idCell);
     row.appendChild(nameCell);
     row.appendChild(qtyCell);
-    row.appendChild(priceCell);
+
 
     // Add the row to the table
     currentTable.querySelector("tbody").appendChild(row);
@@ -73,8 +69,7 @@ function addAlbumsToOrder() {
         tds = row.querySelectorAll("td");
         let AlbumId = tds[0].innerText;
         let qty = tds[2].firstChild.value;
-        let uPrice = tds[3].firstChild.value;
-        allAlbums.push({"albumID": AlbumId, "qty": qty, "uPrice": uPrice});
+        allAlbums.push({"albumID": AlbumId, "qty": qty});
     };
 
 
