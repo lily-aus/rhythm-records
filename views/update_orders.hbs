@@ -21,9 +21,34 @@
 
         <div class="text-font" id="update_order">
             <form class="text-font" id="updateOrder">
+
+                <fieldset>
+                    <h3>Albums In Order</h3>
+                    <table id="updateOrder-table" border="1" cellpadding="5">
+                        <thead class="text-font-headers">
+                            <tr class="text-font-headers">
+                                <th class="text-font-headers">Delete</th>
+                                <th class="text-font-headers">Album ID</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {{#each order_albums}}
+                                <tr class="text-font" data-value={{this.[Album ID]}}>
+                                    <td><a href="#" onclick="deleteAlbumFromOrder({{this.[Album ID]}}, {{this.OrderID}})"><i class="material-icons button delete">delete</i></a></td>
+                                    <td align="center">{{this.[Album ID]}}</td>
+                                </tr>
+                            {{/each}}
+                            <script src="/js/delete_album_from_order.js"></script>
+                        </tbody>
+                    </table>
+                </fieldset>
+                
+                <br><br>
+
                 {{#each data}}      
                     <fieldset>
-                        <h3>Selected Order Details</h3>
+                        <h4>Selected Order Details</h4>
                         <div class="form-group">
                             <p>Order ID (<a id="order_id" value="{{this.[Order ID]}}">{{this.[Order ID]}}</a>)</p>
 
@@ -35,29 +60,6 @@
                         </div>
                     </fieldset>
                 {{/each}}
-                
-                <h4>Albums In Order</h4>
-
-                <table id="updateOrder-table" border="1" cellpadding="5">
-                    <thead class="text-font-headers">
-                        <tr class="text-font-headers">
-                            <th class="text-font-headers">Delete</th>
-                            <th class="text-font-headers">Album ID</th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        {{#each order_albums}}
-                            <tr class="text-font" data-value={{this.[Album ID]}}>
-                                <td><a href="#" onclick="deleteAlbumFromOrder({{this.[Album ID]}}, {{this.OrderID}})"><i class="material-icons button delete">delete</i></a></td>
-                                <td align="center">{{this.[Album ID]}}</td>
-                            </tr>
-                        {{/each}}
-                        <script src="/js/delete_album_from_order.js"></script>
-                    </tbody>
-                </table>
-                
-                <br><br>
 
                 <div>
                     <input onclick="window.location.href='/orders';" class="btn" type="submit" id="UpdateSaveOrder" value="Update Order">
