@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS `Orders_has_Albums` (
   `order_id` INT NOT NULL,
   `album_id` INT NULL,
   `quantity` INT NOT NULL,
-  `unit_price` DECIMAL(10,2) NOT NULL,
   `line_total` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`Orders_Albums_id`),
   CONSTRAINT `fk_Order_has_Albums_Orders` 
@@ -238,49 +237,42 @@ VALUES
 -- Insert data to Table `Orders_has_Albums`
 -- -----------------------------------------------------
 
-INSERT INTO `Orders_has_Albums` (`order_id`,`album_id`, `quantity`, `unit_price`)
+INSERT INTO `Orders_has_Albums` (`order_id`,`album_id`, `quantity`)
 VALUES
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-04-21'),
   (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame'),
-  2,
-  '37.5'
+  2
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1003' AND order_date = '2022-04-21'),
   (SELECT album_id FROM Albums WHERE album_name = 'Illmatic'),
-  1,
-  '11.5'
+  1
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1003' AND order_date = '2022-04-21'),
   (SELECT album_id FROM Albums WHERE album_name = 'In the Aeroplane Over the Sea'),
-  2,
-  '13'
+  2
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1001' AND order_date = '2022-05-01'),
   (SELECT album_id FROM Albums WHERE album_name = 'Raw Power'),
-  1,
-  '24.5'
+  1
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-05-01'),
   (SELECT album_id FROM Albums WHERE album_name = 'Neotokyo GSDF'),
-  1,
-  '24.5'
+  1
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1004' AND order_date = '2022-05-01'),
   (SELECT album_id FROM Albums WHERE album_name = 'It Was Written'),
-  1,
-  '24.5'
+  1
 ),
 (
   (SELECT order_id FROM Orders WHERE customer_id = '1005' AND order_date = '2022-05-05'),
   (SELECT album_id FROM Albums WHERE album_name = 'Let Mortal Heroes Sing Your Flame'),
-  1,
-  '37.5'
+  1
 );
 
 
@@ -289,7 +281,8 @@ VALUES
 -- -----------------------------------------------------
 
 UPDATE `Orders_has_Albums`
-SET `line_total` = quantity * unit_price;
+INNER JOIN `Albums` ON Albums.album_id = Orders_has_Albums.album_id
+SET Orders_has_Albums.line_total = Orders_has_Albums.quantity * Albums.price;
 
 
 -- -----------------------------------------------------

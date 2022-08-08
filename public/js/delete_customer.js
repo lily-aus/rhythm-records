@@ -11,9 +11,9 @@ function deleteCustomer(customerID) {
       contentType: "application/json; charset=utf-8",
       success: function(result) {
         deleteRow(customerID);
+        location.reload();
       }
     });
-    location.reload();
   }
   
   function deleteRow(customerID){
