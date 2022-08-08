@@ -350,7 +350,7 @@ app.get('/update_orders/:order_id', function(req, res)
                 {
                     let orderID = rows[0].order_id;
 
-                    let getOrderById = `SELECT DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${orderID}`;
+                    let getOrderById = `SELECT order_id AS 'Order ID', DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${orderID}`;
 
                     db.pool.query(getOrderById, function(error, rows, fields){
 
