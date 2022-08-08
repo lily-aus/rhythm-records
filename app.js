@@ -350,7 +350,7 @@ app.get('/update_orders/:order_id', function(req, res)
                 {
                     let orderID = rows[0].order_id;
 
-                    let getOrderById = `SELECT order_id AS 'Order ID' , DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${orderID}`;
+                    let getOrderById = `SELECT DATE_FORMAT(order_date, '%Y/%m/%d') AS 'Order Date', customer_id AS 'Customer ID' FROM Orders WHERE order_id = ${orderID}`;
 
                     db.pool.query(getOrderById, function(error, rows, fields){
 
@@ -362,6 +362,7 @@ app.get('/update_orders/:order_id', function(req, res)
                         }
                         else 
                         {
+                            let albums = `SELECT album_id AS 'Album ID' FROM Orders_has_Albums WHERE order_id = ${orderID}`;
                             db.pool.query(albums, function(error, rows, fields){
 
                                 let order_albums = rows;
@@ -372,7 +373,7 @@ app.get('/update_orders/:order_id', function(req, res)
                                 } 
                                 else
                                 {
-                                    res.render("update_orders", { data: rows, order_albums: order_albums, active: { Orders: true }});
+                                    res.render("update_orders", { data, order_albums, active: { Orders: true }});
                                 };
                             });
                         };
@@ -1158,30 +1159,6 @@ app.delete('/delete-album-ajax/', function(req,res,next)
                 })
             }
     })});
-
-
-
-app.delete('/delete-artists-has-albums-ajax/', function(req,res,next)
-    {
-        let data = req.body;
-        let artists_has_albumsID = parseInt(data.Artists_Albums_id);
-        let deleteArtists_has_Albums = `DELETE FROM Artists_has_Albums WHERE Artists_Albums_id = ?`;
-
-
-        // Run the 1st query
-        db.pool.query(deleteArtists_has_Albums, [artists_has_albumsID], function(error, rows, fields){
-            if (error) {
-
-                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error);
-                res.sendStatus(400);
-            }
-            else
-            {
-                res.sendStatus(204);
-            }
-    })});
-
 
 app.delete('/delete-genres-has-albums-ajax/', function(req,res,next)
     {
